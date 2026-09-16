@@ -1,0 +1,2872 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MENSCH — Summer Collection Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:40 8% 95%; --surface:40 14% 99%; --raised:40 10% 97%; --recess:40 8% 92%;
+  --line:36 9% 87%; --line-2:36 8% 79%;
+  --ink:30 6% 16%; --ink-2:30 4% 34%; --ink-3:32 5% 48%;
+  --accent:32 24% 44%; --accent-soft:34 24% 93%;
+  --mgmt:32 5% 52%; --prod:32 24% 44%;
+  --pos:150 30% 34%; --cau:36 55% 40%; --neg:8 55% 46%;
+  --sb:15.5rem; --hdr:60px; --r:10px; color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}*{margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:hsl(var(--canvas));color:hsl(var(--ink));
+  font-family:'Inter',ui-sans-serif,system-ui,sans-serif;font-size:.9375rem;line-height:1.55;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+a{color:inherit;text-decoration:none} img{display:block;max-width:100%}
+table{border-collapse:collapse;width:100%}
+:focus-visible{outline:2px solid hsl(var(--accent));outline-offset:2px}
+::selection{background:hsl(var(--accent));color:#fff}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+.fig,td[data-n],th[data-n],.mono{font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.t-micro{font-size:.6875rem;line-height:1rem;letter-spacing:.04em}
+.t-label{font-size:.75rem;line-height:1.15rem}
+.caps{font-size:.6875rem;letter-spacing:.11em;text-transform:uppercase;font-weight:600;color:hsl(var(--ink-3))}
+.muted{color:hsl(var(--ink-2))}.faint{color:hsl(var(--ink-3))}
+.semi{font-weight:600}.med{font-weight:500}
+.pos{color:hsl(var(--pos))}.cau{color:hsl(var(--cau))}.neg{color:hsl(var(--neg))}
+.spacer{flex:1}.row{display:flex;align-items:center;gap:.5rem}
+.row-between{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+.wrap{flex-wrap:wrap}.stack{display:flex;flex-direction:column;gap:1rem}
+.stack-s{display:flex;flex-direction:column;gap:.5rem}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.875rem}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.875rem}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.875rem}
+@media(max-width:1000px){.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.g3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+/* ── shell ─────────────────────────────────────────────────────────────*/
+.sb{position:fixed;inset:0 auto 0 0;width:var(--sb);z-index:40;display:flex;flex-direction:column;
+  background:hsl(var(--surface));border-right:1px solid hsl(var(--line))}
+.sb-brand{padding:1.125rem 1.25rem 1rem;border-bottom:1px solid hsl(var(--line));
+  display:flex;align-items:center;gap:.75rem}
+.sb-mark{flex:none;line-height:0}
+.bison{display:block;overflow:visible}
+.lockup{display:inline-flex;align-items:center;gap:.62em;line-height:1}
+.lockword{font-family:'Arial',Helvetica,sans-serif;font-weight:400;letter-spacing:.34em;
+  font-size:1em;white-space:nowrap}
+.cover-mark{position:absolute;top:1.1rem;right:1.25rem;opacity:.9;line-height:0}
+.sb-name{font-weight:600;font-size:13px;letter-spacing:.26em;text-transform:uppercase}
+.sb-sub{font-size:10.5px;color:hsl(var(--ink-3));margin-top:3px}
+.sb-nav{flex:1;overflow-y:auto;padding:.5rem .5rem 1rem;scrollbar-width:thin}
+.sb-nav::-webkit-scrollbar{width:4px}
+.sb-nav::-webkit-scrollbar-thumb{background:hsl(var(--line-2));border-radius:2px}
+.s-link{display:flex;align-items:center;gap:.625rem;width:100%;padding:.4375rem .625rem;
+  border-radius:7px;color:hsl(var(--ink-2));font-size:12.5px;font-weight:500;margin-bottom:1px;
+  transition:background .12s,color .12s}
+.s-link:hover{background:hsl(var(--canvas));color:hsl(var(--ink))}
+.s-link[aria-current="true"]{background:hsl(var(--ink));color:#fff}
+.s-num{font-family:'IBM Plex Mono',monospace;font-size:9.5px;opacity:.5;width:14px;flex:none}
+.s-txt{flex:1;min-width:0}
+.s-pct{font-family:'IBM Plex Mono',monospace;font-size:9.5px;opacity:.6;flex:none}
+.sb-foot{padding:.75rem 1rem;border-top:1px solid hsl(var(--line));display:flex;gap:.4375rem}
+.sb-fb{flex:1;text-align:center;font-size:11px;font-weight:500;color:hsl(var(--ink-3));
+  padding:.4375rem;border:1px solid hsl(var(--line));border-radius:6px;transition:.12s}
+.sb-fb:hover{color:hsl(var(--ink));border-color:hsl(var(--line-2))}
+.app{padding-left:var(--sb);min-height:100dvh}
+.topbar{position:sticky;top:0;z-index:30;height:var(--hdr);background:hsl(var(--canvas)/.93);
+  backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid hsl(var(--line));
+  display:flex;align-items:center;gap:.875rem;padding:0 clamp(1rem,2.4vw,1.75rem)}
+.crumbs{font-size:12.5px;color:hsl(var(--ink-3));font-weight:500;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.crumbs b{color:hsl(var(--ink));font-weight:600}
+main{max-width:80rem;padding:clamp(1.25rem,2.6vw,1.75rem) clamp(1rem,2.4vw,1.75rem) 5rem}
+
+/* logo slot, top-right */
+.logoslot{display:flex;align-items:center;gap:.625rem;flex:none}
+.logobox{width:40px;height:40px;border:1px dashed hsl(var(--line-2));border-radius:8px;
+  display:grid;place-items:center;cursor:pointer;overflow:hidden;background:hsl(var(--surface))}
+.logobox.filled{border-style:solid}
+.logobox img{width:100%;height:100%;object-fit:contain;padding:3px}
+.logobox span{font-size:9px;color:hsl(var(--ink-3));letter-spacing:.06em}
+
+/* ── page furniture ────────────────────────────────────────────────────*/
+.ph{margin-bottom:1.25rem}
+.ph h1{font-size:1.5rem;line-height:1.9rem;letter-spacing:-.028em;font-weight:300}
+.ph .sub{color:hsl(var(--ink-3));font-size:13px;margin-top:.25rem;max-width:64ch}
+.brief{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:hsl(var(--line));
+  border:1px solid hsl(var(--line));border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem}
+.brief div{background:hsl(var(--surface));padding:.875rem 1rem}
+.brief .k{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  color:hsl(var(--ink-3))}
+.brief p{font-size:12px;line-height:1.2rem;color:hsl(var(--ink-2));margin-top:.375rem}
+@media(max-width:900px){.brief{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.brief{grid-template-columns:1fr}}
+.blk{display:flex;align-items:baseline;gap:.75rem;margin:1.75rem 0 .875rem;
+  padding-bottom:.4375rem;border-bottom:1.5px solid hsl(var(--ink))}
+.blk h2{font-size:1rem;font-weight:500;letter-spacing:-.012em}
+.blk .ln{flex:1}
+.blk .r{font-size:11.5px;color:hsl(var(--ink-3));white-space:nowrap}
+.panel{background:hsl(var(--surface));border:1px solid hsl(var(--line));border-radius:var(--r);overflow:hidden}
+.p-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+  padding:.75rem 1rem;border-bottom:1px solid hsl(var(--line))}
+.p-head h3{font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.p-body{padding:1rem}.p-body.flush{padding:0;overflow-x:auto}
+.panel.ink{background:hsl(var(--ink));color:hsl(var(--canvas));border-color:hsl(var(--ink))}
+.panel.ink .faint{color:hsl(38 8% 66%)}
+
+/* who fills what */
+.byM{border-left:2px solid hsl(var(--mgmt))}
+.byP{border-left:2px solid hsl(var(--prod))}
+.tagM,.tagP{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:.125rem .375rem;border-radius:3px}
+.tagM{background:hsl(var(--recess));color:hsl(var(--ink-3))}
+.tagP{background:hsl(var(--accent-soft));color:hsl(var(--accent))}
+
+table.t{font-size:12.5px;min-width:38rem}
+.t th{font-size:10px;letter-spacing:.07em;text-transform:uppercase;font-weight:600;
+  color:hsl(var(--ink-3));text-align:left;padding:.625rem .75rem;border-bottom:1px solid hsl(var(--line));white-space:nowrap}
+.t td{padding:.5625rem .75rem;border-bottom:1px solid hsl(var(--line));vertical-align:middle}
+.t tr:last-child td{border-bottom:0}
+.t tbody tr:hover td{background:hsl(var(--raised))}
+.t [data-n]{text-align:right;white-space:nowrap}
+.t .tot td{border-top:1.5px solid hsl(var(--ink));font-weight:600}
+
+.inp{width:100%;height:32px;padding:0 .5rem;border:1px solid hsl(var(--line));border-radius:6px;
+  background:hsl(var(--surface));font:inherit;font-size:12.5px;color:hsl(var(--ink))}
+.inp:focus{border-color:hsl(var(--accent));outline:none}
+.inp.blank{background:hsl(var(--accent-soft)/.5);border-style:dashed}
+textarea.inp{height:auto;padding:.4375rem .5rem;line-height:1.3rem;resize:vertical}
+.inp.n{text-align:right;font-family:'IBM Plex Mono',monospace}
+.fld{display:flex;flex-direction:column;gap:.25rem}
+.fld label{font-size:10px;letter-spacing:.07em;text-transform:uppercase;font-weight:600;color:hsl(var(--ink-3))}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4375rem;height:33px;
+  padding:0 .8125rem;border-radius:7px;border:1px solid hsl(var(--line));background:hsl(var(--surface));
+  font-size:12.5px;font-weight:500;transition:.12s;white-space:nowrap}
+.btn:hover{background:hsl(var(--canvas));border-color:hsl(var(--line-2))}
+.btn-primary{background:hsl(var(--ink));color:#fff;border-color:hsl(var(--ink))}
+.btn-primary:hover{background:hsl(30 6% 24%)}
+.btn-sm{height:27px;padding:0 .5625rem;font-size:11.5px}
+.badge{display:inline-flex;align-items:center;gap:.25rem;padding:.125rem .4375rem;border-radius:999px;
+  font-size:10px;font-weight:600;background:hsl(var(--recess));color:hsl(var(--ink-2));
+  border:1px solid hsl(var(--line))}
+.badge-a{background:hsl(var(--accent-soft));color:hsl(var(--accent));border-color:transparent}
+.badge-p{background:hsl(var(--pos)/.1);color:hsl(var(--pos));border-color:transparent}
+.badge-c{background:hsl(var(--cau)/.12);color:hsl(var(--cau));border-color:transparent}
+.bar{height:5px;border-radius:999px;background:hsl(var(--recess));overflow:hidden}
+.bar>i{display:block;height:100%;background:hsl(var(--accent));transition:width .5s}
+.note{background:hsl(var(--accent-soft));border-left:2px solid hsl(var(--accent));
+  padding:.75rem .9375rem;font-size:12.5px;line-height:1.3rem;color:hsl(var(--ink-2));border-radius:0 6px 6px 0}
+.note.w{background:hsl(var(--cau)/.09);border-left-color:hsl(var(--cau))}
+.note.d{background:hsl(var(--ink));color:hsl(38 8% 80%);border-left-color:hsl(var(--accent))}
+.sample{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:hsl(var(--cau));background:hsl(var(--cau)/.1);padding:.1875rem .4375rem;border-radius:4px}
+
+/* ── showcase ──────────────────────────────────────────────────────────*/
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:1rem}
+.card{background:hsl(var(--surface));border:1px solid hsl(var(--line));border-radius:var(--r);
+  overflow:hidden;transition:.16s;text-align:left;width:100%}
+.card:hover{border-color:hsl(var(--line-2));box-shadow:0 4px 16px hsl(30 20% 20%/.07);transform:translateY(-2px)}
+.card-img{aspect-ratio:3/4;background:hsl(var(--recess));position:relative;overflow:hidden;display:grid;place-items:center}
+.card-img img{width:100%;height:100%;object-fit:cover}
+.card-img .ph2{text-align:center;color:hsl(var(--ink-3))}
+.card-img .ph2 b{display:block;font-size:1.125rem;opacity:.4}
+.card-body{padding:.75rem .8125rem}
+.card-code{font-family:'IBM Plex Mono',monospace;font-size:10px;color:hsl(var(--ink-3))}
+.card-name{font-size:13px;font-weight:600;margin-top:.1875rem;letter-spacing:-.01em}
+.card-meta{font-size:11px;color:hsl(var(--ink-3));margin-top:.25rem}
+.card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:.5rem}
+
+.sheet{position:fixed;inset:0;z-index:120;background:hsl(var(--canvas));display:none;overflow-y:auto}
+.sheet.on{display:block}
+.sheet-bar{position:sticky;top:0;z-index:5;height:54px;background:hsl(var(--canvas)/.94);
+  backdrop-filter:blur(10px);border-bottom:1px solid hsl(var(--line));display:flex;align-items:center;
+  gap:.75rem;padding:0 clamp(1rem,3vw,2rem)}
+.sheet-in{max-width:74rem;margin:0 auto;padding:clamp(1.25rem,3vw,2rem)}
+.shot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.625rem}
+.shot{aspect-ratio:3/4;background:hsl(var(--recess));border:1px dashed hsl(var(--line-2));
+  border-radius:8px;overflow:hidden;display:grid;place-items:center;cursor:pointer;position:relative}
+.shot.filled{border-style:solid}
+.shot img{width:100%;height:100%;object-fit:cover}
+.shot span{font-size:10px;color:hsl(var(--ink-3));text-align:center;padding:.5rem}
+.shot .x{position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:5px;
+  background:hsl(var(--ink)/.72);color:#fff;font-size:11px;display:grid;place-items:center;opacity:0}
+.shot:hover .x{opacity:1}
+
+/* size matrix */
+.sizemx{overflow-x:auto}
+.sizemx table{min-width:30rem}
+.sizemx th{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+  padding:.4375rem .25rem;border-bottom:1px solid hsl(var(--line));color:hsl(var(--ink-3))}
+.sizemx td{padding:.25rem;border-bottom:1px solid hsl(var(--line))}
+.sizemx input{width:100%;min-width:48px;height:30px;text-align:center;border:1px solid hsl(var(--line));
+  border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:12px;background:hsl(var(--surface))}
+.sizemx input:focus{border-color:hsl(var(--accent));outline:none}
+.sizemx .totcol{font-family:'IBM Plex Mono',monospace;font-weight:600;text-align:center}
+
+.sb-toggle{display:none;position:fixed;top:12px;left:12px;z-index:60;width:34px;height:34px;
+  background:hsl(var(--surface));border:1px solid hsl(var(--line));border-radius:7px;
+  align-items:center;justify-content:center}
+.sb-scrim{display:none;position:fixed;inset:0;background:hsl(30 20% 10%/.4);z-index:39}
+@media(max-width:1023px){
+  .sb{transform:translateX(-100%);transition:transform .26s}
+  body.nav-on .sb{transform:none} body.nav-on .sb-scrim{display:block}
+  .app{padding-left:0} .sb-toggle{display:flex} .topbar{padding-left:3.25rem}
+  .shot-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media print{.sb,.topbar,.sb-toggle{display:none!important}.app{padding-left:0}}
+
+/* showcase card — quantity and size breakup */
+.qtyline{display:flex;align-items:baseline;gap:.3125rem;margin-top:.5rem;
+  padding-top:.5rem;border-top:1px solid hsl(var(--line))}
+.qtybig{font-size:1.25rem;font-weight:600;letter-spacing:-.03em;line-height:1}
+.sizestrip{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.4375rem}
+.sizestrip span{display:inline-flex;align-items:baseline;gap:.1875rem;
+  background:hsl(var(--recess));border-radius:4px;padding:.125rem .3125rem;line-height:1.1}
+.sizestrip i{font-style:normal;font-size:9px;letter-spacing:.04em;color:hsl(var(--ink-3));font-weight:600}
+.sizestrip b{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600}
+
+#toast{position:fixed;left:50%;bottom:1.5rem;transform:translate(-50%,1rem);z-index:200;
+ background:hsl(var(--ink));color:#fff;padding:.625rem 1rem;border-radius:8px;font-size:12.5px;
+ opacity:0;pointer-events:none;transition:.22s}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ── Summer Master additions ───────────────────────────────────────── */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.625rem;margin:.25rem 0 1.25rem}
+.kpi{background:#fff;border:1px solid hsl(var(--line));border-radius:10px;padding:.8rem .9rem}
+.kv{font-size:1.35rem;font-weight:600;letter-spacing:-.02em;line-height:1.15;color:hsl(var(--ink))}
+.kl{font-size:11px;color:hsl(var(--ink-3));margin-top:.2rem;letter-spacing:.04em}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+.panel{min-width:0}
+main{overflow-x:hidden}
+.t-lab{font-size:12.5px;color:hsl(var(--ink-2))}
+.p-body.flush{padding:0}
+.hero-dark h1,.hero-dark p{color:hsl(var(--surface))!important}
+.chiprow{display:flex;gap:.4rem;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  padding:.25rem .1rem .55rem;scrollbar-width:none}
+.chiprow::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid hsl(var(--line));background:#fff;border-radius:999px;
+  padding:.42rem .8rem;font-size:12px;color:hsl(var(--ink-2));cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{background:hsl(var(--ink));color:hsl(var(--surface));border-color:hsl(var(--ink))}
+</style></head>
+<body>
+<button class="sb-toggle" id="navToggle" aria-label="Menu">☰</button>
+<div class="sb-scrim" id="navScrim"></div>
+<div id="root"></div>
+<input type="file" id="importer" accept="application/json" hidden>
+<script>
+/* ═══ MENSCH PRODUCTION BLUEPRINT — data model & persistence ═════════════ */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uid=p=>(p||'x')+Math.random().toString(36).slice(2,8);
+const grp=n=>{n=String(Math.abs(Math.round(n||0)));if(n.length<=3)return n;
+  const l=n.slice(-3);return n.slice(0,-3).replace(/\B(?=(\d{2})+(?!\d))/g,',')+','+l};
+const inr=v=>'₹'+grp(v);
+const num=v=>{const n=parseFloat(v);return isFinite(n)?n:0};
+
+
+/* ═══ THE MARK ═══════════════════════════════════════════════════════════ */
+const BISON=`<path d="M16 42 C16 24 31 16 50 16 C69 16 84 24 84 42 C84 49 78 54 70 56 C69 63 67 70 64 74 C61 78 56 79 50 79 C44 79 39 78 36 74 C33 70 31 63 30 56 C22 54 16 49 16 42 Z" fill="none" stroke="CURRENT" stroke-width="3.8" stroke-linejoin="round"/> <g fill="CURRENT"> <path d="M30.68 19.58 C20 15 12 10 6 4 C10 13 14.5 19.5 21.90 25.70 C24.25 23.14 27.23 21.10 30.68 19.58 Z"/> <g transform="translate(100,0) scale(-1,1)"><path d="M30.68 19.58 C20 15 12 10 6 4 C10 13 14.5 19.5 21.90 25.70 C24.25 23.14 27.23 21.10 30.68 19.58 Z"/></g> <path d="M32 27 L44 27 L38 43 ZM43.5 26 L56.5 26 L50 48 ZM56 27 L68 27 L62 43 Z"/> </g>`;
+const MARK=(size,colour)=>`<svg viewBox="0 0 100 100" class="bison" style="width:${size}px;height:${size}px">${BISON.replace(/CURRENT/g,colour||'currentColor')}</svg>`;
+const LOCKUP=(h,colour)=>`<span class="lockup" style="font-size:${h}px">
+ ${MARK(Math.round(h*1.9),colour)}<span class="lockword" style="color:${colour||'currentColor'}">MENSCH</span></span>`;
+
+const KEY='mensch.summer.master.v1';
+let DB=null;
+
+/* ── size templates ───────────────────────────────────────────────────── */
+const SIZE_SETS={
+ top:['XS','S','M','L','XL','XXL','3XL'],
+ bottom:['28','30','32','34','36','38','40'],
+ alpha:['S','M','L','XL'],
+ shoe:['UK6','UK7','UK8','UK9','UK10','UK11'],
+ one:['One size'],
+ free:['Free']
+};
+const SIZE_CURVE={                       // management's planned mix, editable
+ top:{XS:5,S:15,M:26,L:30,XL:16,XXL:8,'3XL':0},
+ bottom:{'28':6,'30':14,'32':26,'34':28,'36':18,'38':8,'40':0},
+ alpha:{S:20,M:32,L:30,XL:18},
+  shoe:{UK6:8,UK7:18,UK8:26,UK9:24,UK10:16,UK11:8},
+  one:{'One size':100}, free:{Free:100}
+};
+
+/* ── material groups → categories (editable) ──────────────────────────── */
+const MATERIAL_GROUPS=[
+ {id:'woven',name:'Wovens',cats:['Shirts','Casual shirts','Formal shirts','Linen shirts','Overshirts'],sizes:'top'},
+ {id:'knit',name:'Knits',cats:['T-Shirts','Polo shirts','Sweatshirts','Hoodies','Knit co-ords'],sizes:'top'},
+ {id:'denim',name:'Denim',cats:['Jeans','Denim shirts','Denim jackets','Denim shorts'],sizes:'bottom'},
+ {id:'bottom',name:'Bottomwear',cats:['Trousers','Chinos','Cargos','Shorts'],sizes:'bottom'},
+ {id:'outer',name:'Outerwear',cats:['Jackets','Layering pieces'],sizes:'top'},
+ {id:'essentials',name:'Essentials',cats:['Underwear','Socks'],sizes:'alpha'},
+ {id:'special',name:'Special / Occasion',cats:['Co-ords','Occasion wear'],sizes:'top'}
+];
+const catGroup=c=>{const g=MATERIAL_GROUPS.find(m=>m.cats.includes(c));return g?g.id:'woven'};
+const catSizes=c=>(CATMETA[c]&&CATMETA[c].sizeSet)||'top';
+
+/* ── the assortment MENSCH is asking to be produced ───────────────────── */
+/*   Styles and units are management figures from the MENSCH range plan.
+     No cost, capacity or lead-time value is pre-filled anywhere.          */
+const PLANNED_FULL=[
+ ['Shirts',             16,1152,1,3,1699,2399,'top',   'Core revenue and traffic','Core'],
+ ['T-Shirts',           14, 924,1,3, 899,1499,'top',   'Traffic driver and graphic territory','Core'],
+ ['Shorts',              8, 432,1,3,1499,1999,'bottom','Summer core','Core'],
+ ['Trousers',            8, 432,1,3,1999,2699,'bottom','Core revenue','Core'],
+ ['Underwear',           5, 480,1,3, 499, 799,'alpha', 'Basket builder and repeat','Important'],
+ ['Caps / Hats',         5, 300,1,2, 699,1199,'free',  'Basket builder','Important'],
+ ['Jeans',               6, 288,2,2,2299,2999,'bottom','Core revenue','Important'],
+ ['Joggers',             5, 240,2,2,1499,1999,'bottom','Comfort core','Important'],
+ ['Bags',                6, 240,2,2,1999,3999,'one',   'Brand builder and basket','Selective'],
+ ['Shades / Sunglasses', 5, 240,2,2,1299,2499,'one',   'Impulse and image','Selective'],
+ ['Shoes',               4, 240,3,2,2999,4999,'shoe',  'Image and capability test','Selective'],
+ ['Jackets',             4, 144,3,2,2999,4999,'top',   'Statement, controlled depth','Selective'],
+ ['Designer Collection', 6, 144,3,2,3499,6999,'top',   'Statement and designer-led','Experimental']
+];
+const PLANNED=PLANNED_FULL.map(r=>[r[0],r[1],r[2],r[3]]);
+const CATMETA=Object.fromEntries(PLANNED_FULL.map(r=>[r[0],
+  {designs:r[1],units:r[2],phase:r[3],cw:r[4],mrpLo:r[5],mrpHi:r[6],sizeSet:r[7],role:r[8],prio:r[9]}]));
+const SUBCATS={'Bags':['Backpack','Sling Bag','Duffle Bag']};
+const CAT_LIST=PLANNED_FULL.map(r=>r[0]);
+const catKind=c=>({'Shoes':'shoe','Bags':'bag','Shades / Sunglasses':'eyewear','Caps / Hats':'headwear'}[c]||'apparel');
+
+function seed(){
+ const phases=[
+   {id:'p1',no:'01',name:'Drop 1 — Summer Launch',start:'',end:'',sampleBy:'',prodBy:'',status:'Concept',
+    obj:'Open the season with the categories that carry an Indian summer. Maximum depth, lowest adoption risk.'},
+   {id:'p2',no:'02',name:'Drop 2 — Rapid Follow-up',start:'',end:'',sampleBy:'',prodBy:'',status:'Concept',
+    obj:'Newness six to eight weeks in, plus the accessories that lift basket value.'},
+   {id:'p3',no:'03',name:'Drop 3 — Statement & Capability',start:'',end:'',sampleBy:'',prodBy:'',status:'Concept',
+    obj:'Controlled depth on the pieces that build image and test the design partner hardest.'}
+ ];
+ const designs=[];
+ PLANNED.forEach(([cat,styles,units,ph])=>{
+  const set=catSizes(cat), curve=SIZE_CURVE[set];
+  const base=Math.floor(units/styles), extra=units-base*styles;
+  for(let i=1;i<=styles;i++){
+   const per=base+(i<=extra?1:0), qty={};
+   const keys=SIZE_SETS[set];
+   let run=0;
+   keys.forEach(s=>{const v=Math.floor(per*(curve[s]||0)/100);qty[s]=v;run+=v});
+   // remainder goes to the deepest sizes first, so the curve stays true
+   const order=[...keys].sort((a,b)=>(curve[b]||0)-(curve[a]||0));
+   let k=0; while(run<per){qty[order[k%order.length]]++;run++;k++}
+   designs.push({
+    id:uid('d'), code:codeFor(cat,i), name:'', cat,
+    sub:(SUBCATS[cat]?SUBCATS[cat][Math.floor((i-1)/Math.ceil(styles/SUBCATS[cat].length))]||SUBCATS[cat][SUBCATS[cat].length-1]:''), group:catGroup(cat), sizeSet:set,
+    phase:phases[ph-1].id, colour:'', colours:(CATMETA[cat]&&CATMETA[cat].cw)||1, fabric:'', comp:'', gsm:'', width:'',
+    fit:'', wash:'', finish:'', mrp:'', targetCost:'', quotedCost:'', moq:'',
+    vendor:'', leadTime:'', sampleStatus:'Not started', prodStatus:'Concept', qc:'',
+    notes:'', qty, shots:{}, cost:{}
+   });
+  }
+ });
+ return {
+  meta:{created:new Date().toISOString(),updated:'',version:1},
+  brand:{name:'MENSCH',tagline:'Style with Substance',
+   customer:'',priceBand:'',quality:'',refs:'',fabrics:'',fit:'',finish:'',wash:'',
+   packing:'',tolerance:'',refImages:{}},
+  logo:'', phases, designs,
+  review:{}, submission:{name:'',role:'',org:'',date:'',notes:''}
+ };
+}
+function codeFor(cat,i){
+ const p={'Shirts':'SH','T-Shirts':'TS','Shorts':'SR','Trousers':'TR','Underwear':'UW',
+  'Caps / Hats':'CP','Jeans':'DN','Joggers':'JG','Bags':'BG','Shades / Sunglasses':'SG',
+  'Shoes':'SO','Jackets':'JK','Designer Collection':'DC'}[cat]||'XX';
+ return 'MN-'+p+'-'+String(i).padStart(3,'0');
+}
+
+function load(){
+ try{const r=localStorage.getItem(KEY);DB=r?JSON.parse(r):seed()}catch(e){DB=seed()}
+ if(!DB.designs)DB=seed();
+}
+let saveT;
+function save(){DB.meta.updated=new Date().toISOString();
+ clearTimeout(saveT);saveT=setTimeout(()=>{
+  try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){
+   toast('Storage full — export a backup')}},220)}
+function toast(msg){
+ let t=$('#toast'); if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t)}
+ t.textContent=msg;t.className='on';clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2600);
+}
+load();
+try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}
+
+/* ── roll-ups ─────────────────────────────────────────────────────────── */
+const dTotal=d=>Object.values(d.qty||{}).reduce((a,b)=>a+num(b),0);
+const dSkus=d=>Object.values(d.qty||{}).filter(v=>num(v)>0).length*(num(d.colours)||1);
+function rollup(list){
+ list=list||DB.designs;
+ return {designs:list.length,
+  pieces:list.reduce((a,d)=>a+dTotal(d),0),
+  skus:list.reduce((a,d)=>a+dSkus(d),0),
+  colourways:list.reduce((a,d)=>a+(num(d.colours)||1),0)};
+}
+function byPhase(pid){return DB.designs.filter(d=>d.phase===pid)}
+function byGroup(gid){return DB.designs.filter(d=>d.group===gid)}
+function byCat(c){return DB.designs.filter(d=>d.cat===c)}
+const CATS=()=>[...new Set(DB.designs.map(d=>d.cat))];
+
+/* ── completion tracking ──────────────────────────────────────────────── */
+const PROD_FIELDS=['quotedCost','moq','vendor','leadTime'];
+function designFilled(d){return PROD_FIELDS.filter(f=>String(d[f]||'').trim()).length}
+function completion(){
+ const total=DB.designs.length*PROD_FIELDS.length;
+ const done=DB.designs.reduce((a,d)=>a+designFilled(d),0);
+ return total?Math.round(done/total*100):0;
+}
+
+/* ═══ NAVIGATION & PAGES ═════════════════════════════════════════════════ */
+const NAV=[
+ ['overview','Overview'],['brand','Brand Direction'],
+ ['showcase','The Mensch Showcase'],['inventory','Inventory Plan']
+];
+const PHASE1=['overview','brand','phases','showcase'];
+const P={};
+
+function brief(a,b,c,d){
+ return `<div class="brief">
+  <div><div class="k">What this is</div><p>${a}</p></div>
+  <div><div class="k">MENSCH has provided</div><p>${b}</p></div>
+  <div><div class="k">You need to fill</div><p>${c}</p></div>
+  <div><div class="k">Why it matters</div><p>${d}</p></div>
+ </div>`;
+}
+function blk(t,r){return `<div class="blk"><h2>${esc(t)}</h2><span class="ln"></span>
+ ${r?`<span class="r">${esc(r)}</span>`:''}</div>`}
+function fld(label,val,attr,ph,blank){
+ return `<label class="fld"><span>${esc(label)}</span>
+  <input class="inp${blank?' blank':''}" value="${esc(val||'')}" placeholder="${esc(ph||'')}" ${attr||''}></label>`}
+function sel(label,val,opts,attr){
+ return `<label class="fld"><span>${esc(label)}</span>
+  <select class="inp" ${attr||''}>${opts.map(o=>`<option ${o===val?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`}
+
+/* ── 1 · OVERVIEW ─────────────────────────────────────────────────────── */
+P.overview=()=>{
+ const cats=PLANNED_FULL.length;
+ const designs=PLANNED_FULL.reduce((a,x)=>a+x[1],0);
+ const units=PLANNED_FULL.reduce((a,x)=>a+x[2],0);
+ const cw=PLANNED_FULL.reduce((a,x)=>a+x[1]*x[4],0);
+ const lo=Math.min(...PLANNED_FULL.map(x=>x[5])), hi=Math.max(...PLANNED_FULL.map(x=>x[6]));
+ const byPrio=k=>PLANNED_FULL.filter(x=>x[9]===k);
+ return `
+ <div class="panel hero-dark" style="margin-bottom:1.5rem;background:hsl(var(--ink));color:hsl(var(--surface))">
+  <div class="p-body" style="padding:1.6rem">
+   <div class="t-lab" style="color:hsl(var(--accent));letter-spacing:.2em">SUMMER COLLECTION MASTER</div>
+   <h1 style="margin:.5rem 0 .4rem;font-size:clamp(1.4rem,5vw,2rem);line-height:1.15">
+     Design development, assortment, inventory and production intent</h1>
+   <p style="max-width:70ch;opacity:.82;font-size:.94rem;line-height:1.5">
+     The single source of truth for the first MENSCH Summer collection &mdash; what we are building,
+     who it is for, how many designs and pieces we intend to make, which drop each product belongs to
+     and what it should retail for.</p>
+  </div></div>
+
+ ${blk('The collection at a glance','Decided, not provisional')}
+ <div class="kpis">
+  ${[[cats,'Categories'],[designs,'Designs'],[grp(units),'Pieces'],[cw,'Colourway combinations'],
+     ['3','Drops'],['&#8377;'+grp(lo)+'&ndash;'+grp(hi),'Retail span']]
+   .map(([v,l])=>`<div class="kpi"><div class="kv">${v}</div><div class="kl">${l}</div></div>`).join('')}
+ </div>
+
+ ${blk('Where the depth sits','Inventory is weighted, not spread evenly')}
+ <div class="panel"><div class="p-body flush"><div class="table-scroll"><table class="t">
+  <thead><tr><th>Priority</th><th>Categories</th><th data-n>Designs</th><th data-n>Pieces</th><th data-n>Share</th></tr></thead>
+  <tbody>${['Core','Important','Selective','Experimental'].map(k=>{
+    const g=byPrio(k); if(!g.length)return '';
+    const d=g.reduce((a,x)=>a+x[1],0), u=g.reduce((a,x)=>a+x[2],0);
+    return `<tr><td><b>${k}</b></td><td class="t-lab muted">${g.map(x=>x[0]).join(', ')}</td>
+      <td data-n>${d}</td><td data-n>${grp(u)}</td><td data-n>${Math.round(u/units*100)}%</td></tr>`;}).join('')}
+  </tbody></table></div></div></div>
+
+ ${blk('The three drops','Why each one exists')}
+ <div class="g3">
+  ${DB.phases.map((p,i)=>{
+    const inPh=PLANNED_FULL.filter(x=>x[3]===i+1);
+    const d=inPh.reduce((a,x)=>a+x[1],0), u=inPh.reduce((a,x)=>a+x[2],0);
+    return `<div class="panel"><div class="p-body">
+     <div class="t-lab" style="color:hsl(var(--accent))">${esc(p.no)}</div>
+     <div class="semi" style="margin:.3rem 0 .5rem">${esc(p.name)}</div>
+     <div class="row" style="gap:1.2rem;margin-bottom:.6rem">
+       <div><div class="kv" style="font-size:1.1rem">${d}</div><div class="kl">designs</div></div>
+       <div><div class="kv" style="font-size:1.1rem">${grp(u)}</div><div class="kl">pieces</div></div></div>
+     <p class="t-lab muted" style="line-height:1.35">${esc(p.obj||'')}</p>
+     <div class="t-micro faint" style="margin-top:.5rem">${esc(inPh.map(x=>x[0]).join(' \u00b7 '))}</div>
+    </div></div>`;}).join('')}
+ </div>
+
+ ${blk('How to use this','For the design team')}
+ <div class="panel" style="border-color:hsl(var(--accent)/.45)"><div class="p-body">
+  <p style="max-width:74ch;line-height:1.55"><b>The references uploaded into this system represent design
+  direction and product inspiration only.</b> The design team is expected to create original and exclusive
+  MENSCH products from this brief &mdash; not to copy the reference garments. References are for silhouette,
+  detail, fabric, mood, construction and aesthetic direction.</p>
+  <div class="g3" style="margin-top:1rem">
+   ${[['Open the Showcase','Every planned style has a card. Filter by category or drop, open a style for the full sheet.'],
+      ['Read each style sheet','Role, fit, fabric direction, colourways, target retail and what we expect developed.'],
+      ['Return a portfolio','Not thirty safe styles, not thirty experiments. The intended mix is in the Inventory Plan.']]
+    .map(([t,d])=>`<div><div class="semi" style="font-size:.9rem">${t}</div>
+      <p class="t-lab muted" style="margin-top:.25rem;line-height:1.35">${d}</p></div>`).join('')}
+  </div>
+ </div></div>
+`};
+
+/* ═══ THE MENSCH SHOWCASE ════════════════════════════════════════════════ */
+const SHOTS=['Front','Back','Detail','Fabric','Technical sketch','Reference'];
+const SAMPLE_ST=['Not started','First sample','Fit sample','Revised sample','Size set','PP sample','Approved'];
+const ALL_CATS=()=>MATERIAL_GROUPS.flatMap(g=>g.cats);
+let SC={cat:'all',sub:'all',phase:'all',open:null};
+
+P.brand=()=>{
+ const PAL=[['Deep Charcoal','#1C1C1C'],['Graphite Grey','#3F4045'],['Stone Grey','#8A8883'],
+            ['Warm Off-White','#F4F1EB'],['Soft Beige','#D8D0C4']];
+ const card=(t,d)=>`<div class="panel"><div class="p-body">
+   <div class="t-lab" style="color:hsl(var(--accent));font-size:11px;letter-spacing:.1em">${t}</div>
+   <p style="margin-top:.35rem;line-height:1.45;font-size:.92rem">${d}</p></div></div>`;
+ return `
+ <div class="panel hero-dark" style="margin-bottom:1.4rem;background:hsl(var(--ink));color:hsl(var(--surface))">
+  <div class="p-body" style="padding:1.5rem">
+   <h1 style="font-size:clamp(1.3rem,4.6vw,1.8rem);margin:0 0 .35rem">Mensch</h1>
+   <p style="opacity:.85;max-width:64ch;line-height:1.5;font-size:.93rem">
+    A German word for a person of substance and integrity &mdash; someone you can rely on.
+    We named the brand after the compliment, then set out to build product that earns it.</p>
+   <div style="margin-top:.9rem;letter-spacing:.2em;font-size:.78rem;color:hsl(var(--accent))">
+    FOR WHATEVER COMES NEXT</div>
+  </div></div>
+
+ ${blk('Positioning','Where MENSCH sits')}
+ <div class="g2">
+  ${card('THE ONE LINE','Accessible-premium contemporary menswear, sold direct. Fashion-aware without being costume. Confident without being loud.')}
+  ${card('THE GAP','Below the designer labels he cannot justify, above the marketplace brands that disappoint after three washes.')}
+ </div>
+
+ ${blk('Fast fashion, the MENSCH way','Our operating model')}
+ <div class="panel" style="margin-bottom:1rem"><div class="p-body">
+  <div class="semi" style="font-size:1.05rem;margin-bottom:.4rem">Frequent new design. Deliberately limited quantity.</div>
+  <div class="g2" style="margin-top:.6rem">
+   <div><div class="t-lab" style="color:hsl(var(--accent));font-size:11px">WE TAKE</div>
+    <p class="t-lab muted" style="line-height:1.4;margin-top:.25rem">Speed from idea to rail. Reading what sells and reacting inside the season. Tight merchandising. A reason to come back this month.</p></div>
+   <div><div class="t-lab" style="color:hsl(var(--neg));font-size:11px">WE DO NOT TAKE</div>
+    <p class="t-lab muted" style="line-height:1.4;margin-top:.25rem">Thousands of styles a year. Disposable make. A discount calendar. Copying a runway look wholesale.</p></div>
+  </div></div></div>
+
+ ${blk('Who we design for','One man, 22 to 38')}
+ <div class="g3">
+  ${[['The Young Professional','26&ndash;34','A new role, a wedding season, a wardrobe gap he has noticed twice'],
+     ['The Urban Trend-Seeker','22&ndash;28','A new drop, a creator wearing it, a weekend or an occasion'],
+     ['The Occasion Buyer','25&ndash;38','A wedding, a festival, a work event, a photograph he will keep']]
+   .map(([n,a,t])=>`<div class="panel"><div class="p-body">
+     <div class="semi">${n}</div><div class="t-micro faint" style="margin:.2rem 0 .45rem">${a}</div>
+     <p class="t-lab muted" style="line-height:1.35">${t}</p></div></div>`).join('')}
+ </div>
+ <div class="note" style="margin:.75rem 0 0">He has outgrown looking young and has not started dressing old. That is a life stage, not a birth year.</div>
+
+ ${blk('Design language','In the garment itself')}
+ <div class="g2">
+  ${card('FIT &amp; PROPORTION','Clean regular and considered relaxed. Room without sloppiness. Nothing skin-tight, nothing shapeless.')}
+  ${card('FABRIC','Hand feel above the price point. For summer: breathable cotton, linen and blends with weight and recovery. Texture over shine.')}
+  ${card('COLOUR ON GARMENT','Grounded and tonal by default. Colour arrives as a considered accent or a seasonal story, not as noise.')}
+  ${card('DETAIL &amp; BRANDING','Corozo-look buttons, tonal thread, clean bar-tacks. Woven neck label. The logo is not the design &mdash; never chest-slogan branding.')}
+ </div>
+
+ ${blk('Brand palette','Brand surfaces only')}
+ <div class="panel"><div class="p-body">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:.6rem">
+   ${PAL.map(([n,h])=>`<div><div style="height:58px;border-radius:8px;background:${h};border:1px solid hsl(var(--line))"></div>
+     <div class="t-micro" style="margin-top:.3rem">${n}</div>
+     <div class="t-micro faint" style="font-family:ui-monospace,monospace">${h}</div></div>`).join('')}
+  </div>
+  <div class="note" style="margin-top:.8rem">These five are the brand&rsquo;s own surfaces. Garment colour is broader &mdash; seasonal ranges are chosen per capsule and signed off with us. Graphic artwork on T-shirts may use colour beyond the five, by exception.</div>
+ </div></div>
+
+ ${blk('Two special territories','Controlled, and not the whole brand')}
+ <div class="g2">
+  <div class="panel"><div class="p-body">
+   <div class="semi">Neo-Psychedelic Artwear</div>
+   <div class="t-micro faint" style="margin:.15rem 0 .5rem">Selected T-shirts only</div>
+   <p class="t-lab muted" style="line-height:1.4">Minimal. One idea, executed strangely well &mdash; altered perception, optical illusion, surreal single images, warped type. <b>Never</b> cluttered all-over prints, tie-dye, rainbow gradients or festival graphics. Never applied to shirts, trousers or outerwear.</p>
+  </div></div>
+  <div class="panel"><div class="p-body">
+   <div class="semi">Designer Collection</div>
+   <div class="t-micro faint" style="margin:.15rem 0 .5rem">Contemporary evening, not ethnicwear</div>
+   <p class="t-lab muted" style="line-height:1.4">Sheer, open-weave and textured cloth. Relaxed boxy volume, open collar, soft drape. Tonal earth and smoke. Surface interest instead of embellishment. The occasion is a fashion event, a club, a premium dinner &mdash; not a wedding mandap.</p>
+  </div></div>
+ </div>
+
+ ${blk('What MENSCH is not','Fast rejections')}
+ <div class="panel"><div class="p-body"><div class="g3">
+   ${['A logo-led streetwear label','A discount-calendar brand','A celebrity vehicle',
+      'A brand that chases every micro-trend','A marketplace-only label','A brand that photographs better than it fits']
+     .map(x=>`<div class="row" style="gap:.5rem;align-items:flex-start;margin-bottom:.3rem">
+       <span style="color:hsl(var(--neg))">&times;</span><span class="t-lab">${x}</span></div>`).join('')}
+ </div></div></div>
+
+ ${blk('Reference universe','Learn, do not copy')}
+ <div class="panel"><div class="p-body flush"><div class="table-scroll"><table class="t">
+  <thead><tr><th>Reference</th><th>Study this</th><th>Do not take</th></tr></thead>
+  <tbody>${[['Zara','Trend translation, merchandising rhythm, speed','The garments themselves'],
+    ['COS / Arket','Restraint, proportion, fabric honesty','The coldness'],
+    ['Contemporary Indian menswear','What the Indian body and climate actually need','Marketplace-grade make'],
+    ['Premium streetwear','Graphic discipline and placement','Logo-led design'],
+    ['Designer menswear','Construction ideas, silhouette courage','Unwearable drama']]
+   .map(([a,b,c])=>`<tr><td><b>${a}</b></td><td class="t-lab muted">${b}</td><td class="t-lab muted">${c}</td></tr>`).join('')}
+  </tbody></table></div></div></div>
+`};
+
+P.showcase=()=>{
+ let list=DB.designs;
+ if(SC.cat!=='all')  list=list.filter(d=>d.cat===SC.cat);
+ if(SC.sub!=='all')  list=list.filter(d=>(d.sub||'')===SC.sub);
+ if(SC.phase!=='all')list=list.filter(d=>d.phase===SC.phase);
+ const r=rollup(list);
+ const subs=SUBCATS[SC.cat]||null;
+ const chip=(active,attr,val,label)=>
+   `<button class="chip" aria-pressed="${active}" data-${attr}="${val}">${esc(label)}</button>`;
+ return `
+ <div class="ph"><h1>The Mensch Showcase</h1>
+  <p class="sub">The collection development room. Every planned style, its role, its drop and what we
+   expect developed. Open a style for the full brief.</p></div>
+
+ <div class="note" style="margin-bottom:.9rem"><b>References are direction, not designs.</b>
+  Anything uploaded here is for silhouette, detail, fabric, mood and construction reference only.
+  The design team creates original, exclusive MENSCH product from this brief &mdash; never a copy.</div>
+
+ <div class="chiprow">
+  ${chip(SC.cat==='all','scc','all','All ('+DB.designs.length+')')}
+  ${CAT_LIST.map(c=>chip(SC.cat===c,'scc',c,c+' ('+DB.designs.filter(d=>d.cat===c).length+')')).join('')}
+ </div>
+ ${subs?`<div class="chiprow">
+   ${chip(SC.sub==='all','scs','all','All '+SC.cat)}
+   ${subs.map(x=>chip(SC.sub===x,'scs',x,x)).join('')}
+  </div>`:''}
+ <div class="chiprow">
+  ${chip(SC.phase==='all','scp','all','All drops')}
+  ${DB.phases.map(p=>chip(SC.phase===p.id,'scp',p.id,p.name)).join('')}
+ </div>
+
+ <div class="row wrap" style="gap:.875rem;margin:.4rem 0 1rem">
+  ${[['Designs',r.designs],['Pieces',r.pieces],['Colourways',r.colourways],['SKUs',r.skus]].map(([k,v])=>
+    `<div class="row" style="gap:.4375rem"><span class="caps">${k}</span>
+      <span class="fig semi">${grp(v)}</span></div>`).join('')}
+  <span class="spacer"></span>
+  <button class="btn btn-sm" data-addstyle="1">+ Add style</button>
+ </div>
+
+ ${list.length?'':'<div class="note">Nothing matches this filter.</div>'}
+ <div class="cat-grid">
+ ${list.map(d=>{
+   const t=dTotal(d), ph=DB.phases.find(p=>p.id===d.phase);
+   const img=(d.shots||{})['Reference']||(d.shots||{})['Front']||Object.values(d.shots||{})[0];
+   const cols=num(d.colours)||1, meta=CATMETA[d.cat]||{};
+   return `<button class="card" data-open="${d.id}">
+    <div class="card-img">${img?`<img src="${img}" alt="" style="object-fit:contain;background:hsl(var(--recess))">`
+      :`<div class="ph2"><b>+</b><span class="t-micro">Upload reference</span></div>`}</div>
+    <div class="card-body">
+     <div class="card-code">${esc(d.code)}</div>
+     <div class="card-name">${esc(d.name||d.cat)}</div>
+     <div class="card-meta">${esc(d.cat)}${d.sub?' · '+esc(d.sub):''} · ${ph?esc(ph.no):'—'}</div>
+     <div class="card-meta t-micro faint">${esc(meta.role||'')}</div>
+     <div class="qtyline">
+      <span class="qtybig fig">${grp(t)}</span>
+      <span class="t-micro faint">pcs · ${cols} colourway${cols>1?'s':''}</span>
+      <span class="spacer"></span>
+      <span class="t-micro faint">&#8377;${grp(meta.mrpLo||0)}&ndash;${grp(meta.mrpHi||0)}</span>
+     </div>
+    </div></button>`}).join('')}
+ </div>
+ ${SC.open?sheetHTML():''}
+`};
+
+function CATFIELDS(d){
+ const k=catKind(d.cat);
+ if(k==='bag') return [['Bag type','fabric','Backpack / sling / duffle'],['Main material','comp','Canvas, nylon, leather trim'],
+   ['Lining','width','Polyester twill'],['Dimensions','gsm','H x W x D cm'],['Compartments','fit','Main + laptop + front'],
+   ['Hardware / zips','wash','YKK, matte gunmetal'],['Strap','finish','Padded, adjustable'],['Laptop fit','print','Up to 15 inch']];
+ if(k==='shoe') return [['Shoe type','fabric','Sneaker / loafer / sandal'],['Upper','comp','Full-grain leather, canvas'],
+   ['Lining','width','Leather / mesh'],['Sole','gsm','Vulcanised rubber, EVA'],['Construction','fit','Cupsole / stitchdown'],
+   ['Finish','wash','Matte, burnished toe'],['Branding','finish','Debossed heel tab']];
+ if(k==='eyewear') return [['Frame shape','fabric','Square / aviator / round'],['Frame material','comp','Acetate, metal'],
+   ['Lens colour','width','Smoke, amber, green'],['Lens type','gsm','Polarised / UV400 / gradient'],
+   ['Dimensions','fit','Lens x bridge x temple'],['Hinges / hardware','wash','Flex hinge'],['Branding','finish','Temple etch']];
+ if(k==='headwear') return [['Shape','fabric','5-panel / 6-panel / bucket'],['Material','comp','Cotton twill, ripstop'],
+   ['Closure','width','Strapback / snapback'],['Fit','gsm','Free size, adjustable'],
+   ['Graphic / embroidery','fit','Flat embroidery, tonal'],['Branding','wash','Woven tab']];
+ return [['Fabric direction','fabric','e.g. Cotton Oxford, linen blend'],['Composition','comp','100% cotton'],
+   ['Weight / GSM','gsm','140'],['Fabric width','width','58 inch'],['Fit','fit','Regular / relaxed'],
+   ['Wash / finish','wash','Enzyme wash, garment dye'],['Graphic / print','print','Placement, scale, technique'],
+   ['Construction notes','finish','Seams, plackets, cuffs']];
+}
+function sheetHTML(){
+ const d=DB.designs.find(x=>x.id===SC.open);
+ if(!d)return '<div class="sheet" id="sheet"></div>';
+ const sizes=SIZE_SETS[d.sizeSet]||SIZE_SETS.top, tot=dTotal(d);
+ const ph=DB.phases.find(p=>p.id===d.phase);
+ const idx=DB.designs.findIndex(x=>x.id===d.id);
+ return `<div class="sheet on" id="sheet"><div class="sheet-bar">
+  <button class="btn btn-sm" data-close="1">← Back</button>
+  <span class="fig t-label faint">${esc(d.code)}</span>
+  <span class="semi">${esc(d.name||d.cat)}</span>
+  <span class="spacer"></span>
+  <span class="t-micro faint">${idx+1} of ${DB.designs.length}</span>
+  <button class="btn btn-sm" data-nav="-1">←</button>
+  <button class="btn btn-sm" data-nav="1">→</button>
+  <button class="btn btn-sm" data-dup="${d.id}">Duplicate</button>
+  <button class="btn btn-sm" data-del="${d.id}">Delete</button>
+ </div>
+ <div class="sheet-in">
+  <div class="g2" style="gap:1.5rem;align-items:start">
+   <div>
+    <div class="shot-grid">
+     ${SHOTS.map(s=>{const img=(d.shots||{})[s];
+      return `<label class="shot${img?' filled':''}">
+       ${img?`<img src="${img}" alt=""><button class="x" data-shotx="${d.id}:${s}">✕</button>`
+        :`<span>${s}<br>+ upload</span>`}
+       <input type="file" accept="image/*" data-shot="${d.id}:${s}" hidden></label>`}).join('')}
+    </div>
+    <div class="note" style="margin-top:.875rem">Six images per style. Front and back are the minimum a factory needs to sample from; the technical sketch removes most fit ambiguity.</div>
+   </div>
+   <div class="stack">
+    <div class="panel byM"><div class="p-head"><h3>Identity</h3><span class="tagM">MENSCH</span></div>
+     <div class="p-body"><div class="g2" style="gap:.625rem">
+      ${fld('Style code',d.code,`data-d="${d.id}:code"`)}
+      ${fld('Working title',d.name,`data-d="${d.id}:name"`,'e.g. Camp Collar Linen')}
+      ${sel('Category',d.cat,CAT_LIST,`data-d="${d.id}:cat"`)}
+      ${SUBCATS[d.cat]?sel('Subcategory',d.sub||'',SUBCATS[d.cat],`data-d="${d.id}:sub"`):''}
+      ${sel('Drop',ph?ph.name:'',DB.phases.map(p=>p.name),`data-dphase="${d.id}"`)}
+      ${CATFIELDS(d).map(x=>fld(x[0],d[x[1]]||'',`data-d="${d.id}:${x[1]}"`,x[2])).join('\n      ')}
+      ${fld('Colour / colourway direction',d.colour,`data-d="${d.id}:colour"`,'Ecru, olive, charcoal')}
+      ${fld('Number of colourways',d.colours,`data-d="${d.id}:colours" inputmode="numeric"`,'1')}
+     </div></div></div>
+
+    <div class="panel byP"><div class="p-head"><h3>Commercial &amp; production</h3>
+      <span class="tagP">Production team</span></div>
+     <div class="p-body"><div class="g2" style="gap:.625rem">
+      ${fld('Target MRP ₹',d.mrp,`data-d="${d.id}:mrp" inputmode="numeric"`,'Within the band')}
+      ${fld('Product role',(CATMETA[d.cat]||{}).role||'',`data-d="${d.id}:role"`,'')}
+      ${sel('Design tier',d.tier||'Core',['Core','Elevated','Trend','Signature','Statement','Experimental'],`data-d="${d.id}:tier"`)}
+      ${sel('Sample status',d.sampleStatus,SAMPLE_ST,`data-d="${d.id}:sampleStatus"`)}
+     </div>
+     ${(()=>{const m=CATMETA[d.cat]||{};
+       return `<div class="note" style="margin-top:.75rem">Approved retail band for ${esc(d.cat)}:
+        <b>&#8377;${grp(m.mrpLo||0)}&ndash;${grp(m.mrpHi||0)}</b>. Design to the number &mdash; fabric,
+        construction and finishing all have to sit inside it.</div>`})()}
+     </div></div>
+   </div>
+  </div>
+
+  ${blk('Size-wise quantity','Change any cell — every roll-up follows')}
+  <div class="panel"><div class="p-body">
+   <div class="row wrap" style="gap:.5rem;margin-bottom:.75rem">
+    <span class="caps">Size set</span>
+    ${Object.keys(SIZE_SETS).map(k=>`<button class="btn btn-sm ${d.sizeSet===k?'btn-primary':''}"
+      data-sizeset="${d.id}:${k}">${({top:'XS–3XL',bottom:'28–40',alpha:'S–XL',shoe:'UK6–UK11',one:'One size',free:'Free'})[k]}</button>`).join('')}
+   </div>
+   <div class="sizemx"><table>
+    <thead><tr><th style="text-align:left">Size</th>${sizes.map(s=>`<th>${esc(s)}</th>`).join('')}
+     <th>Total</th></tr></thead>
+    <tbody><tr><td class="t-label muted" style="white-space:nowrap">Quantity</td>
+     ${sizes.map(s=>`<td><input value="${esc(d.qty[s]??0)}" data-qty="${d.id}:${s}" inputmode="numeric"></td>`).join('')}
+     <td class="totcol">${grp(tot)}</td></tr>
+     <tr><td class="t-label muted">Mix</td>
+     ${sizes.map(s=>`<td class="totcol t-micro faint">${tot?Math.round(num(d.qty[s])/tot*100):0}%</td>`).join('')}
+     <td class="totcol t-micro faint">100%</td></tr>
+     
+    </tbody></table></div>
+   <div class="g4" style="margin-top:.875rem">
+    ${[['Pieces, this design',grp(tot)],['Per colourway',grp(Math.round(tot/(num(d.colours)||1)))],
+       ['Live sizes',sizes.filter(s=>num(d.qty[s])>0).length],['SKUs',grp(dSkus(d))]].map(([k,v])=>
+     `<div><div class="caps">${k}</div><div class="fig semi" style="margin-top:.1875rem">${v}</div></div>`).join('')}
+   </div>
+  </div></div>
+
+  ${blk('Notes')}
+  <div class="panel"><div class="p-body">
+   <label class="fld"><span>MENSCH design direction</span>
+   <textarea class="inp" rows="3" data-d="${d.id}:brief"
+    placeholder="What this style should be — silhouette, mood, detailing, what it is for">${esc(d.brief||'')}</textarea></label>
+   <label class="fld" style="margin-top:.625rem"><span>Designer notes back to us</span>
+   <textarea class="inp" rows="3" data-d="${d.id}:notes"
+    placeholder="Fabric suggestions, construction options, feasibility, anything we should know">${esc(d.notes||'')}</textarea></label>
+  </div></div>
+  <div style="height:3rem"></div>
+ </div></div>`;
+}
+
+/* ═══ FACTORY LANDING COST ENGINE ════════════════════════════════════════
+   Every input is entered by the production team. Nothing is pre-filled.
+   Landing cost stops at the packed, QC-passed garment inside the factory.  */
+const TRIM_ROWS=['Buttons','Zipper','Thread','Elastic','Interlining','Main label',
+ 'Size label','Wash-care label','Hang tag','Drawcord','Eyelets','Other trims'];
+const PROC_ROWS=['Dyeing','Washing','Printing','Embroidery','Enzyme wash','Silicon wash',
+ 'Garment dye','Distressing','Special finish'];
+
+function C(d){ d.cost=d.cost||{}; const c=d.cost;
+ c.fab=c.fab||{cons:'',unit:'m',rate:'',waste:'',shrink:''};
+ c.trims=c.trims||{}; c.proc=c.proc||{};
+ c.cut=c.cut||{marker:'',labour:'',bundle:''};
+ c.stitch=c.stitch||{mode:'sam',sam:'',rate:'',eff:'',flat:''};
+ c.fin=c.fin||{trim:'',iron:'',button:'',insp:'',fold:''};
+ c.qc=c.qc||{inline:'',endline:'',final:'',reject:'',rework:''};
+ c.pack=c.pack||{poly:'',sticker:'',tissue:'',carton:''};
+ c.oh=c.oh||{mode:'perpiece',perpiece:'',monthly:'',output:''};
+ return c;
+}
+const sum=o=>Object.values(o||{}).reduce((a,b)=>a+num(b),0);
+
+function costOf(d){
+ const c=C(d);
+ const cons=num(c.fab.cons), rate=num(c.fab.rate);
+ const fabric=cons*(1+num(c.fab.waste)/100)*(1+num(c.fab.shrink)/100)*rate;
+ const trims=Object.values(c.trims).reduce((a,t)=>a+num(t.qty)*num(t.rate),0);
+ const proc=Object.values(c.proc).reduce((a,p)=>a+num(p),0);
+ const cut=sum(c.cut);
+ const st=c.stitch;
+ const stitch=st.mode==='flat'?num(st.flat)
+  :(num(st.eff)>0?num(st.sam)/(num(st.eff)/100)*num(st.rate):0);
+ const fin=sum(c.fin);
+ const qcCost=num(c.qc.inline)+num(c.qc.endline)+num(c.qc.final);
+ const pack=sum(c.pack);
+ const oh=c.oh.mode==='perpiece'?num(c.oh.perpiece)
+  :(num(c.oh.output)>0?num(c.oh.monthly)/num(c.oh.output):0);
+ const sub=fabric+trims+proc+cut+stitch+fin+qcCost+pack+oh;
+ const rej=Math.min(40,num(c.qc.reject))/100;
+ const landing=rej<1?sub/(1-rej):sub;
+ return {fabric,trims,proc,cut,stitch,fin,qc:qcCost,pack,oh,sub,
+  rejAdd:landing-sub,landing,
+  filled:[fabric,trims,proc,cut,stitch,fin,qcCost,pack,oh].some(v=>v>0)};
+}
+function fabricNeed(d){
+ const c=C(d), cons=num(c.fab.cons);
+ if(!cons)return 0;
+ return cons*(1+num(c.fab.waste)/100)*dTotal(d);
+}
+function projectCost(list){
+ list=list||DB.designs;
+ let total=0,costed=0,pieces=0,fabMetres=0,lo=null,hi=null;
+ list.forEach(d=>{
+  const r=costOf(d), q=dTotal(d);
+  pieces+=q; fabMetres+=fabricNeed(d);
+  if(r.filled){costed++; total+=r.landing*q;
+   if(lo===null||r.landing<lo.v)lo={v:r.landing,d};
+   if(hi===null||r.landing>hi.v)hi={v:r.landing,d}}
+ });
+ return {total,costed,designs:list.length,pieces,fabMetres,lo,hi,
+  avg:pieces&&costed?total/list.filter(d=>costOf(d).filled)
+    .reduce((a,d)=>a+dTotal(d),0):0};
+}
+
+/* ═══ INVENTORY · MATERIAL GROUPS · PRODUCT COSTING ══════════════════════ */
+
+/* ── 5 · INVENTORY PLAN ───────────────────────────────────────────────── */
+P.inventory=()=>{
+ const r=rollup(DB.designs);
+ const catRows=CAT_LIST.map(c=>{
+   const l=DB.designs.filter(d=>d.cat===c), m=CATMETA[c]||{};
+   const ph=DB.phases.find(p=>p.id===(l[0]||{}).phase);
+   return {c,m,ph,designs:l.length,pieces:l.reduce((a,d)=>a+dTotal(d),0),
+     cw:l.reduce((a,d)=>a+(num(d.colours)||1),0),
+     skus:l.reduce((a,d)=>a+dSkus(d),0),
+     perStyle:l.length?Math.round(l.reduce((a,d)=>a+dTotal(d),0)/l.length):0};
+ }).sort((a,b)=>b.pieces-a.pieces);
+ const grand=catRows.reduce((a,x)=>a+x.pieces,0);
+ const SETNAME={top:'Tops (XS–3XL)',bottom:'Bottoms (28–40)',alpha:'Underwear (S–XL)',
+   shoe:'Footwear (UK6–UK11)',one:'One size',free:'Free size'};
+ const bySet={};
+ DB.designs.forEach(d=>{const k=d.sizeSet||'top'; bySet[k]=bySet[k]||{};
+   Object.entries(d.qty||{}).forEach(([sz,v])=>bySet[k][sz]=(bySet[k][sz]||0)+num(v))});
+ return `
+ <div class="ph"><h1>Inventory Plan</h1>
+  <p class="sub">The Summer production commitment. Every figure rolls up from the size matrix on each
+   style — change one cell in the Showcase and everything here follows.</p></div>
+
+ <div class="kpis">
+  ${[[CAT_LIST.length,'Categories'],[r.designs,'Designs'],[grp(r.pieces),'Total pieces'],
+     [grp(r.colourways),'Colourways'],[grp(r.skus),'SKUs'],[DB.phases.length,'Drops']]
+   .map(([v,l])=>`<div class="kpi"><div class="kv">${v}</div><div class="kl">${l}</div></div>`).join('')}
+ </div>
+ <div class="note" style="margin-bottom:1.1rem"><b>How to read the numbers.</b> Planned pieces is the
+  total for that style across all of its colourways &mdash; colourways are never multiplied into the
+  piece count. SKUs are live sizes &times; colourways, which is what the warehouse will actually hold.</div>
+
+ ${blk('By category','Where the depth sits')}
+ <div class="panel"><div class="p-body flush"><div class="table-scroll"><table class="t">
+  <thead><tr><th>Category</th><th data-n>Designs</th><th data-n>CW</th><th data-n>Pieces/style</th>
+   <th data-n>Pieces</th><th data-n>Share</th><th>Size logic</th><th>MRP band</th><th>Drop</th><th>Role</th></tr></thead>
+  <tbody>
+  ${catRows.map(x=>`<tr>
+    <td><b>${esc(x.c)}</b></td>
+    <td data-n>${x.designs}</td><td data-n>${x.cw}</td><td data-n>${grp(x.perStyle)}</td>
+    <td data-n class="semi">${grp(x.pieces)}</td>
+    <td data-n>${grand?Math.round(x.pieces/grand*100):0}%</td>
+    <td class="t-micro faint">${esc(SETNAME[x.m.sizeSet]||'')}</td>
+    <td class="t-micro">&#8377;${grp(x.m.mrpLo||0)}&ndash;${grp(x.m.mrpHi||0)}</td>
+    <td class="t-micro">${x.ph?esc(x.ph.no):'—'}</td>
+    <td class="t-micro faint">${esc(x.m.role||'')}</td></tr>`).join('')}
+  <tr class="tot"><td><b>Total</b></td><td data-n><b>${r.designs}</b></td>
+   <td data-n><b>${grp(r.colourways)}</b></td><td data-n>—</td>
+   <td data-n><b>${grp(grand)}</b></td><td data-n>100%</td><td colspan="4"></td></tr>
+  </tbody></table></div></div></div>
+
+ ${blk('By drop','Why each one exists')}
+ <div class="panel" style="margin-bottom:1rem"><div class="p-body flush"><div class="table-scroll"><table class="t">
+  <thead><tr><th>Drop</th><th>Categories</th><th data-n>Designs</th><th data-n>Pieces</th><th>Objective</th></tr></thead>
+  <tbody>${DB.phases.map(p=>{
+    const l=DB.designs.filter(d=>d.phase===p.id);
+    const cs=[...new Set(l.map(d=>d.cat))];
+    return `<tr><td><b>${esc(p.name)}</b></td>
+      <td class="t-micro faint">${esc(cs.join(', '))}</td>
+      <td data-n>${l.length}</td><td data-n class="semi">${grp(l.reduce((a,d)=>a+dTotal(d),0))}</td>
+      <td class="t-micro">${esc(p.obj||'')}</td></tr>`}).join('')}
+   <tr class="tot"><td><b>Total</b></td><td></td><td data-n><b>${r.designs}</b></td>
+    <td data-n><b>${grp(r.pieces)}</b></td><td></td></tr>
+  </tbody></table></div></div></div>
+
+ ${blk('Size curves','Kept apart — a shoe size never lands in a shirt chart')}
+ <div class="stack-s">
+ ${Object.keys(bySet).map(k=>{
+   const rowsTot=Object.values(bySet[k]).reduce((a,b)=>a+b,0);
+   const keys=SIZE_SETS[k]||[];
+   return `<div class="panel"><div class="p-body">
+    <div class="row-between" style="margin-bottom:.5rem">
+     <span class="semi">${esc(SETNAME[k]||k)}</span>
+     <span class="t-micro faint">${grp(rowsTot)} pieces</span></div>
+    <div class="sizemx"><table><thead><tr><th style="text-align:left">Size</th>
+      ${keys.map(sz=>`<th>${esc(sz)}</th>`).join('')}<th>Total</th></tr></thead>
+     <tbody><tr><td class="t-label muted">Pieces</td>
+      ${keys.map(sz=>`<td class="totcol">${grp(bySet[k][sz]||0)}</td>`).join('')}
+      <td class="totcol semi">${grp(rowsTot)}</td></tr>
+      <tr><td class="t-label muted">Mix</td>
+      ${keys.map(sz=>`<td class="totcol t-micro faint">${rowsTot?Math.round((bySet[k][sz]||0)/rowsTot*100):0}%</td>`).join('')}
+      <td class="totcol t-micro faint">100%</td></tr></tbody></table></div>
+   </div></div>`}).join('')}
+ </div>
+
+ ${blk('By style','The full production table')}
+ <div class="panel"><div class="p-body flush"><div class="table-scroll"><table class="t">
+  <thead><tr><th>Code</th><th>Category</th><th>Sub</th><th>Drop</th><th data-n>CW</th>
+   <th>Size range</th><th data-n>Pieces</th><th data-n>SKUs</th><th data-n>Target MRP</th><th>Sample</th></tr></thead>
+  <tbody>${DB.designs.map(d=>{const p=DB.phases.find(x=>x.id===d.phase), keys=SIZE_SETS[d.sizeSet]||[];
+    return `<tr><td class="fig">${esc(d.code)}</td><td>${esc(d.cat)}</td>
+     <td class="t-micro faint">${esc(d.sub||'—')}</td>
+     <td class="t-micro">${p?esc(p.no):'—'}</td><td data-n>${num(d.colours)||1}</td>
+     <td class="t-micro faint">${keys.length?esc(keys[0]+'–'+keys[keys.length-1]):'—'}</td>
+     <td data-n class="semi">${grp(dTotal(d))}</td><td data-n>${grp(dSkus(d))}</td>
+     <td data-n>${d.mrp?'&#8377;'+grp(d.mrp):'—'}</td>
+     <td class="t-micro faint">${esc(d.sampleStatus||'')}</td></tr>`}).join('')}
+   <tr class="tot"><td colspan="6"><b>Total</b></td>
+    <td data-n><b>${grp(r.pieces)}</b></td><td data-n><b>${grp(r.skus)}</b></td><td colspan="2"></td></tr>
+  </tbody></table></div></div></div>
+ <div style="height:2rem"></div>
+`;
+};
+
+/* ── 6 · MATERIAL GROUPS ──────────────────────────────────────────────── */
+P.materials=()=>{
+ return `
+ <div class="ph"><h1>Material Groups</h1>
+  <p class="sub">Production is organised by fabric family, not by category — because that is how machines, skills and vendors are organised.</p></div>
+ ${brief('The assortment grouped the way a factory would plan it.',
+  'Which categories sit in which fabric family, and the quantity in each.',
+  'Fabric detail, machinery, skill type, vendor and average production time per group.',
+  'A woven line and a knit line are different factories. This tells you how much of each you need.')}
+
+ ${MATERIAL_GROUPS.map(g=>{
+  const list=byGroup(g.id); if(!list.length)return '';
+  const r=rollup(list), fab=list.reduce((a,d)=>a+fabricNeed(d),0);
+  const gsms=list.map(d=>num(d.gsm)).filter(Boolean);
+  const m=DB.matGroup&&DB.matGroup[g.id]||{};
+  return `
+  ${blk(g.name,r.designs+' designs · '+grp(r.pieces)+' pieces')}
+  <div class="panel"><div class="p-body">
+   <div class="g4" style="margin-bottom:.875rem">
+    ${[['Designs',grp(r.designs)],['Colourways',grp(r.colourways)],
+       ['Pieces',grp(r.pieces)],['SKUs',grp(r.skus)]].map(([k,v])=>
+     `<div><div class="caps">${k}</div><div class="fig semi" style="font-size:1.125rem;margin-top:.1875rem">${v}</div></div>`).join('')}
+   </div>
+   <div class="row wrap" style="gap:.375rem;margin-bottom:.875rem">
+    ${[...new Set(list.map(d=>d.cat))].map(c=>{const n=rollup(byCat(c));
+     return `<span class="badge">${esc(c)} · ${grp(n.pieces)}</span>`}).join('')}
+   </div>
+   <div class="g4" style="gap:.75rem">
+    ${fld('Fabric requirement (m)',fab?grp(fab):'',`disabled`,'From consumption input')}
+    ${fld('Average GSM',gsms.length?Math.round(gsms.reduce((a,b)=>a+b,0)/gsms.length):'',`disabled`,'From design records')}
+    ${fld('Fabric width',m.width,`data-mg="${g.id}:width"`,'e.g. 58"',1)}
+    ${fld('Estimated consumption',m.cons,`data-mg="${g.id}:cons"`,'Average per garment',1)}
+    ${fld('Wastage %',m.waste,`data-mg="${g.id}:waste"`,'Cutting + shrinkage',1)}
+    ${fld('Required machinery',m.mach,`data-mg="${g.id}:mach"`,'Machine types',1)}
+    ${fld('Skill type',m.skill,`data-mg="${g.id}:skill"`,'Operator grade',1)}
+    ${fld('Vendor / factory',m.vendor,`data-mg="${g.id}:vendor"`,'Who runs this line',1)}
+    ${fld('Avg production cost ₹',m.cost,`data-mg="${g.id}:cost"`,'Per garment',1)}
+    ${fld('Avg production time',m.time,`data-mg="${g.id}:time"`,'Days per lot',1)}
+   </div>
+  </div></div>`}).join('')}`;
+};
+
+/* ── 7 · PRODUCT COSTING ──────────────────────────────────────────────── */
+let CS={open:null};
+P.costing=()=>{
+ const pc=projectCost();
+ if(!CS.open&&DB.designs.length)CS.open=DB.designs[0].id;
+ const d=DB.designs.find(x=>x.id===CS.open)||DB.designs[0];
+ if(!d)return '<div class="ph"><h1>Product Costing</h1></div>';
+ const c=C(d), r=costOf(d), q=dTotal(d);
+ const LINES=[['Fabric',r.fabric],['Trims',r.trims],['Processing',r.proc],['Cutting',r.cut],
+  ['Stitching',r.stitch],['Finishing',r.fin],['Quality control',r.qc],['Factory packing',r.pack],
+  ['Overhead allocation',r.oh]];
+ return `
+ <div class="ph"><h1>Product Costing</h1>
+  <p class="sub">The factory landing cost per piece. Fill one design, then use it as the template for the rest of the category.</p></div>
+ ${brief('The cost sheet for every design.',
+  'The design, its quantity and its specification.',
+  'Every cost line — fabric through overhead — and the rejection allowance.',
+  'This produces the single number management is asking for.')}
+
+ <div class="g4">
+  ${[['Designs costed',pc.costed+' / '+pc.designs],
+     ['Weighted avg landing',pc.avg?inr(Math.round(pc.avg)):'—'],
+     ['Total production cost',pc.total?inr(Math.round(pc.total)):'—'],
+     ['Fabric required',pc.fabMetres?grp(pc.fabMetres)+' m':'—']].map(([k,v])=>
+   `<div class="panel"><div class="p-body"><div class="caps">${k}</div>
+     <div class="fig" style="font-size:1.5rem;margin-top:.25rem;letter-spacing:-.03em">${v}</div></div></div>`).join('')}
+ </div>
+
+ ${blk('Choose a design')}
+ <div class="row wrap" style="gap:.375rem;margin-bottom:1rem">
+  <select class="inp" style="max-width:26rem" data-csopen="1">
+   ${DB.designs.map(x=>`<option value="${x.id}" ${x.id===d.id?'selected':''}>
+     ${esc(x.code)} — ${esc(x.name||x.cat)} ${costOf(x).filled?'✓':''}</option>`).join('')}
+  </select>
+  <button class="btn btn-sm" data-copycost="${d.id}">Copy this sheet to all ${esc(d.cat)}</button>
+  <button class="btn btn-sm" data-clearcost="${d.id}">Clear</button>
+ </div>
+
+ <div class="g2" style="gap:1.25rem;align-items:start">
+  <div class="stack">
+   <div class="panel byP"><div class="p-head"><h3>A · Fabric</h3><span class="tagP">To fill</span></div>
+    <div class="p-body"><div class="g2" style="gap:.625rem">
+     ${fld('Consumption per garment',c.fab.cons,`data-c="${d.id}:fab.cons" inputmode="decimal"`,'metres or kg',1)}
+     ${sel('Unit',c.fab.unit,['m','kg'],`data-c="${d.id}:fab.unit"`)}
+     ${fld('Fabric rate ₹',c.fab.rate,`data-c="${d.id}:fab.rate" inputmode="decimal"`,'per unit',1)}
+     ${fld('Wastage %',c.fab.waste,`data-c="${d.id}:fab.waste" inputmode="decimal"`,'cutting',1)}
+     ${fld('Shrinkage %',c.fab.shrink,`data-c="${d.id}:fab.shrink" inputmode="decimal"`,'allowance',1)}
+    </div></div></div>
+
+   <div class="panel byP"><div class="p-head"><h3>B · Trims</h3>
+     <span class="fig t-label">${r.trims?inr(Math.round(r.trims)):'—'}</span></div>
+    <div class="p-body flush"><table class="t" style="min-width:0">
+     <thead><tr><th>Trim</th><th data-n style="width:5.5rem">Qty</th>
+      <th data-n style="width:6rem">Rate ₹</th><th data-n style="width:5rem">Total</th></tr></thead>
+     <tbody>${TRIM_ROWS.map(n=>{const t=c.trims[n]||{};
+      const tot=num(t.qty)*num(t.rate);
+      return `<tr><td class="t-label">${esc(n)}</td>
+       <td><input class="inp n" value="${esc(t.qty||'')}" data-c="${d.id}:trims.${n}.qty" inputmode="decimal"></td>
+       <td><input class="inp n" value="${esc(t.rate||'')}" data-c="${d.id}:trims.${n}.rate" inputmode="decimal"></td>
+       <td data-n class="fig ${tot?'':'faint'}">${tot?tot.toFixed(2):'—'}</td></tr>`}).join('')}
+     </tbody></table></div></div>
+
+   <div class="panel byP"><div class="p-head"><h3>C · Processing</h3>
+     <span class="fig t-label">${r.proc?inr(Math.round(r.proc)):'—'}</span></div>
+    <div class="p-body"><div class="g3" style="gap:.625rem">
+     ${PROC_ROWS.map(n=>fld(n,c.proc[n],`data-c="${d.id}:proc.${n}" inputmode="decimal"`,'₹',1)).join('')}
+    </div></div></div>
+
+   <div class="panel byP"><div class="p-head"><h3>D · Cutting</h3>
+     <span class="fig t-label">${r.cut?inr(Math.round(r.cut)):'—'}</span></div>
+    <div class="p-body"><div class="g3" style="gap:.625rem">
+     ${fld('Marker making ₹',c.cut.marker,`data-c="${d.id}:cut.marker" inputmode="decimal"`,'',1)}
+     ${fld('Cutting labour ₹',c.cut.labour,`data-c="${d.id}:cut.labour" inputmode="decimal"`,'',1)}
+     ${fld('Bundling ₹',c.cut.bundle,`data-c="${d.id}:cut.bundle" inputmode="decimal"`,'',1)}
+    </div></div></div>
+
+   <div class="panel byP"><div class="p-head"><h3>E · Stitching</h3>
+     <span class="fig t-label">${r.stitch?inr(Math.round(r.stitch)):'—'}</span></div>
+    <div class="p-body">
+     <div class="row" style="gap:.375rem;margin-bottom:.75rem">
+      <button class="btn btn-sm ${c.stitch.mode==='sam'?'btn-primary':''}" data-stmode="${d.id}:sam">SAM based</button>
+      <button class="btn btn-sm ${c.stitch.mode==='flat'?'btn-primary':''}" data-stmode="${d.id}:flat">Flat rate</button>
+     </div>
+     ${c.stitch.mode==='sam'?`<div class="g3" style="gap:.625rem">
+      ${fld('SAM (minutes)',c.stitch.sam,`data-c="${d.id}:stitch.sam" inputmode="decimal"`,'',1)}
+      ${fld('Labour rate ₹/min',c.stitch.rate,`data-c="${d.id}:stitch.rate" inputmode="decimal"`,'',1)}
+      ${fld('Line efficiency %',c.stitch.eff,`data-c="${d.id}:stitch.eff" inputmode="decimal"`,'e.g. 55',1)}
+     </div>
+     <div class="t-micro faint" style="margin-top:.5rem">SAM ÷ efficiency × rate per minute</div>`
+     :`<div class="g2" style="gap:.625rem">
+      ${fld('Stitching cost ₹ per garment',c.stitch.flat,`data-c="${d.id}:stitch.flat" inputmode="decimal"`,'',1)}
+     </div>`}
+    </div></div>
+
+   <div class="panel byP"><div class="p-head"><h3>F · Finishing</h3>
+     <span class="fig t-label">${r.fin?inr(Math.round(r.fin)):'—'}</span></div>
+    <div class="p-body"><div class="g3" style="gap:.625rem">
+     ${[['trim','Thread trimming'],['iron','Ironing'],['button','Buttoning'],
+        ['insp','Inspection'],['fold','Folding']].map(([k,l])=>
+      fld(l+' ₹',c.fin[k],`data-c="${d.id}:fin.${k}" inputmode="decimal"`,'',1)).join('')}
+    </div></div></div>
+
+   <div class="panel byP"><div class="p-head"><h3>G · Quality control</h3>
+     <span class="fig t-label">${r.qc?inr(Math.round(r.qc)):'—'}</span></div>
+    <div class="p-body"><div class="g3" style="gap:.625rem">
+     ${[['inline','Inline QC ₹'],['endline','End-line QC ₹'],['final','Final inspection ₹'],
+        ['reject','Rejection %'],['rework','Rework allowance ₹']].map(([k,l])=>
+      fld(l,c.qc[k],`data-c="${d.id}:qc.${k}" inputmode="decimal"`,'',1)).join('')}
+    </div>
+    <div class="t-micro faint" style="margin-top:.5rem">Rejection % grosses the whole cost up — it is not added as a line.</div>
+    </div></div>
+
+   <div class="panel byP"><div class="p-head"><h3>H · Factory packing</h3>
+     <span class="fig t-label">${r.pack?inr(Math.round(r.pack)):'—'}</span></div>
+    <div class="p-body"><div class="g4" style="gap:.625rem">
+     ${[['poly','Polybag ₹'],['sticker','Size sticker ₹'],['tissue','Tissue ₹'],
+        ['carton','Carton allocation ₹']].map(([k,l])=>
+      fld(l,c.pack[k],`data-c="${d.id}:pack.${k}" inputmode="decimal"`,'',1)).join('')}
+    </div>
+    <div class="t-micro faint" style="margin-top:.5rem">Manufacturing-stage packing only. Consumer ecommerce packaging is out of scope.</div>
+    </div></div>
+
+   <div class="panel byP"><div class="p-head"><h3>I · Factory overhead</h3>
+     <span class="fig t-label">${r.oh?inr(Math.round(r.oh)):'—'}</span></div>
+    <div class="p-body">
+     <div class="row" style="gap:.375rem;margin-bottom:.75rem">
+      <button class="btn btn-sm ${c.oh.mode==='perpiece'?'btn-primary':''}" data-ohmode="${d.id}:perpiece">Per piece</button>
+      <button class="btn btn-sm ${c.oh.mode==='alloc'?'btn-primary':''}" data-ohmode="${d.id}:alloc">Monthly ÷ output</button>
+     </div>
+     ${c.oh.mode==='perpiece'
+      ?`<div class="g2" style="gap:.625rem">${fld('Overhead ₹ per garment',c.oh.perpiece,`data-c="${d.id}:oh.perpiece" inputmode="decimal"`,'',1)}</div>`
+      :`<div class="g2" style="gap:.625rem">
+        ${fld('Monthly factory overhead ₹',c.oh.monthly,`data-c="${d.id}:oh.monthly" inputmode="decimal"`,'',1)}
+        ${fld('Monthly output (pieces)',c.oh.output,`data-c="${d.id}:oh.output" inputmode="decimal"`,'',1)}</div>`}
+     <div class="t-micro faint" style="margin-top:.5rem">Rent, power, supervision, maintenance, depreciation, compliance, admin.</div>
+    </div></div>
+  </div>
+
+  <div style="position:sticky;top:calc(var(--hdr) + 1rem)">
+   <div class="panel"><div class="p-head"><h3>${esc(d.code)}</h3>
+     <span class="badge">${grp(q)} pieces</span></div>
+    <div class="p-body flush"><table class="t" style="min-width:0">
+     <tbody>${LINES.map(([k,v])=>`<tr><td class="t-label">${k}</td>
+      <td data-n class="fig ${v?'':'faint'}">${v?v.toFixed(2):'—'}</td>
+      <td data-n class="t-micro faint">${r.sub&&v?Math.round(v/r.sub*100)+'%':''}</td></tr>`).join('')}
+      <tr class="tot"><td>Subtotal</td><td data-n class="fig">${r.sub?r.sub.toFixed(2):'—'}</td><td></td></tr>
+      ${r.rejAdd>0?`<tr><td class="t-label">Rejection allowance</td>
+       <td data-n class="fig">${r.rejAdd.toFixed(2)}</td><td data-n class="t-micro faint">${num(c.qc.reject)}%</td></tr>`:''}
+     </tbody></table>
+    </div>
+    <div class="p-body" style="border-top:1.5px solid hsl(var(--ink))">
+     <div class="caps">Factory landing cost / piece</div>
+     <div class="fig" style="font-size:2rem;letter-spacing:-.035em;margin-top:.25rem">
+      ${r.landing?inr(Math.round(r.landing)):'—'}</div>
+     ${r.landing?`<div class="t-micro faint" style="margin-top:.375rem">
+       ${inr(Math.round(r.landing*q))} for ${grp(q)} pieces</div>`:''}
+     ${(()=>{const m=num(d.mrp),t=num(d.targetCost);
+       if(!r.landing)return '<div class="t-micro faint" style="margin-top:.5rem">Fill the sheet to see the result.</div>';
+       let out='';
+       if(t)out+=`<div class="row-between" style="margin-top:.625rem"><span class="t-label muted">vs target ₹${grp(t)}</span>
+        <span class="fig ${r.landing<=t?'pos':'neg'}">${r.landing<=t?'−':'+'}${inr(Math.abs(Math.round(r.landing-t)))}</span></div>`;
+       if(m)out+=`<div class="row-between" style="margin-top:.25rem"><span class="t-label muted">Gross margin at ₹${grp(m)} MRP</span>
+        <span class="fig">${((m-r.landing)/m*100).toFixed(1)}%</span></div>`;
+       return out})()}
+    </div></div>
+   ${fabricNeed(d)?`<div class="panel" style="margin-top:.875rem"><div class="p-body">
+     <div class="caps">Fabric for this design</div>
+     <div class="fig semi" style="font-size:1.25rem;margin-top:.25rem">${grp(fabricNeed(d))} ${esc(c.fab.unit)}</div>
+     <div class="t-micro faint" style="margin-top:.25rem">${c.fab.cons} ${esc(c.fab.unit)} × ${grp(q)} pieces, incl. ${num(c.fab.waste)||0}% wastage</div>
+   </div></div>`:''}
+  </div>
+ </div>
+
+ ${blk('Costing progress across the range')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th>Category</th><th data-n>Designs</th><th data-n>Costed</th>
+   <th data-n>Avg landing</th><th data-n>Pieces</th><th data-n>Category cost</th></tr></thead>
+  <tbody>${CATS().map(cat=>{const l=byCat(cat), p=projectCost(l);
+   return `<tr><td class="semi">${esc(cat)}</td>
+    <td data-n class="fig">${l.length}</td>
+    <td data-n class="fig ${p.costed?'':'faint'}">${p.costed}</td>
+    <td data-n class="fig ${p.avg?'':'faint'}">${p.avg?inr(Math.round(p.avg)):'—'}</td>
+    <td data-n class="fig">${grp(p.pieces)}</td>
+    <td data-n class="fig ${p.total?'':'faint'}">${p.total?inr(Math.round(p.total)):'—'}</td></tr>`}).join('')}
+   <tr class="tot"><td><b>Total</b></td><td data-n class="fig"><b>${DB.designs.length}</b></td>
+    <td data-n class="fig"><b>${pc.costed}</b></td>
+    <td data-n class="fig"><b>${pc.avg?inr(Math.round(pc.avg)):'—'}</b></td>
+    <td data-n class="fig"><b>${grp(pc.pieces)}</b></td>
+    <td data-n class="fig"><b>${pc.total?inr(Math.round(pc.total)):'—'}</b></td></tr>
+  </tbody></table></div></div>
+ ${pc.lo?`<div class="g2" style="margin-top:.875rem">
+   <div class="panel"><div class="p-body"><div class="caps">Lowest cost SKU</div>
+    <div class="semi" style="margin-top:.25rem">${esc(pc.lo.d.code)} — ${esc(pc.lo.d.name||pc.lo.d.cat)}</div>
+    <div class="fig" style="font-size:1.25rem">${inr(Math.round(pc.lo.v))}</div></div></div>
+   <div class="panel"><div class="p-body"><div class="caps">Highest cost SKU</div>
+    <div class="semi" style="margin-top:.25rem">${esc(pc.hi.d.code)} — ${esc(pc.hi.d.name||pc.hi.d.cat)}</div>
+    <div class="fig" style="font-size:1.25rem">${inr(Math.round(pc.hi.v))}</div></div></div>
+  </div>`:''}`;
+};
+
+/* ═══ FACTORY · MACHINERY · MANPOWER · CAPACITY ══════════════════════════ */
+const F=()=>{DB.factory=DB.factory||{spaces:{},rate:'',deposit:'',fitout:'',location:'',
+ shifts:'1',hours:'8',days:'26',model:'inhouse'};return DB.factory};
+const SPACES=[
+ ['fabric','Fabric store','Roll storage, relaxation, inspection'],
+ ['cutting','Cutting room','Spreading table, cutting, bundling'],
+ ['stitch','Stitching floor','Lines, operators, work-in-progress'],
+ ['wash','Washing / processing','If in-house, otherwise outsourced'],
+ ['finish','Finishing','Thread trim, ironing, buttoning'],
+ ['qc','Quality control','Inline and final inspection'],
+ ['pack','Packing','Polybag, sticker, carton'],
+ ['fg','Finished goods store','Ready stock before dispatch'],
+ ['office','Office / merchandising','Sampling, admin, PPC'],
+ ['util','Utilities and circulation','Power, compressor, walkways, washrooms']
+];
+const MACHINES=[
+ ['ssm','Single needle lockstitch','Wovens — the workhorse'],
+ ['ol4','Overlock 4-thread','Knit seams, edge finishing'],
+ ['ol5','Overlock 5-thread','Heavier knit seams'],
+ ['fl','Flatlock','Knit hems and covers'],
+ ['db','Double needle','Denim, topstitching'],
+ ['bh','Buttonhole','Shirts, plackets'],
+ ['bs','Button stitch','Attaching buttons'],
+ ['br','Bartack','Stress points, belt loops'],
+ ['fd','Feed-off-arm','Denim side seams'],
+ ['ke','Kansai / multi-needle','Waistbands, decorative'],
+ ['sn','Snap / rivet press','Denim, outerwear'],
+ ['cut','Straight knife cutter','Cutting room'],
+ ['band','Band knife','Small parts, precision'],
+ ['fuse','Fusing machine','Collars, cuffs, plackets'],
+ ['steam','Steam iron + boiler','Finishing'],
+ ['vac','Vacuum ironing table','Finishing'],
+ ['thread','Thread suction / trimmer','Finishing'],
+ ['nd','Needle detector','Compliance, export'],
+ ['insp','Fabric inspection machine','4-point system'],
+ ['gen','Generator / power backup','Continuity']
+];
+const ROLES=[
+ ['mgr','Production manager','Planning, line balancing, delivery'],
+ ['sup','Floor supervisor','Line supervision, quality at source'],
+ ['op','Machine operators','Stitching'],
+ ['help','Helpers','Feeding, bundling, trimming'],
+ ['cut2','Cutting master','Marker, spreading, cutting'],
+ ['cuth','Cutting helpers','Spreading, bundling'],
+ ['qcin','QC — inline','Checking at the line'],
+ ['qcf','QC — final','Final audit before packing'],
+ ['fin2','Finishing staff','Trimming, ironing, folding'],
+ ['pack2','Packing staff','Polybag, sticker, carton'],
+ ['store','Store keeper','Fabric and trims'],
+ ['mech','Mechanic / technician','Machine maintenance'],
+ ['merch','Merchandiser','Sampling, vendor follow-up'],
+ ['admin','Admin / accounts','Payroll, compliance, records']
+];
+const nz=v=>num(v)||0;
+function factoryTotals(){
+ const f=F();
+ const sqft=SPACES.reduce((a,[k])=>a+nz((f.spaces[k]||{}).sqft),0);
+ const rent=sqft*nz(f.rate);
+ return {sqft,rent,deposit:nz(f.deposit),fitout:nz(f.fitout)};
+}
+function machineTotals(){
+ const m=DB.machines=DB.machines||{};
+ let qty=0,capex=0,kw=0,ops=0;
+ MACHINES.forEach(([k])=>{const x=m[k]||{};
+  const q=nz(x.qty); qty+=q; capex+=q*nz(x.price); kw+=q*nz(x.kw); ops+=q*nz(x.ops)});
+ return {qty,capex,kw,ops};
+}
+function manpowerTotals(){
+ const r=DB.roles=DB.roles||{};
+ let head=0,monthly=0;
+ ROLES.forEach(([k])=>{const x=r[k]||{};
+  const h=nz(x.head); head+=h; monthly+=h*nz(x.salary)});
+ return {head,monthly};
+}
+function capacityModel(){
+ const f=F(), m=DB.capacity=DB.capacity||{};
+ const mt=machineTotals();
+ const machines=nz(m.machines)||mt.qty;
+ const hours=nz(f.hours)||8, days=nz(f.days)||26, shifts=nz(f.shifts)||1;
+ const sam=nz(m.sam), eff=nz(m.eff);
+ const minutes=machines*hours*60*days*shifts;
+ const out=(sam>0&&eff>0)?Math.floor(minutes*(eff/100)/sam):0;
+ const levels=[25,50,75,90].map(p=>({p,pieces:Math.floor(out*p/100)}));
+ return {machines,hours,days,shifts,sam,eff,minutes,out,levels};
+}
+
+/* ── 8 · FACTORY PLAN ─────────────────────────────────────────────────── */
+P.factory=()=>{
+ const f=F(), t=factoryTotals();
+ return `
+ <div class="ph"><h1>Factory Plan</h1>
+  <p class="sub">Space required by function, and what it costs to hold it.</p></div>
+ ${brief('The physical footprint needed to produce this assortment.',
+  'The quantity and the assortment mix — 5,602 pieces across six material groups.',
+  'Square feet per function, rent per square foot, deposit and fit-out.',
+  'Space is the second largest fixed cost after people, and it sets the ceiling on capacity.')}
+
+ <div class="g4">
+  ${[['Total area',t.sqft?grp(t.sqft)+' sq ft':'—'],
+     ['Monthly rent',t.rent?inr(Math.round(t.rent)):'—'],
+     ['Security deposit',t.deposit?inr(t.deposit):'—'],
+     ['Fit-out',t.fitout?inr(t.fitout):'—']].map(([k,v])=>
+   `<div class="panel"><div class="p-body"><div class="caps">${k}</div>
+     <div class="fig" style="font-size:1.5rem;margin-top:.25rem;letter-spacing:-.03em">${v}</div></div></div>`).join('')}
+ </div>
+
+ ${blk('Operating model','Which parts you run and which you outsource')}
+ <div class="panel"><div class="p-body">
+  <div class="row wrap" style="gap:.375rem;margin-bottom:.875rem">
+   ${[['inhouse','Full in-house'],['cmt','CMT — fabric supplied by us'],
+      ['hybrid','Hybrid — stitching in-house, rest outsourced'],
+      ['outsource','Fully outsourced']].map(([k,l])=>
+    `<button class="btn btn-sm ${f.model===k?'btn-primary':''}" data-fmodel="${k}">${l}</button>`).join('')}
+  </div>
+  <div class="g4" style="gap:.75rem">
+   ${fld('Location',f.location,'data-f="location"','City / area',1)}
+   ${fld('Rent ₹ per sq ft',f.rate,'data-f="rate" inputmode="decimal"','Monthly',1)}
+   ${fld('Security deposit ₹',f.deposit,'data-f="deposit" inputmode="decimal"','',1)}
+   ${fld('Fit-out ₹',f.fitout,'data-f="fitout" inputmode="decimal"','One-time',1)}
+   ${fld('Shifts',f.shifts,'data-f="shifts" inputmode="numeric"','1',1)}
+   ${fld('Hours per shift',f.hours,'data-f="hours" inputmode="numeric"','8',1)}
+   ${fld('Working days per month',f.days,'data-f="days" inputmode="numeric"','26',1)}
+  </div>
+ </div></div>
+
+ ${blk('Space by function','Enter the square feet you need for each')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th>Area</th><th>What happens here</th><th data-n style="width:7rem">Sq ft</th>
+   <th data-n style="width:8rem">Monthly rent</th><th data-n>Share</th><th>Notes</th></tr></thead>
+  <tbody>${SPACES.map(([k,n,d2])=>{const s=f.spaces[k]||{};
+   const sq=nz(s.sqft), rent=sq*nz(f.rate);
+   return `<tr><td class="semi">${esc(n)}</td>
+    <td class="t-label muted">${esc(d2)}</td>
+    <td><input class="inp n blank" value="${esc(s.sqft||'')}" data-fs="${k}:sqft" inputmode="numeric"></td>
+    <td data-n class="fig ${rent?'':'faint'}">${rent?inr(Math.round(rent)):'—'}</td>
+    <td data-n class="fig faint">${t.sqft?Math.round(sq/t.sqft*100)+'%':'—'}</td>
+    <td><input class="inp" value="${esc(s.note||'')}" data-fs="${k}:note" placeholder="Optional"></td></tr>`}).join('')}
+   <tr class="tot"><td colspan="2"><b>Total</b></td>
+    <td data-n class="fig"><b>${t.sqft?grp(t.sqft):'—'}</b></td>
+    <td data-n class="fig"><b>${t.rent?inr(Math.round(t.rent)):'—'}</b></td>
+    <td data-n class="fig">100%</td><td></td></tr>
+  </tbody></table></div></div>
+ ${t.sqft?'':'<div class="note w" style="margin-top:.875rem">Nothing is assumed here. Enter the area you would actually take and the rent follows automatically.</div>'}`;
+};
+
+/* ── 9 · MACHINERY ────────────────────────────────────────────────────── */
+P.machinery=()=>{
+ const m=DB.machines=DB.machines||{}, t=machineTotals();
+ return `
+ <div class="ph"><h1>Machinery</h1>
+  <p class="sub">Every machine required, with quantity, price, power load and operators.</p></div>
+ ${brief('The equipment list and its capital cost.',
+  'The product mix — wovens, knits, denim, bottomwear, outerwear and essentials.',
+  'Quantity, unit price, power draw and operators per machine, and whether it is required, optional or outsourced.',
+  'This is the CAPEX number, and it determines the capacity model on the next page.')}
+
+ <div class="g4">
+  ${[['Machines',t.qty?grp(t.qty):'—'],['Capital cost',t.capex?inr(t.capex):'—'],
+     ['Connected load',t.kw?t.kw.toFixed(1)+' kW':'—'],['Operators needed',t.ops?grp(t.ops):'—']].map(([k,v])=>
+   `<div class="panel"><div class="p-body"><div class="caps">${k}</div>
+     <div class="fig" style="font-size:1.5rem;margin-top:.25rem;letter-spacing:-.03em">${v}</div></div></div>`).join('')}
+ </div>
+
+ ${blk('Machine list','Mark anything you would outsource rather than buy')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th>Machine</th><th>Used for</th><th data-n style="width:5rem">Qty</th>
+   <th data-n style="width:7rem">Unit ₹</th><th data-n style="width:5rem">kW</th>
+   <th data-n style="width:5rem">Ops</th><th style="width:8rem">Status</th>
+   <th data-n style="width:7rem">Total ₹</th></tr></thead>
+  <tbody>${MACHINES.map(([k,n,u])=>{const x=m[k]||{};
+   const tot=nz(x.qty)*nz(x.price);
+   return `<tr><td class="semi">${esc(n)}</td>
+    <td class="t-label muted">${esc(u)}</td>
+    <td><input class="inp n blank" value="${esc(x.qty||'')}" data-mc="${k}:qty" inputmode="numeric"></td>
+    <td><input class="inp n blank" value="${esc(x.price||'')}" data-mc="${k}:price" inputmode="numeric"></td>
+    <td><input class="inp n blank" value="${esc(x.kw||'')}" data-mc="${k}:kw" inputmode="decimal"></td>
+    <td><input class="inp n blank" value="${esc(x.ops||'')}" data-mc="${k}:ops" inputmode="numeric"></td>
+    <td><select class="inp" data-mc="${k}:status">
+     ${['','Required','Optional','Outsource','Later phase'].map(o=>
+      `<option ${o===(x.status||'')?'selected':''}>${o}</option>`).join('')}</select></td>
+    <td data-n class="fig ${tot?'':'faint'}">${tot?inr(tot):'—'}</td></tr>`}).join('')}
+   <tr class="tot"><td colspan="2"><b>Total</b></td>
+    <td data-n class="fig"><b>${t.qty||'—'}</b></td><td></td>
+    <td data-n class="fig"><b>${t.kw?t.kw.toFixed(1):'—'}</b></td>
+    <td data-n class="fig"><b>${t.ops||'—'}</b></td><td></td>
+    <td data-n class="fig"><b>${t.capex?inr(t.capex):'—'}</b></td></tr>
+  </tbody></table></div></div>
+ <div class="note" style="margin-top:.875rem">Anything marked <b>Outsource</b> stays out of the capital figure but should appear as a processing cost on the costing sheet instead.</div>`;
+};
+
+/* ── 10 · MANPOWER ────────────────────────────────────────────────────── */
+P.manpower=()=>{
+ const r=DB.roles=DB.roles||{}, t=manpowerTotals();
+ const cap=capacityModel();
+ const perPc=cap.out?t.monthly/cap.out:0;
+ return `
+ <div class="ph"><h1>Manpower</h1>
+  <p class="sub">Every role, its headcount and its cost — and what that means per garment.</p></div>
+ ${brief('The team required to run the floor.',
+  'The production volume and the assortment complexity.',
+  'Headcount and monthly salary per role.',
+  'Labour is the largest controllable cost in a garment factory and it drives the cost per piece.')}
+
+ <div class="g4">
+  ${[['Total headcount',t.head?grp(t.head):'—'],
+     ['Monthly payroll',t.monthly?inr(t.monthly):'—'],
+     ['Annual payroll',t.monthly?inr(t.monthly*12):'—'],
+     ['Labour per piece',perPc?inr(Math.round(perPc)):'—']].map(([k,v])=>
+   `<div class="panel"><div class="p-body"><div class="caps">${k}</div>
+     <div class="fig" style="font-size:1.5rem;margin-top:.25rem;letter-spacing:-.03em">${v}</div></div></div>`).join('')}
+ </div>
+ ${perPc?'':'<div class="note w" style="margin-top:.875rem">Labour per piece appears once headcount and the capacity model are both filled — it is payroll ÷ monthly output, not a guess.</div>'}
+
+ ${blk('Roles')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th>Role</th><th>Responsibility</th><th data-n style="width:5.5rem">Headcount</th>
+   <th data-n style="width:7rem">Salary ₹</th><th data-n style="width:8rem">Monthly cost</th>
+   <th style="width:9rem">Contribution</th></tr></thead>
+  <tbody>${ROLES.map(([k,n,d2])=>{const x=r[k]||{};
+   const tot=nz(x.head)*nz(x.salary);
+   return `<tr><td class="semi">${esc(n)}</td>
+    <td class="t-label muted">${esc(d2)}</td>
+    <td><input class="inp n blank" value="${esc(x.head||'')}" data-rl="${k}:head" inputmode="numeric"></td>
+    <td><input class="inp n blank" value="${esc(x.salary||'')}" data-rl="${k}:salary" inputmode="numeric"></td>
+    <td data-n class="fig ${tot?'':'faint'}">${tot?inr(tot):'—'}</td>
+    <td><input class="inp" value="${esc(x.note||'')}" data-rl="${k}:note" placeholder="Output or note"></td></tr>`}).join('')}
+   <tr class="tot"><td colspan="2"><b>Total</b></td>
+    <td data-n class="fig"><b>${t.head||'—'}</b></td><td></td>
+    <td data-n class="fig"><b>${t.monthly?inr(t.monthly):'—'}</b></td><td></td></tr>
+  </tbody></table></div></div>`;
+};
+
+/* ── 11 · PRODUCTION CAPACITY ─────────────────────────────────────────── */
+P.capacity=()=>{
+ const c=capacityModel(), f=F(), m=DB.capacity=DB.capacity||{};
+ const mp=manpowerTotals(), ft=factoryTotals(), mt=machineTotals();
+ const monthlyFixed=ft.rent+mp.monthly+nz(m.otherFixed);
+ const r=rollup();
+ const months=c.out?(r.pieces/c.out):0;
+ const outRate=nz(m.outRate), inCost=c.out?monthlyFixed/c.out+nz(m.inVar):0;
+ const saving=outRate&&inCost?outRate-inCost:0;
+ const be=saving>0?Math.ceil(monthlyFixed/(outRate-nz(m.inVar))):0;
+ return `
+ <div class="ph"><h1>Production Capacity</h1>
+  <p class="sub">What the floor can actually produce, and whether making it beats buying it.</p></div>
+ ${brief('The output model and the make-versus-outsource decision.',
+  'The order quantity — '+grp(r.pieces)+' pieces across '+r.designs+' designs.',
+  'Machine count, average SAM, line efficiency and the outsourced rate to compare against.',
+  'Capacity decides whether the order is deliverable. Break-even decides whether it should be made in-house at all.')}
+
+ <div class="panel"><div class="p-body">
+  <div class="g4" style="gap:.75rem">
+   ${fld('Stitching machines',m.machines||mt.qty||'','data-cap="machines" inputmode="numeric"','From machinery list',1)}
+   ${fld('Average SAM (minutes)',m.sam,'data-cap="sam" inputmode="decimal"','Across the range',1)}
+   ${fld('Line efficiency %',m.eff,'data-cap="eff" inputmode="decimal"','e.g. 55',1)}
+   ${fld('Other monthly fixed ₹',m.otherFixed,'data-cap="otherFixed" inputmode="numeric"','Power, admin, misc',1)}
+  </div>
+  <div class="t-micro faint" style="margin-top:.625rem">
+   Machines × ${c.hours} hours × 60 × ${c.days} days × ${c.shifts} shift${c.shifts>1?'s':''} × efficiency ÷ SAM.
+   Shift pattern is set on the Factory Plan.</div>
+ </div></div>
+
+ ${blk('Monthly output')}
+ <div class="g4">
+  ${c.levels.map(l=>`<div class="panel"><div class="p-body">
+   <div class="caps">At ${l.p}% utilisation</div>
+   <div class="fig" style="font-size:1.5rem;margin-top:.25rem">${l.pieces?grp(l.pieces):'—'}</div>
+   <div class="t-micro faint" style="margin-top:.25rem">pieces per month</div>
+   <div class="bar" style="margin-top:.5rem"><i style="width:${l.p}%"></i></div>
+  </div></div>`).join('')}
+ </div>
+ ${c.out?`<div class="note" style="margin-top:.875rem">
+   At 100% theoretical utilisation the floor produces <b>${grp(c.out)} pieces a month</b>.
+   The full order of ${grp(r.pieces)} pieces would take <b>${months.toFixed(1)} months</b> at full load,
+   or <b>${(months/0.75).toFixed(1)} months</b> at a realistic 75%.</div>`
+  :'<div class="note w" style="margin-top:.875rem">Enter machines, SAM and efficiency to model output.</div>'}
+
+ ${blk('Make or outsource','The number that decides it')}
+ <div class="g2" style="align-items:start">
+  <div class="panel"><div class="p-body">
+   <div class="g2" style="gap:.75rem">
+    ${fld('Outsourced rate ₹ / piece',m.outRate,'data-cap="outRate" inputmode="decimal"','What a CMT unit quotes',1)}
+    ${fld('In-house variable ₹ / piece',m.inVar,'data-cap="inVar" inputmode="decimal"','Excluding fixed cost',1)}
+   </div>
+   <div class="stack-s" style="margin-top:.875rem">
+    ${[['Monthly fixed cost',monthlyFixed?inr(Math.round(monthlyFixed)):'—','Rent + payroll + other'],
+       ['In-house cost / piece',inCost?inr(Math.round(inCost)):'—','Fixed ÷ output + variable'],
+       ['Saving vs outsourcing',saving?inr(Math.round(saving)):'—','Per piece, at full output']].map(([k,v,s])=>
+     `<div class="row-between"><div><div class="t-label semi">${k}</div>
+       <div class="t-micro faint">${s}</div></div><span class="fig semi">${v}</span></div>`).join('')}
+   </div>
+  </div></div>
+  <div class="panel ${be?'ink':''}"><div class="p-body">
+   <div class="caps" style="${be?'color:hsl(34 22% 66%)':''}">Break-even volume</div>
+   <div class="fig" style="font-size:2rem;margin-top:.25rem;letter-spacing:-.035em">
+    ${be?grp(be):'—'}</div>
+   <div class="t-micro ${be?'':'faint'}" style="margin-top:.375rem;${be?'color:hsl(34 22% 66%)':''}">
+    pieces per month</div>
+   ${be?`<p style="margin-top:.875rem;font-size:12.5px;line-height:1.3rem;color:hsl(38 10% 82%)">
+     Below ${grp(be)} pieces a month, outsourcing is cheaper. Above it, the factory pays for itself.
+     ${c.out?`At your modelled output of ${grp(c.out)} that is
+      <b style="color:#fff">${c.out>=be?'above':'below'} break-even</b>.`:''}</p>`
+    :'<p class="t-micro faint" style="margin-top:.75rem">Enter an outsourced rate and in-house variable cost to see the crossover.</p>'}
+  </div></div>
+ </div>
+
+ ${blk('Output by garment type','One factory floor, running each garment type on its own')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th>Garment</th><th>Group</th><th data-n style="width:5.5rem">SAM</th>
+   <th data-n>Landing cost</th><th data-n>Pieces / day</th><th data-n>Pieces / month</th>
+   <th data-n>Order qty</th><th data-n>Days needed</th></tr></thead>
+  <tbody>${CATS().map(cat=>{
+   const l=byCat(cat), pcx=projectCost(l), g=MATERIAL_GROUPS.find(m=>m.id===catGroup(cat));
+   DB.catSam=DB.catSam||{};
+   const sam=nz(DB.catSam[cat]);
+   const perDay=(sam&&c.eff&&c.machines)
+     ? Math.floor(c.machines*nz(c.hours)*60*nz(c.shifts)*(nz(c.eff)/100)/sam) : 0;
+   const perMonth=perDay*nz(c.days);
+   const qty=rollup(l).pieces;
+   const days=perDay?Math.ceil(qty/perDay):0;
+   return `<tr><td class="semi">${esc(cat)}</td>
+    <td class="t-label muted">${g?esc(g.name):'—'}</td>
+    <td><input class="inp n blank" value="${esc(DB.catSam[cat]||'')}" data-csam="${esc(cat)}" inputmode="decimal"></td>
+    <td data-n class="fig ${pcx.avg?'':'faint'}">${pcx.avg?inr(Math.round(pcx.avg)):'—'}</td>
+    <td data-n class="fig ${perDay?'':'faint'}">${perDay?grp(perDay):'—'}</td>
+    <td data-n class="fig semi ${perMonth?'':'faint'}">${perMonth?grp(perMonth):'—'}</td>
+    <td data-n class="fig">${grp(qty)}</td>
+    <td data-n class="fig ${days?'':'faint'}">${days?grp(days):'—'}</td></tr>`}).join('')}
+  </tbody></table></div></div>
+ <div class="note" style="margin-top:.875rem">
+  Each row assumes the <b>whole floor</b> runs that garment alone — that is the honest way to compare a shirt against a jean, because they do not share a line efficiently.
+  Enter the SAM for each garment type and the daily and monthly output follows from the same machine count, hours and efficiency set above.
+  ${c.machines?`Currently modelled on <b>${grp(c.machines)} machines × ${nz(c.hours)} hours × ${nz(c.shifts)} shift${nz(c.shifts)>1?'s':''} × ${nz(c.eff)||'—'}% efficiency</b>, ${nz(c.days)} days a month.`:''}</div>
+
+ ${blk('Consistency checks','Every number that must agree with another')}
+<div class="panel"><div class="p-body flush"><table class="t">
+ <thead><tr><th style="width:2.5rem"></th><th>Check</th><th>Detail</th></tr></thead>
+ <tbody>${consistency().map(x=>`<tr>
+  <td style="text-align:center;font-size:14px">${x.ok?'<span class="pos">✓</span>':'<span class="neg">✗</span>'}</td>
+  <td class="${x.ok?'':'semi'}">${esc(x.label)}</td>
+  <td class="t-label muted">${esc(x.detail)}</td></tr>`).join('')}
+ </tbody></table></div></div>
+${(()=>{const bad=consistency().filter(x=>!x.ok).length;
+ return bad?`<div class="note w" style="margin-top:.875rem"><b>${bad} check${bad>1?'s':''} failing.</b> Fix these before the numbers are used for a decision — a figure that disagrees with another is worse than a blank.</div>`
+ :'<div class="note" style="margin-top:.875rem">Every cross-tab figure agrees. Change any input and these checks re-run.</div>'})()}
+
+${blk('Capacity against the order')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th>Phase</th><th data-n>Pieces</th><th data-n>Months at 75%</th>
+   <th data-n>Machines needed</th><th>Feasibility</th></tr></thead>
+  <tbody>${DB.phases.map(p=>{const x=rollup(byPhase(p.id));
+   const at75=c.out*0.75, mo=at75?x.pieces/at75:0;
+   const need=(c.sam&&c.eff&&c.hours&&c.days)
+    ? Math.ceil(x.pieces*c.sam/((c.eff/100)*c.hours*60*c.days*c.shifts)) : 0;
+   return `<tr><td class="semi">${esc(p.no)} · ${esc(p.name)}</td>
+    <td data-n class="fig">${grp(x.pieces)}</td>
+    <td data-n class="fig ${mo?'':'faint'}">${mo?mo.toFixed(1):'—'}</td>
+    <td data-n class="fig ${need?'':'faint'}">${need?grp(need):'—'}</td>
+    <td class="t-label muted">${need?(need<=c.machines?'<span class="badge badge-p">Within capacity</span>'
+      :'<span class="badge badge-c">Needs '+(need-c.machines)+' more machines</span>'):'—'}</td></tr>`}).join('')}
+  </tbody></table></div></div>
+ <div class="note" style="margin-top:.875rem">Machines needed assumes each phase is produced in one month. If a phase runs longer, the machine requirement falls proportionally — the timeline page in Phase 4 will let you spread it.</div>`;
+};
+
+/* ═══ VENDORS · QUALITY · TIMELINE ═══════════════════════════════════════ */
+const VEND_TYPES=['Fabric mill','Fabric trader','Trims supplier','CMT unit','Full-package factory',
+ 'Washing / processing','Printing','Embroidery','Packing supplier','Testing lab'];
+const RISK_LVL=['','Low','Medium','High'];
+
+/* ── 12 · VENDORS & SOURCING ──────────────────────────────────────────── */
+P.vendors=()=>{
+ DB.vendors=DB.vendors||[];
+ const V=DB.vendors;
+ return `
+ <div class="ph"><h1>Vendors &amp; Sourcing</h1>
+  <p class="sub">Who supplies what, on what terms, and where the single points of failure are.</p></div>
+ ${brief('The supply base behind the quote.',
+  'The assortment and the fabric families it needs.',
+  'Vendor names, speciality, MOQ, capacity, lead time, payment terms and risk.',
+  'A price is only as good as the vendor behind it. A single unbacked vendor is the biggest schedule risk in any launch.')}
+
+ <div class="g4">
+  ${[['Vendors listed',V.length||'—'],
+     ['Fabric sources',V.filter(v=>/fabric/i.test(v.type||'')).length||'—'],
+     ['High risk',V.filter(v=>v.risk==='High').length||'—'],
+     ['With backup',V.filter(v=>v.backup).length||'—']].map(([k,v])=>
+   `<div class="panel"><div class="p-body"><div class="caps">${k}</div>
+     <div class="fig" style="font-size:1.5rem;margin-top:.25rem">${v}</div></div></div>`).join('')}
+ </div>
+
+ ${blk('Vendor list',V.length?V.length+' entries':'None added yet')}
+ ${V.length?`<div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th style="width:11rem">Vendor</th><th style="width:10rem">Type</th><th>Speciality</th>
+   <th data-n style="width:6rem">MOQ</th><th data-n style="width:7rem">Capacity/mo</th>
+   <th data-n style="width:6rem">Lead days</th><th style="width:8rem">Payment</th>
+   <th style="width:7rem">Risk</th><th style="width:3rem"></th></tr></thead>
+  <tbody>${V.map((v,i)=>`<tr>
+   <td><input class="inp" value="${esc(v.name||'')}" data-v="${i}:name" placeholder="Name"></td>
+   <td><select class="inp" data-v="${i}:type">${['',...VEND_TYPES].map(o=>
+     `<option ${o===(v.type||'')?'selected':''}>${o}</option>`).join('')}</select></td>
+   <td><input class="inp" value="${esc(v.spec||'')}" data-v="${i}:spec" placeholder="What they do best"></td>
+   <td><input class="inp n" value="${esc(v.moq||'')}" data-v="${i}:moq" inputmode="numeric"></td>
+   <td><input class="inp n" value="${esc(v.cap||'')}" data-v="${i}:cap" inputmode="numeric"></td>
+   <td><input class="inp n" value="${esc(v.lead||'')}" data-v="${i}:lead" inputmode="numeric"></td>
+   <td><input class="inp" value="${esc(v.pay||'')}" data-v="${i}:pay" placeholder="e.g. 30% adv"></td>
+   <td><select class="inp" data-v="${i}:risk">${RISK_LVL.map(o=>
+     `<option ${o===(v.risk||'')?'selected':''}>${o}</option>`).join('')}</select></td>
+   <td><button class="btn btn-sm" data-vdel="${i}">✕</button></td></tr>`).join('')}
+  </tbody></table></div></div>`
+ :`<div class="panel"><div class="p-body" style="text-align:center;padding:2.5rem">
+   <p class="faint">No vendors added. Add the mills, trims suppliers and units you would actually use.</p></div></div>`}
+ <div class="row" style="margin-top:.875rem;gap:.5rem">
+  <button class="btn" data-vadd="1">+ Add vendor</button>
+  ${V.length?`<span class="t-micro faint" style="align-self:center">Mark a backup on any vendor you would not want to depend on alone.</span>`:''}
+ </div>
+
+ ${V.length?`${blk('Backup and dependency')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th>Vendor</th><th>Backup identified</th><th>What happens if they fail</th></tr></thead>
+  <tbody>${V.map((v,i)=>`<tr>
+   <td class="semi">${esc(v.name||'Unnamed')}</td>
+   <td><input class="inp" value="${esc(v.backup||'')}" data-v="${i}:backup" placeholder="Second source"></td>
+   <td><input class="inp" value="${esc(v.fallback||'')}" data-v="${i}:fallback" placeholder="Contingency"></td></tr>`).join('')}
+  </tbody></table></div></div>`:''}
+
+ ${blk('Sourcing by material group')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th>Group</th><th data-n>Pieces</th><th data-n>Fabric</th><th>Vendor</th><th>Notes</th></tr></thead>
+  <tbody>${MATERIAL_GROUPS.map(g=>{const l=byGroup(g.id); if(!l.length)return '';
+   const r=rollup(l), fab=l.reduce((a,d)=>a+fabricNeed(d),0);
+   const m=(DB.matGroup||{})[g.id]||{};
+   return `<tr><td class="semi">${esc(g.name)}</td>
+    <td data-n class="fig">${grp(r.pieces)}</td>
+    <td data-n class="fig ${fab?'':'faint'}">${fab?grp(fab)+' m':'—'}</td>
+    <td class="t-label ${m.vendor?'':'faint'}">${esc(m.vendor||'—')}</td>
+    <td><input class="inp" value="${esc((DB.srcNote||{})[g.id]||'')}" data-src="${g.id}" placeholder="Sourcing note"></td></tr>`}).join('')}
+  </tbody></table></div></div>`;
+};
+
+/* ── 13 · QUALITY CONTROL ─────────────────────────────────────────────── */
+const QC_ROWS=[
+ ['fabinsp','Fabric inspection','4-point system','Points per 100 sq yd'],
+ ['shade','Shade matching','Against approved swatch','Grade under D65'],
+ ['shrink','Shrinkage','Wash test on cut sample','Max % movement'],
+ ['bleed','Colour fastness','Wet and dry crocking','Minimum grade'],
+ ['gsmck','GSM verification','Against tech pack','± tolerance'],
+ ['meas','Measurement','Against size chart','± tolerance per point'],
+ ['spi','Stitch density','Stitches per inch','Minimum SPI'],
+ ['seam','Seam strength','Pull test','Minimum kg'],
+ ['button','Button / snap strength','Pull test','Minimum kg'],
+ ['pucker','Seam pucker','Visual grade','Minimum grade'],
+ ['sym','Symmetry','Collar, cuff, pocket','Max deviation'],
+ ['press','Pressing and finish','Visual','Standard'],
+ ['trimq','Trims and labels','Placement and legibility','Standard'],
+ ['needle','Needle / metal check','Detector pass','Mandatory'],
+ ['aql','Final AQL','Sampling standard','AQL level'],
+ ['pack','Packing check','Fold, polybag, barcode','Scan pass']
+];
+P.qc=()=>{
+ DB.qcStd=DB.qcStd||{};
+ return `
+ <div class="ph"><h1>Quality Control</h1>
+  <p class="sub">The standards a garment must meet before it leaves the factory.</p></div>
+ ${brief('The acceptance standard, checkpoint by checkpoint.',
+  'The quality level we are targeting and the reference garments behind it.',
+  'The measurable standard and tolerance you can commit to on each checkpoint.',
+  'A tolerance agreed now is a dispute avoided later. It also protects your rejection percentage.')}
+
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th style="width:12rem">Checkpoint</th><th>Method</th>
+   <th style="width:9rem">Measured as</th><th style="width:9rem">Standard</th>
+   <th style="width:8rem">Stage</th><th>Action on failure</th></tr></thead>
+  <tbody>${QC_ROWS.map(([k,n,m,u])=>{const x=DB.qcStd[k]||{};
+   return `<tr><td class="semi">${esc(n)}</td>
+    <td class="t-label muted">${esc(m)}</td>
+    <td class="t-label faint">${esc(u)}</td>
+    <td><input class="inp blank" value="${esc(x.std||'')}" data-qc="${k}:std" placeholder="Your standard"></td>
+    <td><select class="inp" data-qc="${k}:stage">${['','Inward','In-process','Pre-shipment','Final'].map(o=>
+      `<option ${o===(x.stage||'')?'selected':''}>${o}</option>`).join('')}</select></td>
+    <td><input class="inp" value="${esc(x.action||'')}" data-qc="${k}:action" placeholder="Reject / rework / escalate"></td></tr>`}).join('')}
+  </tbody></table></div></div>
+
+ ${blk('Rejection and rework')}
+ <div class="panel"><div class="p-body">
+  <div class="g4" style="gap:.75rem">
+   ${fld('Expected rejection %',DB.qcStd.rejPct,'data-qcx="rejPct" inputmode="decimal"','Across the range',1)}
+   ${fld('Rework capacity %',DB.qcStd.reworkPct,'data-qcx="reworkPct" inputmode="decimal"','Recoverable',1)}
+   ${fld('AQL level',DB.qcStd.aqlLevel,'data-qcx="aqlLevel"','e.g. 2.5 Level II',1)}
+   ${fld('Inspection frequency',DB.qcStd.freq,'data-qcx="freq"','e.g. every bundle',1)}
+  </div>
+  <label class="fld" style="margin-top:.875rem"><span>Quality commitments and exclusions</span>
+   <textarea class="inp" rows="3" data-qcx="notes"
+    placeholder="What you can guarantee, and what you cannot at this price">${esc(DB.qcStd.notes||'')}</textarea></label>
+ </div></div>
+ ${(()=>{const r=nz(DB.qcStd.rejPct); if(!r)return '';
+  const pcs=rollup().pieces;
+  if(r>=100)return '<div class="note w" style="margin-top:.875rem">Rejection cannot be 100%.</div>';
+  const cutQty=Math.ceil(pcs/(1-r/100)), extra=cutQty-pcs;
+  return `<div class="note" style="margin-top:.875rem">At <b>${r}% rejection</b>, producing ${grp(pcs)} good pieces means cutting <b>${grp(cutQty)}</b> — an extra ${grp(extra)} pieces of fabric, trims and labour. Grossing up divides by (1 − rejection), it does not simply add the percentage. That is already reflected in the landing cost on each sheet.</div>`})()}`;
+};
+
+/* ── 14 · PRODUCTION TIMELINE ─────────────────────────────────────────── */
+const STAGES=[
+ ['freeze','Design freeze','Management','Tech packs issued'],
+ ['fabsrc','Fabric sourcing','Production','Mill confirmation'],
+ ['sample1','First sample','Production','Proto against tech pack'],
+ ['fit','Fit approval','Management','On a fit model'],
+ ['sample2','Revised sample','Production','Corrections applied'],
+ ['sizeset','Size set','Production','Full curve checked'],
+ ['ppmeet','PP meeting','Both','Line, quality and packing agreed'],
+ ['fabin','Fabric in-house','Production','Inspected and relaxed'],
+ ['cut','Cutting','Production','Spread, cut, bundle'],
+ ['stitch','Stitching','Production','Line running'],
+ ['wash','Washing / processing','Production','If applicable'],
+ ['finish','Finishing','Production','Trim, press, button'],
+ ['qcfinal','Final QC','Production','AQL audit'],
+ ['pack','Packing','Production','Polybag, sticker, carton'],
+ ['fg','Finished goods ready','Production','Handover to management']
+];
+P.timeline=()=>{
+ DB.timeline=DB.timeline||{};
+ DB.risks=DB.risks||[];
+ const T=DB.timeline;
+ const total=STAGES.reduce((a,[k])=>a+nz((T[k]||{}).days),0);
+ let cum=0;
+ return `
+ <div class="ph"><h1>Production Timeline</h1>
+  <p class="sub">Design freeze to finished goods, stage by stage, with the risks attached.</p></div>
+ ${brief('How long the order actually takes.',
+  'Phase deadlines and the order quantity.',
+  'Duration per stage, who owns it, what it depends on, and what could delay it.',
+  'The cumulative figure is the honest lead time. It is what management plans the launch against.')}
+
+ <div class="g4">
+  ${[['Total lead time',total?total+' days':'—'],
+     ['In weeks',total?(total/7).toFixed(1):'—'],
+     ['Stages',STAGES.length],
+     ['Risks logged',DB.risks.length||'—']].map(([k,v])=>
+   `<div class="panel"><div class="p-body"><div class="caps">${k}</div>
+     <div class="fig" style="font-size:1.5rem;margin-top:.25rem">${v}</div></div></div>`).join('')}
+ </div>
+
+ ${blk('Stages','Enter duration in days — the bar shows where each sits')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th style="width:2.5rem">#</th><th style="width:11rem">Stage</th><th>What happens</th>
+   <th style="width:7rem">Owner</th><th data-n style="width:5.5rem">Days</th>
+   <th data-n style="width:5.5rem">Cumulative</th><th style="width:26%">Position</th></tr></thead>
+  <tbody>${STAGES.map(([k,n,o,d2],i)=>{const x=T[k]||{};
+   const days=nz(x.days), start=cum; cum+=days;
+   const l=total?start/total*100:0, wpc=total?days/total*100:0;
+   return `<tr><td class="fig faint">${String(i+1).padStart(2,'0')}</td>
+    <td class="semi">${esc(n)}</td>
+    <td class="t-label muted">${esc(d2)}</td>
+    <td><select class="inp" data-tl="${k}:owner">${['',o,'Management','Production','Both','Vendor'].filter((v,j,a)=>a.indexOf(v)===j).map(op=>
+      `<option ${op===(x.owner||o)?'selected':''}>${op}</option>`).join('')}</select></td>
+    <td><input class="inp n blank" value="${esc(x.days||'')}" data-tl="${k}:days" inputmode="numeric"></td>
+    <td data-n class="fig ${days?'':'faint'}">${days?cum:'—'}</td>
+    <td>${days?`<div style="height:14px;background:hsl(var(--recess));border-radius:3px;position:relative">
+      <i style="position:absolute;left:${l}%;width:${Math.max(wpc,1.5)}%;top:0;bottom:0;
+       background:hsl(var(--accent));border-radius:3px;display:block"></i></div>`:''}</td></tr>`}).join('')}
+   <tr class="tot"><td colspan="4"><b>Total lead time</b></td>
+    <td data-n class="fig"><b>${total||'—'}</b></td>
+    <td data-n class="fig faint">days</td><td></td></tr>
+  </tbody></table></div></div>
+
+ ${blk('Risks',DB.risks.length?DB.risks.length+' logged':'Log anything that could delay or inflate this')}
+ ${DB.risks.length?`<div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th style="width:16rem">Risk</th><th style="width:9rem">Area</th>
+   <th style="width:7rem">Likelihood</th><th style="width:7rem">Impact</th>
+   <th>Mitigation</th><th style="width:3rem"></th></tr></thead>
+  <tbody>${DB.risks.map((r,i)=>`<tr>
+   <td><input class="inp" value="${esc(r.name||'')}" data-rk="${i}:name" placeholder="What could go wrong"></td>
+   <td><select class="inp" data-rk="${i}:area">${['','Fabric','Trims','Capacity','Manpower','Machinery','Quality','Vendor','Logistics','Compliance'].map(o=>
+     `<option ${o===(r.area||'')?'selected':''}>${o}</option>`).join('')}</select></td>
+   <td><select class="inp" data-rk="${i}:p">${RISK_LVL.map(o=>
+     `<option ${o===(r.p||'')?'selected':''}>${o}</option>`).join('')}</select></td>
+   <td><select class="inp" data-rk="${i}:i">${RISK_LVL.map(o=>
+     `<option ${o===(r.i||'')?'selected':''}>${o}</option>`).join('')}</select></td>
+   <td><input class="inp" value="${esc(r.mit||'')}" data-rk="${i}:mit" placeholder="How you would handle it"></td>
+   <td><button class="btn btn-sm" data-rkdel="${i}">✕</button></td></tr>`).join('')}
+  </tbody></table></div></div>`
+ :`<div class="panel"><div class="p-body" style="text-align:center;padding:2.5rem">
+   <p class="faint">No risks logged. The ones worth writing down are the ones that would move the date.</p></div></div>`}
+ <div class="row" style="margin-top:.875rem"><button class="btn" data-rkadd="1">+ Add risk</button></div>
+
+ ${total?`${blk('Against the phase deadlines')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th>Phase</th><th data-n>Pieces</th><th>Production deadline</th>
+   <th data-n>Lead time</th><th>Assessment</th></tr></thead>
+  <tbody>${DB.phases.map(p=>{const x=rollup(byPhase(p.id));
+   let verdict='<span class="faint">Set a deadline on Production Phases</span>';
+   if(p.prodBy){const d2=Math.ceil((new Date(p.prodBy)-new Date())/86400000);
+    verdict=d2>=total?`<span class="badge badge-p">${d2} days available — achievable</span>`
+     :`<span class="badge badge-c">${d2} days available — ${total-d2} short</span>`}
+   return `<tr><td class="semi">${esc(p.no)} · ${esc(p.name)}</td>
+    <td data-n class="fig">${grp(x.pieces)}</td>
+    <td class="t-label">${esc(p.prodBy||'—')}</td>
+    <td data-n class="fig">${total} days</td>
+    <td class="t-label">${verdict}</td></tr>`}).join('')}
+  </tbody></table></div></div>`:''}`;
+};
+
+/* ═══ MANAGEMENT REVIEW · SUBMISSION ═════════════════════════════════════ */
+
+/* ── validation ───────────────────────────────────────────────────────── */
+function validate(){
+ const g=[], f=F(), mt=machineTotals(), mp=manpowerTotals(), ft=factoryTotals(),
+  cap=capacityModel(), pc=projectCost(), T=DB.timeline||{}, V=DB.vendors||[];
+ const add=(sec,page,what,critical)=>g.push({sec,page,what,critical});
+ // costing
+ const unCosted=DB.designs.filter(d=>!costOf(d).filled);
+ if(unCosted.length)add('Costing','costing',
+  unCosted.length+' of '+DB.designs.length+' designs have no cost sheet',true);
+ const noCons=DB.designs.filter(d=>!num(C(d).fab.cons));
+ if(noCons.length)add('Costing','costing',
+  noCons.length+' designs have no fabric consumption — fabric requirement cannot be calculated',true);
+ // commercial
+ const noQuote=DB.designs.filter(d=>!String(d.quotedCost||'').trim());
+ if(noQuote.length)add('Showcase','showcase',noQuote.length+' designs have no quoted factory cost',true);
+ const noMoq=DB.designs.filter(d=>!String(d.moq||'').trim());
+ if(noMoq.length)add('Showcase','showcase',noMoq.length+' designs have no MOQ stated',false);
+ const noLead=DB.designs.filter(d=>!String(d.leadTime||'').trim());
+ if(noLead.length)add('Showcase','showcase',noLead.length+' designs have no lead time',false);
+ // factory
+ if(!ft.sqft)add('Factory','factory','No space requirement entered',true);
+ if(!num(f.rate))add('Factory','factory','No rent per square foot',false);
+ if(!mt.qty)add('Machinery','machinery','No machines listed',true);
+ if(!mt.capex)add('Machinery','machinery','No machine prices — capital cost cannot be calculated',true);
+ if(!mp.head)add('Manpower','manpower','No headcount entered',true);
+ if(!mp.monthly)add('Manpower','manpower','No salaries entered — payroll cannot be calculated',true);
+ // capacity
+ if(!num((DB.capacity||{}).sam))add('Capacity','capacity','No average SAM — output cannot be modelled',true);
+ if(!num((DB.capacity||{}).eff))add('Capacity','capacity','No line efficiency',true);
+ if(!cap.out)add('Capacity','capacity','Monthly output not modelled',true);
+ const noSam=CATS().filter(c=>!num((DB.catSam||{})[c]));
+ if(noSam.length)add('Capacity','capacity',
+  noSam.length+' garment types have no SAM — per-garment output is blank',false);
+ if(!num((DB.capacity||{}).outRate))add('Capacity','capacity',
+  'No outsourced rate — make-versus-buy cannot be assessed',false);
+ // sourcing
+ if(!V.length)add('Vendors','vendors','No vendors listed',true);
+ const noBackup=V.filter(v=>!String(v.backup||'').trim());
+ if(V.length&&noBackup.length)add('Vendors','vendors',
+  noBackup.length+' vendors have no backup identified',false);
+ // quality
+ const q=DB.qcStd||{};
+ const qcSet=QC_ROWS.filter(([k])=>String((q[k]||{}).std||'').trim()).length;
+ if(qcSet<QC_ROWS.length)add('Quality','qc',
+  (QC_ROWS.length-qcSet)+' quality checkpoints have no standard set',qcSet===0);
+ if(!num(q.rejPct))add('Quality','qc','No expected rejection percentage',false);
+ // timeline
+ const tSet=STAGES.filter(([k])=>num((T[k]||{}).days)).length;
+ if(tSet<STAGES.length)add('Timeline','timeline',
+  (STAGES.length-tSet)+' stages have no duration',tSet===0);
+ if(!(DB.risks||[]).length)add('Timeline','timeline','No risks logged',false);
+ return g;
+}
+function readiness(){
+ const g=validate();
+ const crit=g.filter(x=>x.critical).length;
+ const CHECKS=22;
+ const pct=Math.max(0,Math.round((CHECKS-g.length)/CHECKS*100));
+ return {gaps:g,crit,pct:Math.min(100,pct)};
+}
+
+/* ── 15 · MANAGEMENT REVIEW ───────────────────────────────────────────── */
+P.review=()=>{
+ const r=rollup(), pc=projectCost(), ft=factoryTotals(), mt=machineTotals(),
+  mp=manpowerTotals(), cap=capacityModel(), rd=readiness();
+ const T=DB.timeline||{}, lead=STAGES.reduce((a,[k])=>a+num((T[k]||{}).days),0);
+ const monthlyFixed=ft.rent+mp.monthly+num((DB.capacity||{}).otherFixed);
+ const m=DB.capacity||{};
+ const inCost=cap.out?monthlyFixed/cap.out+num(m.inVar):0;
+ const be=(num(m.outRate)&&num(m.outRate)>num(m.inVar))
+  ? Math.ceil(monthlyFixed/(num(m.outRate)-num(m.inVar))) : 0;
+ DB.review=DB.review||{};
+ return `
+ <div class="row" style="gap:.75rem;margin-bottom:.75rem">${MARK(26,'hsl(var(--ink))')}</div>
+ <div class="ph"><h1>Management Review</h1>
+  <p class="sub">Everything the production team has submitted, on one page.</p></div>
+ ${brief('The complete submission, summarised for a decision.',
+  'The assortment and the questions.',
+  'Nothing — this page reads what you have already filled in.',
+  'This is the page management reads. If a figure here is blank, the decision cannot be made.')}
+
+ <div class="panel ${rd.crit?'':'ink'}"><div class="p-body" style="padding:1.5rem">
+  <div class="row-between" style="align-items:flex-start">
+   <div><div class="caps" style="${rd.crit?'':'color:hsl(34 22% 66%)'}">Submission readiness</div>
+    <div class="fig" style="font-size:2.25rem;letter-spacing:-.035em;margin-top:.25rem">${rd.pct}%</div>
+    <div class="t-label ${rd.crit?'muted':''}" style="margin-top:.375rem;${rd.crit?'':'color:hsl(38 10% 78%)'}">
+     ${rd.crit?`<b class="neg">${rd.crit} critical gap${rd.crit>1?'s':''}</b> — the quote cannot be assessed yet`
+      :'No critical gaps. This submission can be reviewed.'}</div></div>
+   <button class="btn ${rd.crit?'':'btn-primary'}" data-go="submit">Go to Submission →</button>
+  </div>
+  <div class="bar" style="margin-top:1rem;${rd.crit?'':'background:hsl(30 8% 26%)'}">
+   <i style="width:${rd.pct}%"></i></div>
+ </div></div>
+
+ ${blk('The answer','What management asked for')}
+ <div class="g4">
+  ${[['Weighted avg landing cost',pc.avg?inr(Math.round(pc.avg)):'—','Per piece, across costed designs'],
+     ['Total production cost',pc.total?inr(Math.round(pc.total)):'—','For '+grp(r.pieces)+' pieces'],
+     ['Monthly output',cap.out?grp(cap.out):'—','At 100% theoretical'],
+     ['Lead time',lead?lead+' days':'—','Design freeze to finished goods']].map(([k,v,s])=>
+   `<div class="panel"><div class="p-body"><div class="caps">${k}</div>
+     <div class="fig" style="font-size:1.5rem;margin-top:.25rem;letter-spacing:-.03em">${v}</div>
+     <div class="t-micro faint" style="margin-top:.25rem">${s}</div></div></div>`).join('')}
+ </div>
+
+ ${blk('Cost by garment type')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th>Garment</th><th>Group</th><th data-n>Pieces</th><th data-n>Landing cost</th>
+   <th data-n>Category total</th><th data-n>Pieces/day</th><th data-n>Pieces/month</th></tr></thead>
+  <tbody>${CATS().map(cat=>{const l=byCat(cat), p=projectCost(l),
+    g=MATERIAL_GROUPS.find(x=>x.id===catGroup(cat)), sam=num((DB.catSam||{})[cat]);
+   const perDay=(sam&&cap.eff&&cap.machines)
+     ? Math.floor(cap.machines*cap.hours*60*cap.shifts*(cap.eff/100)/sam):0;
+   return `<tr><td class="semi">${esc(cat)}</td>
+    <td class="t-label muted">${g?esc(g.name):'—'}</td>
+    <td data-n class="fig">${grp(p.pieces)}</td>
+    <td data-n class="fig ${p.avg?'':'faint'}">${p.avg?inr(Math.round(p.avg)):'—'}</td>
+    <td data-n class="fig ${p.total?'':'faint'}">${p.total?inr(Math.round(p.total)):'—'}</td>
+    <td data-n class="fig ${perDay?'':'faint'}">${perDay?grp(perDay):'—'}</td>
+    <td data-n class="fig ${perDay?'':'faint'}">${perDay?grp(perDay*cap.days):'—'}</td></tr>`}).join('')}
+   <tr class="tot"><td colspan="2"><b>Total</b></td>
+    <td data-n class="fig"><b>${grp(r.pieces)}</b></td>
+    <td data-n class="fig"><b>${pc.avg?inr(Math.round(pc.avg)):'—'}</b></td>
+    <td data-n class="fig"><b>${pc.total?inr(Math.round(pc.total)):'—'}</b></td>
+    <td colspan="2"></td></tr>
+  </tbody></table></div></div>
+
+ ${blk('Setup required')}
+ <div class="g3">
+  ${[['Factory',[['Area',ft.sqft?grp(ft.sqft)+' sq ft':'—'],['Monthly rent',ft.rent?inr(Math.round(ft.rent)):'—'],
+      ['Deposit',ft.deposit?inr(ft.deposit):'—'],['Fit-out',ft.fitout?inr(ft.fitout):'—'],
+      ['Model',(F().model||'—')]]],
+     ['Machinery',[['Machines',mt.qty||'—'],['Capital cost',mt.capex?inr(mt.capex):'—'],
+      ['Connected load',mt.kw?mt.kw.toFixed(1)+' kW':'—'],['Operators',mt.ops||'—']]],
+     ['Manpower',[['Headcount',mp.head||'—'],['Monthly payroll',mp.monthly?inr(mp.monthly):'—'],
+      ['Annual payroll',mp.monthly?inr(mp.monthly*12):'—'],
+      ['Labour per piece',cap.out&&mp.monthly?inr(Math.round(mp.monthly/cap.out)):'—']]]]
+   .map(([t,rows])=>`<div class="panel"><div class="p-head"><h3>${t}</h3></div><div class="p-body stack-s">
+    ${rows.map(([k,v])=>`<div class="row-between"><span class="t-label muted">${k}</span>
+      <span class="fig semi">${esc(String(v))}</span></div>`).join('')}
+   </div></div>`).join('')}
+ </div>
+
+ ${blk('Make or outsource')}
+ <div class="g2">
+  <div class="panel"><div class="p-body stack-s">
+   ${[['Monthly fixed cost',monthlyFixed?inr(Math.round(monthlyFixed)):'—'],
+      ['In-house cost per piece',inCost?inr(Math.round(inCost)):'—'],
+      ['Outsourced rate quoted',num(m.outRate)?inr(num(m.outRate)):'—'],
+      ['Break-even volume',be?grp(be)+' pcs/month':'—'],
+      ['Modelled output',cap.out?grp(cap.out)+' pcs/month':'—']].map(([k,v])=>
+    `<div class="row-between"><span class="t-label muted">${k}</span>
+      <span class="fig semi">${v}</span></div>`).join('')}
+  </div></div>
+  <div class="panel"><div class="p-head"><h3>Verdict</h3></div><div class="p-body">
+   ${be&&cap.out?`<p class="t-label" style="line-height:1.4rem">
+     At <b>${grp(cap.out)}</b> pieces a month against a break-even of <b>${grp(be)}</b>,
+     in-house production is <b class="${cap.out>=be?'pos':'neg'}">${cap.out>=be?'justified':'not justified'}</b>
+     at this volume.${cap.out<be?' Outsourcing is cheaper until volume rises.':''}</p>`
+    :'<p class="t-label faint">Fill the outsourced rate, in-house variable cost and capacity model to see the verdict.</p>'}
+   <label class="fld" style="margin-top:.875rem"><span>Production team recommendation</span>
+    <textarea class="inp" rows="3" data-rv="rec"
+     placeholder="What you would actually advise">${esc(DB.review.rec||'')}</textarea></label>
+  </div></div>
+ </div>
+
+ ${blk('Sourcing and quality')}
+ <div class="g2">
+  <div class="panel"><div class="p-head"><h3>Vendors</h3>
+    <span class="badge">${(DB.vendors||[]).length||'none'}</span></div>
+   <div class="p-body flush">${(DB.vendors||[]).length?`<table class="t" style="min-width:0">
+    <tbody>${DB.vendors.map(v=>`<tr><td class="semi">${esc(v.name||'Unnamed')}</td>
+     <td class="t-label muted">${esc(v.type||'—')}</td>
+     <td data-n class="fig">${v.lead?v.lead+'d':'—'}</td>
+     <td><span class="badge ${v.risk==='High'?'badge-c':''}">${esc(v.risk||'—')}</span></td></tr>`).join('')}
+   </tbody></table>`:'<div class="p-body"><p class="t-label faint">No vendors listed.</p></div>'}</div></div>
+  <div class="panel"><div class="p-head"><h3>Quality</h3></div><div class="p-body stack-s">
+   ${[['Checkpoints set',QC_ROWS.filter(([k])=>String(((DB.qcStd||{})[k]||{}).std||'').trim()).length+' of '+QC_ROWS.length],
+      ['Expected rejection',num((DB.qcStd||{}).rejPct)?num((DB.qcStd||{}).rejPct)+'%':'—'],
+      ['AQL level',(DB.qcStd||{}).aqlLevel||'—'],
+      ['Risks logged',(DB.risks||[]).length||'—']].map(([k,v])=>
+    `<div class="row-between"><span class="t-label muted">${k}</span><span class="fig semi">${esc(String(v))}</span></div>`).join('')}
+  </div></div>
+ </div>
+
+ ${blk('Open gaps',rd.gaps.length?rd.gaps.length+' outstanding':'None')}
+ ${rd.gaps.length?`<div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th style="width:9rem">Section</th><th>What is missing</th>
+   <th style="width:7rem">Severity</th><th style="width:6rem"></th></tr></thead>
+  <tbody>${rd.gaps.map(g=>`<tr><td class="semi">${esc(g.sec)}</td>
+   <td class="t-label muted">${esc(g.what)}</td>
+   <td><span class="badge ${g.critical?'badge-c':''}">${g.critical?'Critical':'Optional'}</span></td>
+   <td><button class="btn btn-sm" data-go="${g.page}">Open</button></td></tr>`).join('')}
+  </tbody></table></div></div>`
+ :'<div class="note" style="margin-top:.875rem">Every section is complete. This submission is ready for management review.</div>'}`;
+};
+
+/* ── 16 · SUBMISSION ──────────────────────────────────────────────────── */
+P.submit=()=>{
+ const rd=readiness(), r=rollup(), pc=projectCost();
+ DB.submission=DB.submission||{};
+ const s=DB.submission;
+ return `
+ <div class="row" style="gap:.75rem;margin-bottom:.75rem">${MARK(26,'hsl(var(--ink))')}</div>
+ <div class="ph"><h1>Submission</h1>
+  <p class="sub">Check what is missing, sign off, and export.</p></div>
+ ${brief('The handover step.',
+  'The brief and the assortment.',
+  'Your name, role and any closing note — then export the file.',
+  'Management imports the exported file to review your submission in full.')}
+
+ <div class="g4">
+  ${[['Readiness',rd.pct+'%'],['Critical gaps',rd.crit||'None'],
+     ['Designs costed',pc.costed+' / '+pc.designs],
+     ['Pieces quoted',grp(r.pieces)]].map(([k,v])=>
+   `<div class="panel"><div class="p-body"><div class="caps">${k}</div>
+     <div class="fig" style="font-size:1.5rem;margin-top:.25rem">${v}</div></div></div>`).join('')}
+ </div>
+
+ ${blk('Validation',rd.gaps.length?rd.gaps.length+' items':'All clear')}
+ ${rd.gaps.length?`<div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th style="width:9rem">Section</th><th>Item</th><th style="width:7rem">Severity</th>
+   <th style="width:6rem"></th></tr></thead>
+  <tbody>${rd.gaps.map(g=>`<tr><td class="semi">${esc(g.sec)}</td>
+   <td class="t-label muted">${esc(g.what)}</td>
+   <td><span class="badge ${g.critical?'badge-c':''}">${g.critical?'Critical':'Optional'}</span></td>
+   <td><button class="btn btn-sm" data-go="${g.page}">Fix</button></td></tr>`).join('')}
+  </tbody></table></div></div>`
+ :`<div class="panel"><div class="p-body" style="text-align:center;padding:2.5rem">
+   <div class="fig" style="font-size:1.75rem">Complete</div>
+   <p class="t-label faint" style="margin-top:.5rem">Every required field is filled.</p></div></div>`}
+
+ ${blk('Sign-off')}
+ <div class="panel"><div class="p-body">
+  <div class="g4" style="gap:.75rem">
+   ${fld('Name',s.name,'data-sb="name"','Who prepared this',1)}
+   ${fld('Role',s.role,'data-sb="role"','e.g. Production partner',1)}
+   ${fld('Organisation',s.org,'data-sb="org"','Factory or firm',1)}
+   ${fld('Date',s.date,'data-sb="date" type="date"','',1)}
+  </div>
+  <label class="fld" style="margin-top:.875rem"><span>Closing note to management</span>
+   <textarea class="inp" rows="3" data-sb="notes"
+    placeholder="Anything management should read before the numbers">${esc(s.notes||'')}</textarea></label>
+  <label class="row" style="margin-top:.875rem;gap:.5rem;cursor:pointer">
+   <input type="checkbox" data-sb="confirm" ${s.confirm?'checked':''}>
+   <span class="t-label muted">I confirm these figures are my own estimate and can be discussed in detail.</span></label>
+ </div></div>
+
+ ${blk('Export')}
+ <div class="g3">
+  ${[['Full workbook','JSON','Everything — send this back to management','json'],
+     ['Cost sheet','CSV','Every design with its cost breakdown','costcsv'],
+     ['Setup summary','CSV','Factory, machinery, manpower and capacity','setupcsv'],
+     ['Assortment','CSV','Designs, sizes and quantities','descsv'],
+     ['Timeline &amp; risks','CSV','Stages, durations and the risk log','tlcsv'],
+     ['Printable report','PDF','Print this workbook to PDF','print']].map(([t,f,d2,k])=>
+   `<button class="panel" style="text-align:left;width:100%" data-ex="${k}"><div class="p-body">
+     <div class="row-between"><span class="semi" style="font-size:13.5px">${t}</span>
+      <span class="badge badge-a">${f}</span></div>
+     <p class="t-label muted" style="margin-top:.375rem">${d2}</p></div></button>`).join('')}
+ </div>
+ <div class="note" style="margin-top:.875rem">Everything you enter is saved in this browser only. Nothing is uploaded anywhere. Export the JSON and send it to management — they import the same file and see your submission exactly as you left it.</div>`;
+};
+
+/* ── exports ──────────────────────────────────────────────────────────── */
+function csv(rows){return '\ufeff'+rows.map(r=>r.map(x=>{
+ const v=String(x==null?'':x);
+ return /[",\r\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(',')).join('\r\n')}
+function exportCSV(kind){
+ const stamp=new Date().toISOString().slice(0,10);
+ if(kind==='costcsv'){
+  const rows=[['Code','Name','Category','Group','Phase','Pieces','Colours','Fabric','Trims',
+   'Processing','Cutting','Stitching','Finishing','QC','Packing','Overhead','Subtotal',
+   'Rejection %','Landing cost','Total cost','MRP','Margin %']];
+  DB.designs.forEach(d=>{const c=costOf(d),q=dTotal(d),
+   ph=DB.phases.find(p=>p.id===d.phase), m=num(d.mrp);
+   rows.push([d.code,d.name,d.cat,d.group,ph?ph.name:'',dTotal(d),num(d.colours)||1,
+    c.fabric.toFixed(2),c.trims.toFixed(2),c.proc.toFixed(2),c.cut.toFixed(2),c.stitch.toFixed(2),
+    c.fin.toFixed(2),c.qc.toFixed(2),c.pack.toFixed(2),c.oh.toFixed(2),c.sub.toFixed(2),
+    num(C(d).qc.reject),c.landing.toFixed(2),(c.landing*q).toFixed(2),m||'',
+    m&&c.landing?((m-c.landing)/m*100).toFixed(1):''])});
+  return download(csv(rows),'MENSCH_CostSheet_'+stamp+'.csv','text/csv;charset=utf-8');
+ }
+ if(kind==='descsv'){
+  const sizes=[...new Set(DB.designs.flatMap(d=>SIZE_SETS[d.sizeSet]))];
+  const rows=[['Code','Name','Category','Group','Phase','Fabric','GSM','Fit','Colour','Colours',
+   ...sizes,'Total','Quoted cost','MOQ','Vendor','Lead time']];
+  DB.designs.forEach(d=>{const ph=DB.phases.find(p=>p.id===d.phase);
+   rows.push([d.code,d.name,d.cat,d.group,ph?ph.name:'',d.fabric,d.gsm,d.fit,d.colour,
+    num(d.colours)||1,...sizes.map(s=>d.qty[s]??''),dTotal(d),d.quotedCost,d.moq,d.vendor,d.leadTime])});
+  return download(csv(rows),'MENSCH_Assortment_'+stamp+'.csv','text/csv;charset=utf-8');
+ }
+ if(kind==='setupcsv'){
+  const f=F(),ft=factoryTotals(),mt=machineTotals(),mp=manpowerTotals(),cap=capacityModel();
+  const rows=[['Section','Item','Detail','Value']];
+  rows.push(['Factory','Operating model','',f.model||'']);
+  SPACES.forEach(([k,n])=>rows.push(['Factory',n,'sq ft',(f.spaces[k]||{}).sqft||'']));
+  rows.push(['Factory','Total area','sq ft',ft.sqft],['Factory','Rent per sq ft','₹',f.rate||''],
+   ['Factory','Monthly rent','₹',Math.round(ft.rent)],['Factory','Deposit','₹',ft.deposit],
+   ['Factory','Fit-out','₹',ft.fitout],['','','','']);
+  MACHINES.forEach(([k,n])=>{const x=(DB.machines||{})[k]||{};
+   if(num(x.qty))rows.push(['Machinery',n,'qty × ₹'+(x.price||0),num(x.qty)*num(x.price)])});
+  rows.push(['Machinery','Total machines','',mt.qty],['Machinery','Capital cost','₹',mt.capex],
+   ['Machinery','Connected load','kW',mt.kw.toFixed(1)],['','','','']);
+  ROLES.forEach(([k,n])=>{const x=(DB.roles||{})[k]||{};
+   if(num(x.head))rows.push(['Manpower',n,num(x.head)+' × ₹'+(x.salary||0),num(x.head)*num(x.salary)])});
+  rows.push(['Manpower','Headcount','',mp.head],['Manpower','Monthly payroll','₹',mp.monthly],['','','','']);
+  rows.push(['Capacity','Machines','',cap.machines],['Capacity','Average SAM','min',cap.sam],
+   ['Capacity','Efficiency','%',cap.eff],['Capacity','Monthly output','pieces',cap.out]);
+  cap.levels.forEach(l=>rows.push(['Capacity','Output at '+l.p+'%','pieces',l.pieces]));
+  CATS().forEach(c=>{const sam=num((DB.catSam||{})[c]);
+   if(sam){const pd=Math.floor(cap.machines*cap.hours*60*cap.shifts*(cap.eff/100)/sam);
+    rows.push(['Capacity',c+' — per day','SAM '+sam,pd],['Capacity',c+' — per month','',pd*cap.days])}});
+  return download(csv(rows),'MENSCH_Setup_'+stamp+'.csv','text/csv;charset=utf-8');
+ }
+ if(kind==='needs'){
+  const rows=[['#','Request','Why it matters','Priority']];
+  NEEDS.forEach((n,i)=>rows.push([i+1,n[0],n[1],n[2]]));
+  return download(csv(rows),'MENSCH_Vendor_Requests_'+stamp+'.csv','text/csv;charset=utf-8');
+ }
+ if(kind==='tlcsv'){
+  const T=DB.timeline||{};let cum=0;
+  const rows=[['#','Stage','Owner','Days','Cumulative']];
+  STAGES.forEach(([k,n,o],i)=>{const x=T[k]||{},dd=num(x.days);cum+=dd;
+   rows.push([i+1,n,x.owner||o,dd||'',dd?cum:''])});
+  rows.push(['','Total lead time','',cum,''],['','','','','']);
+  rows.push(['Risk','Area','Likelihood','Impact','Mitigation']);
+  (DB.risks||[]).forEach(r=>rows.push([r.name,r.area,r.p,r.i,r.mit]));
+  return download(csv(rows),'MENSCH_Timeline_'+stamp+'.csv','text/csv;charset=utf-8');
+ }
+}
+
+/* ═══ SHELL, ROUTING, HANDLERS ═══════════════════════════════════════════ */
+const R={page:'overview',navOpen:false};
+
+function stub(key,label){
+ const PH={inventory:2,materials:2,costing:2,factory:3,machinery:3,manpower:3,capacity:3,
+  vendors:4,qc:4,timeline:4,review:5,submit:5};
+ const WHAT={
+  inventory:'Every design rolled up by category, phase and material group, with total fabric requirement.',
+  materials:'Wovens, knits, denim, bottomwear and outerwear — designs, pieces, fabric and machinery per group.',
+  costing:'The factory landing cost sheet per design: fabric, trims, processing, cutting, stitching, finishing, QC, packing and overhead.',
+  factory:'Space requirement by function, rent, deposit and fit-out — and total square feet required.',
+  machinery:'Machine-by-machine requirement with quantity, price, power and operator, marked required / optional / outsource.',
+  manpower:'Every role with headcount, salary and output contribution, giving labour cost per garment.',
+  capacity:'Interactive output model — machines, SAM, efficiency and lines against 25 / 50 / 75 / 90% utilisation.',
+  vendors:'Vendor cards with speciality, MOQ, capacity, lead time, payment terms and risk level.',
+  qc:'Stitch density, tolerance, colour fastness, AQL and every acceptance standard.',
+  timeline:'Gantt from design freeze to finished goods, with owner, dependency and delay on each stage.',
+  review:'Management summary of the completed submission — cost, capacity, risk and recommendation.',
+  submit:'Validation, completion percentage, sign-off and export to PDF, CSV and JSON.'};
+ return `<div class="ph"><h1>${esc(label)}</h1>
+  <p class="sub">${esc(WHAT[key]||'')}</p></div>
+ <div class="panel"><div class="p-body" style="text-align:center;padding:3.5rem 1.5rem">
+  <div class="caps">Phase ${PH[key]||2}</div>
+  <p style="font-size:1.0625rem;margin-top:.625rem;max-width:44ch;margin-inline:auto;line-height:1.6rem">
+   This section is defined in the architecture and arrives in Phase ${PH[key]||2}.</p>
+  <p class="t-label faint" style="margin-top:.75rem;max-width:48ch;margin-inline:auto">
+   Phase 1 delivers the shell, brand direction, production phases and the full showcase with size matrices and local persistence.</p>
+  <div style="margin-top:1.25rem"><button class="btn" data-go="showcase">Open The Mensch Showcase →</button></div>
+ </div></div>`;
+}
+
+function sidebar(){
+ const pct=completion();
+ return `<aside class="sb">
+  <div class="sb-brand">
+   <div class="sb-mark">${MARK(30,'hsl(var(--ink))')}</div>
+   <div><div class="sb-name">Mensch</div>
+    <div class="sb-sub">Summer Master</div></div></div>
+  <nav class="sb-nav">
+   ${NAV.map(([k,l],i)=>`<button class="s-link" data-go="${k}" aria-current="${R.page===k}">
+    <span class="s-num">${String(i+1).padStart(2,'0')}</span>
+    <span class="s-txt">${esc(l)}</span>
+    ${P[k]?'':'<span class="s-pct">·</span>'}</button>`).join('')}
+  </nav>
+  <div class="sb-foot">
+   <button class="sb-fb" data-export="json">Backup</button>
+   <button class="sb-fb" data-import="1">Restore</button>
+   <button class="sb-fb" onclick="window.print()">Print</button>
+  </div>
+ </aside>`;
+}
+function topbar(){
+ const cur=NAV.find(n=>n[0]===R.page);
+ const pct=completion();
+ return `<div class="topbar">
+  <div class="crumbs">MENSCH <span class="faint">/</span> Summer Master
+   <span class="faint">/</span> <b>${esc(cur?cur[1]:'')}</b></div>
+  <span class="spacer"></span>
+  <span class="t-micro faint" style="white-space:nowrap">${grp(rollup(DB.designs).pieces)} pieces</span>
+  <div class="logoslot">
+   <label class="logobox${DB.logo?' filled':''}">
+    ${DB.logo?`<img src="${DB.logo}" alt="MENSCH">`:MARK(26,'hsl(var(--ink))')}
+    <input type="file" accept="image/*" data-logo="1" hidden></label>
+   ${DB.logo?'<button class="btn btn-sm" data-logox="1">✕</button>':''}
+  </div>
+ </div>`;
+}
+function render(){
+ const body=P[R.page]?P[R.page]():stub(R.page,(NAV.find(n=>n[0]===R.page)||[])[1]||'');
+ $('#root').innerHTML=sidebar()+`<div class="app">${topbar()}<main>${body}</main></div>`;
+ document.body.classList.toggle('nav-on',R.navOpen);
+}
+function go(k){R.page=k;R.navOpen=false;SC.open=null;
+ if(location.hash.slice(1)!==k)location.hash=k;render();window.scrollTo(0,0)}
+
+/* ── file helpers ─────────────────────────────────────────────────────── */
+function readImg(file,cb){const rd=new FileReader();rd.onload=()=>cb(rd.result);rd.readAsDataURL(file)}
+function download(text,name,mime){
+ const b=new Blob([text],{type:mime});const a=document.createElement('a');
+ a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();
+ setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},400)}
+
+/* ── clicks ───────────────────────────────────────────────────────────── */
+document.addEventListener('click',e=>{
+ const t=e.target;
+ const g=t.closest('[data-go]'); if(g){go(g.dataset.go);return}
+ if(t.closest('#navToggle')){R.navOpen=!R.navOpen;document.body.classList.toggle('nav-on',R.navOpen);return}
+ if(t.closest('#navScrim')){R.navOpen=false;document.body.classList.remove('nav-on');return}
+
+ const scc=t.closest('[data-scc]'); if(scc){SC.cat=scc.dataset.scc;SC.sub='all';render();return}
+ const scs=t.closest('[data-scs]'); if(scs){SC.sub=scs.dataset.scs;render();return}
+ const scp=t.closest('[data-scp]'); if(scp){SC.phase=scp.dataset.scp;render();return}
+ const op=t.closest('[data-open]'); if(op){SC.open=op.dataset.open;render();window.scrollTo(0,0);return}
+ if(t.closest('[data-close]')){SC.open=null;render();return}
+ const nv=t.closest('[data-nav]'); if(nv){
+  const i=DB.designs.findIndex(x=>x.id===SC.open);
+  const j=Math.max(0,Math.min(DB.designs.length-1,i+ +nv.dataset.nav));
+  SC.open=DB.designs[j].id;render();window.scrollTo(0,0);return}
+
+ const add=t.closest('[data-addstyle]'); if(add){
+  const cat=SC.group==='all'?'Shirts':(MATERIAL_GROUPS.find(g=>g.id===SC.group).cats[0]);
+  const set=catSizes(cat), q={}; SIZE_SETS[set].forEach(s=>q[s]=0);
+  const n=DB.designs.filter(d=>d.cat===cat).length+1;
+  const d={id:uid('d'),code:codeFor(cat,n),name:'',cat,group:catGroup(cat),sizeSet:set,
+   phase:(DB.phases[0]||{}).id,colour:'',colours:1,fabric:'',comp:'',gsm:'',width:'',fit:'',
+   wash:'',finish:'',mrp:'',targetCost:'',quotedCost:'',moq:'',vendor:'',leadTime:'',
+   sampleStatus:'Not started',prodStatus:'Concept',qc:'',notes:'',qty:q,shots:{},cost:{}};
+  DB.designs.push(d);save();SC.open=d.id;render();window.scrollTo(0,0);return}
+
+ const dup=t.closest('[data-dup]'); if(dup){
+  const s=DB.designs.find(x=>x.id===dup.dataset.dup);
+  const c=JSON.parse(JSON.stringify(s));c.id=uid('d');
+  c.code=s.code.replace(/(\d+)$/,m=>String(+m+100).padStart(3,'0'));c.name=(s.name||'')+' copy';
+  DB.designs.splice(DB.designs.indexOf(s)+1,0,c);save();SC.open=c.id;render();
+  toast('Style duplicated');return}
+
+ const del=t.closest('[data-del]'); if(del){
+  if(!confirm('Delete this style? This cannot be undone.'))return;
+  DB.designs=DB.designs.filter(x=>x.id!==del.dataset.del);save();SC.open=null;render();
+  toast('Style deleted');return}
+
+ const ss=t.closest('[data-sizeset]'); if(ss){
+  const [id,set]=ss.dataset.sizeset.split(':');
+  const d=DB.designs.find(x=>x.id===id); if(!d)return;
+  const old=d.qty||{}, tot=dTotal(d), curve=SIZE_CURVE[set], q={};
+  SIZE_SETS[set].forEach(s=>{q[s]=old[s]!==undefined?old[s]:Math.round(tot*(curve[s]||0)/100)});
+  d.sizeSet=set;d.qty=q;save();render();return}
+
+ const sx=t.closest('[data-shotx]'); if(sx){e.preventDefault();
+  const [id,s]=sx.dataset.shotx.split(':');
+  const d=DB.designs.find(x=>x.id===id); if(d){delete d.shots[s];save();render()}return}
+ const rx=t.closest('[data-refx]'); if(rx){e.preventDefault();
+  delete DB.brand.refImages[rx.dataset.refx];save();render();return}
+ if(t.closest('[data-logox]')){DB.logo='';save();render();return}
+
+ const pa=t.closest('[data-phaseadd]'); if(pa){
+  const n=DB.phases.length+1;
+  DB.phases.push({id:uid('p'),no:String(n).padStart(2,'0'),name:'New phase',start:'',end:'',
+   sampleBy:'',prodBy:'',status:'Concept'});save();render();return}
+ const pd=t.closest('[data-phasedel]'); if(pd){
+  const id=pd.dataset.phasedel;
+  if(byPhase(id).length){toast('Move its designs to another phase first');return}
+  if(!confirm('Delete this phase?'))return;
+  DB.phases=DB.phases.filter(p=>p.id!==id);save();render();return}
+
+ const co=t.closest('[data-csopen]'); if(co)return;
+ const cc=t.closest('[data-copycost]'); if(cc){
+  const src=DB.designs.find(x=>x.id===cc.dataset.copycost);
+  const targets=DB.designs.filter(x=>x.cat===src.cat&&x.id!==src.id);
+  if(!targets.length){toast('No other designs in this category');return}
+  if(!confirm('Copy this cost sheet to '+targets.length+' other '+src.cat+' designs?'))return;
+  targets.forEach(x=>{x.cost=JSON.parse(JSON.stringify(src.cost))});
+  save();render();toast('Copied to '+targets.length+' designs');return}
+ const clc=t.closest('[data-clearcost]'); if(clc){
+  const d2=DB.designs.find(x=>x.id===clc.dataset.clearcost);
+  if(!confirm('Clear this cost sheet?'))return;
+  d2.cost={};save();render();toast('Cost sheet cleared');return}
+ const sm=t.closest('[data-stmode]'); if(sm){const [id,m]=sm.dataset.stmode.split(':');
+  const d2=DB.designs.find(x=>x.id===id);C(d2).stitch.mode=m;save();render();return}
+ const om=t.closest('[data-ohmode]'); if(om){const [id,m]=om.dataset.ohmode.split(':');
+  const d2=DB.designs.find(x=>x.id===id);C(d2).oh.mode=m;save();render();return}
+ const ex2=t.closest('[data-ex]'); if(ex2){const k=ex2.dataset.ex;
+  if(k==='print'){window.print();return}
+  if(k==='json'){download(JSON.stringify(DB,null,2),
+   'MENSCH_ProductionPlan_'+new Date().toISOString().slice(0,10)+'.json','application/json');
+   toast('Workbook exported');return}
+  exportCSV(k);toast('CSV downloaded');return}
+ if(t.closest('[data-vadd]')){DB.vendors=DB.vendors||[];
+  DB.vendors.push({name:'',type:'',spec:'',moq:'',cap:'',lead:'',pay:'',risk:'',backup:'',fallback:''});
+  save();render();return}
+ const vd=t.closest('[data-vdel]'); if(vd){DB.vendors.splice(+vd.dataset.vdel,1);save();render();return}
+ if(t.closest('[data-rkadd]')){DB.risks=DB.risks||[];
+  DB.risks.push({name:'',area:'',p:'',i:'',mit:''});save();render();return}
+ const rd=t.closest('[data-rkdel]'); if(rd){DB.risks.splice(+rd.dataset.rkdel,1);save();render();return}
+ const fm=t.closest('[data-fmodel]'); if(fm){F().model=fm.dataset.fmodel;save();render();return}
+ const ex=t.closest('[data-export]'); if(ex){
+  download(JSON.stringify(DB,null,2),
+   'MENSCH_ProductionPlan_'+new Date().toISOString().slice(0,10)+'.json','application/json');
+  toast('Backup downloaded');return}
+ if(t.closest('[data-import]')){$('#importer').click();return}
+});
+
+/* ── inputs ───────────────────────────────────────────────────────────── */
+let rerenderT;
+function softRender(){clearTimeout(rerenderT);
+ rerenderT=setTimeout(()=>{const y=scrollY;render();scrollTo(0,y)},500)}
+document.addEventListener('input',e=>{
+ const t=e.target;
+ const b=t.closest('[data-brand]'); if(b){DB.brand[b.dataset.brand]=t.value;save();return}
+ const p=t.closest('[data-phase]'); if(p){const [id,k]=p.dataset.phase.split(':');
+  const ph=DB.phases.find(x=>x.id===id); if(ph){ph[k]=t.value;save();if(k==='name')softRender()}return}
+ const d=t.closest('[data-d]'); if(d){const [id,k]=d.dataset.d.split(':');
+  const de=DB.designs.find(x=>x.id===id); if(de){de[k]=t.value;save();
+   if(['name','code','colours','mrp','quotedCost','moq','vendor','leadTime'].includes(k))softRender()}return}
+ const cf=t.closest('[data-c]'); if(cf){
+  const [id,path]=cf.dataset.c.split(':');
+  const d2=DB.designs.find(x=>x.id===id); if(d2){
+   const c=C(d2), parts=path.split('.');
+   let o=c; for(let i=0;i<parts.length-1;i++){o[parts[i]]=o[parts[i]]||{};o=o[parts[i]]}
+   o[parts[parts.length-1]]=t.value; save(); softRender()}
+  return}
+ const ff=t.closest('[data-f]'); if(ff){F()[ff.dataset.f]=t.value;save();softRender();return}
+ const fs2=t.closest('[data-fs]'); if(fs2){const [k,p]=fs2.dataset.fs.split(':');
+  const f=F();f.spaces[k]=f.spaces[k]||{};f.spaces[k][p]=t.value;save();softRender();return}
+ const mc=t.closest('[data-mc]'); if(mc){const [k,p]=mc.dataset.mc.split(':');
+  DB.machines=DB.machines||{};DB.machines[k]=DB.machines[k]||{};
+  DB.machines[k][p]=t.value;save();softRender();return}
+ const rl=t.closest('[data-rl]'); if(rl){const [k,p]=rl.dataset.rl.split(':');
+  DB.roles=DB.roles||{};DB.roles[k]=DB.roles[k]||{};
+  DB.roles[k][p]=t.value;save();softRender();return}
+ const rv=t.closest('[data-rv]'); if(rv){DB.review=DB.review||{};
+  DB.review[rv.dataset.rv]=t.value;save();return}
+ const sb=t.closest('[data-sb]'); if(sb){DB.submission=DB.submission||{};
+  DB.submission[sb.dataset.sb]=t.value;save();return}
+ const vv=t.closest('[data-v]'); if(vv){const [i,k]=vv.dataset.v.split(':');
+  DB.vendors[+i][k]=t.value;save();softRender();return}
+ const sc2=t.closest('[data-src]'); if(sc2){DB.srcNote=DB.srcNote||{};
+  DB.srcNote[sc2.dataset.src]=t.value;save();return}
+ const qq=t.closest('[data-qc]'); if(qq){const [k,p]=qq.dataset.qc.split(':');
+  DB.qcStd=DB.qcStd||{};DB.qcStd[k]=DB.qcStd[k]||{};DB.qcStd[k][p]=t.value;save();return}
+ const qx=t.closest('[data-qcx]'); if(qx){DB.qcStd=DB.qcStd||{};
+  DB.qcStd[qx.dataset.qcx]=t.value;save();softRender();return}
+ const tl=t.closest('[data-tl]'); if(tl){const [k,p]=tl.dataset.tl.split(':');
+  DB.timeline=DB.timeline||{};DB.timeline[k]=DB.timeline[k]||{};
+  DB.timeline[k][p]=t.value;save();softRender();return}
+ const rk=t.closest('[data-rk]'); if(rk){const [i,k]=rk.dataset.rk.split(':');
+  DB.risks[+i][k]=t.value;save();return}
+ const csm=t.closest('[data-csam]'); if(csm){DB.catSam=DB.catSam||{};
+  DB.catSam[csm.dataset.csam]=t.value;save();softRender();return}
+ const cp=t.closest('[data-cap]'); if(cp){DB.capacity=DB.capacity||{};
+  DB.capacity[cp.dataset.cap]=t.value;save();softRender();return}
+ const mg=t.closest('[data-mg]'); if(mg){const [id,k]=mg.dataset.mg.split(':');
+  DB.matGroup=DB.matGroup||{};DB.matGroup[id]=DB.matGroup[id]||{};
+  DB.matGroup[id][k]=t.value;save();return}
+ const q=t.closest('[data-qty]'); if(q){const [id,s]=q.dataset.qty.split(':');
+  const de=DB.designs.find(x=>x.id===id); if(de){de.qty[s]=num(t.value);save();softRender()}return}
+});
+document.addEventListener('change',e=>{
+ const t=e.target;
+ const sh=t.closest('[data-shot]'); if(sh&&sh.files&&sh.files[0]){
+  const [id,s]=sh.dataset.shot.split(':');
+  readImg(sh.files[0],data=>{const d=DB.designs.find(x=>x.id===id);
+   if(d){d.shots=d.shots||{};d.shots[s]=data;save();render()}});return}
+ const rf=t.closest('[data-ref]'); if(rf&&rf.files&&rf.files[0]){
+  readImg(rf.files[0],data=>{DB.brand.refImages=DB.brand.refImages||{};
+   DB.brand.refImages[rf.dataset.ref]=data;save();render()});return}
+ const lg=t.closest('[data-logo]'); if(lg&&lg.files&&lg.files[0]){
+  readImg(lg.files[0],data=>{DB.logo=data;save();render()});return}
+ const dp=t.closest('[data-dphase]'); if(dp){
+  const d=DB.designs.find(x=>x.id===dp.dataset.dphase);
+  const ph=DB.phases.find(p=>p.name===t.value);
+  if(d&&ph){d.phase=ph.id;save();render()}return}
+ const vs=t.closest('[data-v]'); if(vs&&vs.tagName==='SELECT'){
+  const [i,k]=vs.dataset.v.split(':');DB.vendors[+i][k]=t.value;save();render();return}
+ const qs=t.closest('[data-qc]'); if(qs&&qs.tagName==='SELECT'){
+  const [k,p]=qs.dataset.qc.split(':');DB.qcStd[k]=DB.qcStd[k]||{};
+  DB.qcStd[k][p]=t.value;save();return}
+ const ts=t.closest('[data-tl]'); if(ts&&ts.tagName==='SELECT'){
+  const [k,p]=ts.dataset.tl.split(':');DB.timeline[k]=DB.timeline[k]||{};
+  DB.timeline[k][p]=t.value;save();return}
+ const rs=t.closest('[data-rk]'); if(rs&&rs.tagName==='SELECT'){
+  const [i,k]=rs.dataset.rk.split(':');DB.risks[+i][k]=t.value;save();render();return}
+ const mcs=t.closest('[data-mc]'); if(mcs&&mcs.tagName==='SELECT'){
+  const [k,p]=mcs.dataset.mc.split(':');
+  DB.machines=DB.machines||{};DB.machines[k]=DB.machines[k]||{};
+  DB.machines[k][p]=t.value;save();render();return}
+ const cs=t.closest('[data-csopen]'); if(cs){CS.open=t.value;render();return}
+ const cu=t.closest('[data-c]'); if(cu&&cu.tagName==='SELECT'){
+  const [id,path]=cu.dataset.c.split(':');
+  const d2=DB.designs.find(x=>x.id===id); if(d2){const c=C(d2),p=path.split('.');
+   let o=c;for(let i=0;i<p.length-1;i++)o=o[p[i]];o[p[p.length-1]]=t.value;save();render()}
+  return}
+ const dd=t.closest('[data-d]'); if(dd&&dd.tagName==='SELECT'){
+  const [id,k]=dd.dataset.d.split(':');
+  const de=DB.designs.find(x=>x.id===id);
+  if(de){de[k]=t.value; if(k==='cat'){de.group=catGroup(t.value);
+    const set=catSizes(t.value);
+    if(set!==de.sizeSet){const tot=dTotal(de),curve=SIZE_CURVE[set],nq={};
+     SIZE_SETS[set].forEach(s=>nq[s]=Math.round(tot*(curve[s]||0)/100));de.sizeSet=set;de.qty=nq}}
+   save();render()}return}
+ const ph2=t.closest('[data-phase]'); if(ph2&&ph2.tagName==='SELECT'){
+  const [id,k]=ph2.dataset.phase.split(':');
+  const p=DB.phases.find(x=>x.id===id); if(p){p[k]=t.value;save();render()}return}
+ const sbc=t.closest('[data-sb]'); if(sbc&&sbc.type==='checkbox'){
+  DB.submission=DB.submission||{};DB.submission[sbc.dataset.sb]=sbc.checked;save();return}
+ const im=t.closest('#importer'); if(im&&im.files&&im.files[0]){
+  const rd=new FileReader();
+  rd.onload=()=>{try{const j=JSON.parse(rd.result);
+   if(!j.designs)throw 0;
+   if(!confirm('Replace the current workbook with this file?'))return;
+   DB=j;save();render();toast('Workbook restored')}catch(err){toast('That file could not be read')}};
+  rd.readAsText(im.files[0]);im.value='';return}
+});
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);
+ if(h&&h!==R.page&&NAV.some(n=>n[0]===h))go(h)});
+const h0=location.hash.slice(1);
+if(h0&&NAV.some(n=>n[0]===h0))R.page=h0;
+render();
+
+
+/* ═══ VENDOR QUOTE — Sanjay & team, received 01 Sep 2026 ══════════════════
+   A real costing sheet for a men's full-sleeve shirt, 500 pcs, SS26.
+   Every figure below is theirs. Our derived numbers are marked separately. */
+const QUOTE={
+ received:'2026-09-01', season:'SS26', by:'Sanjay & team',
+ style:'Mens shirt — full sleeve', qty:500, sizes:'38–44', pattern:'Factory made',
+ fabric:{desc:'100% cotton poplin', yield:1.45, unit:'m', rate:160, cost:232},
+ trimFabric:{yield:0, rate:0, cost:0},
+ trims:[['Main label','','Local',1,0.80,0.88],
+  ['Size label','','Local',1,0.25,0.275],
+  ['Washcare satin label','','Local',1,1.00,1.10],
+  ['Zipper','','Local',1,0,0],
+  ['Woven elastic','','Local',0,0,0],
+  ['Main tag','interface','Local',1,1.80,1.98],
+  ['Story tag','interface','Local',1,1.80,1.98],
+  ['Barcode sticker','Vidya','Local',1,1.00,1.10],
+  ['Kimble','','',1,0.10,0.11],
+  ['Poly bag','','',1,2.00,2.20],
+  ['Carton + gum tape','—','Local',1,3.00,3.30],
+  ['Carton sticker','','',1,0.25,0.275],
+  ['Stitching thread','','Local','—',6.00,6.60],
+  ['Interlining','—','Local',0.12,2.00,2.20]],
+ cm:{cutting:8, sewing:80, buttonPack:22, total:110, basis:'Based on volume'},
+ line:{fabricTotal:232, trimTotal:22, wash:7, testing:2, overhead:5, cm:110, subtotal:378},
+ uplift:{markupPct:10, markup:42.47, rejectPct:3, reject:12.61, logistics:2,
+   effectivePct:11.236},   // their sheet labels 10% but the cell computes 11.24%
+
+ fob:435.09,
+ note:'FOB, ex-factory, delivered to our warehouse. Vendor margin is inside the 10% markup.'
+};
+const QT=()=>QUOTE.trims.reduce((a,t)=>a+(+t[5]||0),0);
+
+/* what we add after the factory gate — our own consumer packaging */
+const OURPACK=[['Rigid box','Charcoal board, foil mark, magnetic closure',55],
+ ['Hang tag upgrade','400 GSM board and cotton cord above the vendor tag',6],
+ ['Tissue and insert','Acid-free wrap',0]];
+const OURPACK_TOT=OURPACK.reduce((a,x)=>a+x[2],0);
+
+/* fabric rate by category — vendor rate for shirts, our estimate elsewhere */
+const FABRATE={
+ 'Shirts':[1.45,160,'vendor'], 'Linen shirts':[1.55,240,'ours'],
+ 'T-Shirts':[0.42,420,'ours'], 'Polo shirts':[0.55,460,'ours'],
+ 'Overshirts':[1.70,210,'ours'], 'Trousers':[1.30,230,'ours'],
+ 'Jeans':[1.45,280,'ours'], 'Shorts':[0.95,210,'ours'],
+ 'Jackets':[1.90,320,'ours'], 'Hoodies':[0.95,430,'ours'],
+ 'Underwear':[0.30,380,'ours'], 'Socks':[0.08,500,'ours']};
+/* CM by category — shirt is the vendor's; the rest scale off shirt SAM */
+const CMRATE={'Shirts':[8,80,22,'vendor'],'Linen shirts':[8,82,22,'ours'],
+ 'T-Shirts':[5,34,14,'ours'],'Polo shirts':[6,46,16,'ours'],
+ 'Overshirts':[9,88,22,'ours'],'Trousers':[9,86,20,'ours'],
+ 'Jeans':[10,104,24,'ours'],'Shorts':[7,58,16,'ours'],
+ 'Jackets':[12,138,28,'ours'],'Hoodies':[8,72,20,'ours'],
+ 'Underwear':[3,22,10,'ours'],'Socks':[1,14,6,'ours']};
+const TRIMBY={'Shirts':22,'Linen shirts':22,'T-Shirts':14,'Polo shirts':17,
+ 'Overshirts':24,'Trousers':21,'Jeans':34,'Shorts':19,'Jackets':38,
+ 'Hoodies':19,'Underwear':9,'Socks':5};
+const WASHBY={'Shirts':7,'Linen shirts':9,'T-Shirts':4,'Polo shirts':4,
+ 'Overshirts':8,'Trousers':7,'Jeans':26,'Shorts':7,'Jackets':10,
+ 'Hoodies':6,'Underwear':2,'Socks':1};
+
+const MARKUP_EFF=QUOTE.uplift.effectivePct;
+
+/* machines that actually stitch — the capacity basis. Cutting, fusing,
+   ironing, inspection and the generator do not add line output.          */
+const SEW_KEYS=['ssm','ol4','ol5','fl','db','bh','bs','br','fd','ke'];
+function sewingMachines(){
+ const m=DB.machines||{};
+ return SEW_KEYS.reduce((a,k)=>a+(+((m[k]||{}).qty)||0),0);
+}
+/* every cross-tab number that must agree with another */
+function consistency(){
+ const out=[];
+ const m=DB.machines||{}, r=DB.roles||{}, c=capacityModel(),
+       mt=machineTotals(), mp=manpowerTotals(), ft=factoryTotals(), pc=projectCost();
+ const sew=sewingMachines();
+ const ops=+((r.op||{}).head)||0;
+ const chk=(ok,label,detail)=>out.push({ok,label,detail});
+ chk(sew===c.machines,'Capacity uses the sewing machines on the list',
+   sew+' sewing machines · capacity model uses '+c.machines);
+ chk(ops>=sew*0.9&&ops<=sew*1.15,'Operators staff the line',
+   ops+' operators for '+sew+' line machines');
+ const need=c.sam&&c.eff?Math.ceil(c.out*c.sam/((c.eff/100)*c.hours*60*c.days*c.shifts)):0;
+ chk(!need||Math.abs(need-c.machines)<=1,'Output is achievable on the machines listed',
+   c.out.toLocaleString('en-IN')+' pcs/month needs '+need+' machines');
+ const r2=rollup();
+ chk(pc.pieces===r2.pieces,'Costed quantity equals the assortment',
+   grp(pc.pieces)+' costed · '+grp(r2.pieces)+' in the plan');
+ chk(pc.costed===pc.designs,'Every design carries a cost sheet',
+   pc.costed+' of '+pc.designs);
+ const shirt=DB.designs.find(d=>d.cat==='Shirts');
+ const sd=shirt?Math.abs(costOf(shirt).landing-QUOTE.fob):0;
+ chk(sd<1,'Shirt cost matches the vendor quote',
+   shirt?'₹'+costOf(shirt).landing.toFixed(2)+' vs vendor ₹'+QUOTE.fob.toFixed(2):'—');
+ chk(ft.sqft>0&&ft.rent===ft.sqft*num(F().rate),'Rent equals area × rate',
+   grp(ft.sqft)+' sq ft × ₹'+F().rate+' = ₹'+grp(Math.round(ft.rent)));
+ const fixed=ft.rent+mp.monthly+num((DB.capacity||{}).otherFixed);
+ const be=num((DB.capacity||{}).outRate)>num((DB.capacity||{}).inVar)
+   ?Math.ceil(fixed/(num((DB.capacity||{}).outRate)-num((DB.capacity||{}).inVar))):0;
+ chk(be>0,'Break-even is computable',
+   be?grp(be)+' pcs/month against outsourcing at ₹'+num((DB.capacity||{}).outRate):'set the outsourced rate');
+ chk(c.out<be,'Make-or-buy verdict is consistent with volume',
+   c.out<be?'Output '+grp(c.out)+' is below break-even '+grp(be)+' — outsource'
+           :'Output exceeds break-even — in-house justified');
+ const mtOps=mt.ops;
+ chk(mtOps<=mp.head,'Machine operator requirement fits headcount',
+   mtOps+' operators required by the machine list · '+mp.head+' people budgeted');
+ return out;
+}
+
+const NEEDS=[
+ ['Re-quote the shirt at our actual volume','CM is volume-based. Our launch is 975 shirts across 15 styles, not one run of 500.','Critical'],
+ ['Confirm the fabric against our tech pack','They quoted basic poplin. We specified 140 GSM yarn-dyed Oxford. Price and hand-feel both change.','Critical'],
+ ['Minimum order per style and per colour','975 shirts over 15 styles is roughly 65 a style. Their MOQ of 500 may not allow that split.','Critical'],
+ ['Costing for knits — t-shirts, polos, hoodies','31% of the range. No vendor, no quote.','Critical'],
+ ['Costing for denim and bottomwear','Jeans, trousers, shorts — another 22% of the range.','Critical'],
+ ['CMT rate if we supply the fabric','Fabric is 53% of FOB with their margin on top. A CMT rate would let us buy cloth direct.','High'],
+ ['Payment terms','Not stated on the sheet. Advance, on delivery, or credit changes our working capital.','High'],
+ ['Monthly capacity for our categories','Whether they can carry the full launch alongside their other customers.','High'],
+ ['Sampling cost and lead time','Not on the sheet. Two rounds are budgeted; confirm what each costs.','High'],
+ ['Fabric mill contact','If they will name the mill we can price the cloth directly.','Medium'],
+ ['Confirm the mark-up rate','The sheet labels it 10% but the cell computes ₹42.47 on ₹378, which is 11.24%. Small on one shirt; ₹1.2 lakh across the launch buy.','High'],
+ ['What is inside the ₹5 overhead','Small line, but it is the only unexplained one.','Medium'],
+ ['Their view on second-hand machinery','If we ever run our own unit, their read on used equipment would save us a lot of guessing.','Low']];
+
+/* ═══ 17 · VENDOR QUOTE ══════════════════════════════════════════════════ */
+/* Vendor Quote belongs to the production workflow, not this designer master */
+P.quote=()=>{
+ const Q=QUOTE, U=Q.uplift, L=Q.line;
+ const trimTot=QT();
+ const ourPack=OURPACK_TOT;
+ const landed=Q.fob+ourPack;
+ const ASP=1899, PLAN=650;
+ const shirts=DB.designs.filter(d=>d.cat==='Shirts');
+ const shirtQty=shirts.reduce((a,d)=>a+dTotal(d),0);
+ const row=(k,v,note,bold)=>`<tr${bold?' class="tot"':''}>
+   <td class="${bold?'semi':''}">${esc(k)}</td>
+   <td data-n class="fig${bold?' semi':''}">${v}</td>
+   <td class="t-label muted">${esc(note||'')}</td></tr>`;
+ return `
+ <div class="row" style="gap:.75rem;margin-bottom:.75rem">${MARK(26,'hsl(var(--ink))')}</div>
+ <div class="ph"><h1>Vendor Quote</h1>
+  <p class="sub">Submitted by ${esc(Q.by)} on 1 September 2026 — a full costing for the men's shirt at ${grp(Q.qty)} pieces.</p></div>
+ ${brief('The first real costing we have received.',
+  'The style, quantity, size range and quality target.',
+  'This page is theirs — every figure below came from their sheet.',
+  'It replaces our ₹650 planning assumption with a number a factory has actually quoted.')}
+
+ <div class="g4">
+  ${[['Quoted FOB','₹'+Q.fob.toFixed(0),'Ex-factory, per piece'],
+     ['Our planning assumption','₹'+PLAN,'What the business plan used'],
+     ['Difference','₹'+Math.round(PLAN-landed),'Better, after our packaging'],
+     ['Gross margin at ₹'+grp(ASP),((ASP-landed)/ASP*100).toFixed(1)+'%','Was '+((ASP-PLAN)/ASP*100).toFixed(1)+'%']]
+   .map(([k,v,s],i)=>`<div class="panel${i===2?' ':''}"><div class="p-body">
+    <div class="caps">${k}</div>
+    <div class="fig" style="font-size:1.5rem;margin-top:.25rem;letter-spacing:-.03em;${i===2?'color:hsl(var(--pos))':''}">${v}</div>
+    <div class="t-micro faint" style="margin-top:.25rem">${s}</div></div></div>`).join('')}
+ </div>
+
+ ${blk('The sheet as submitted',Q.style+' · '+Q.sizes+' · '+grp(Q.qty)+' pcs')}
+ <div class="g2" style="align-items:start">
+  <div class="panel"><div class="p-head"><h3>Cost build</h3><span class="tagM">Vendor figures</span></div>
+   <div class="p-body flush"><table class="t" style="min-width:0"><tbody>
+    ${row('Body fabric — '+Q.fabric.desc,Q.fabric.cost.toFixed(2),Q.fabric.yield+' m × ₹'+Q.fabric.rate+'/m')}
+    ${row('Trim fabric',Q.trimFabric.cost.toFixed(2),'None on this style')}
+    ${row('Total fabric',L.fabricTotal.toFixed(2),'',1)}
+    ${row('Total trims',L.trimTotal.toFixed(2),'14 lines, itemised below')}
+    ${row('Garment wash',L.wash.toFixed(2),'')}
+    ${row('Garment testing',L.testing.toFixed(2),'')}
+    ${row('Overheads',L.overhead.toFixed(2),'Vendor factory overhead')}
+    ${row('CM — cut and make',L.cm.toFixed(2),'Cutting '+Q.cm.cutting+' · sewing '+Q.cm.sewing+' · button and pack '+Q.cm.buttonPack)}
+    ${row('Subtotal',L.subtotal.toFixed(2),'',1)}
+    ${row('Mark-up '+U.markupPct+'%',U.markup.toFixed(2),'Vendor margin')}
+    ${row('Rejection allowance '+U.rejectPct+'%',U.reject.toFixed(2),'')}
+    ${row('Logistics to our warehouse',U.logistics.toFixed(2),'')}
+    ${row('FOB total',Q.fob.toFixed(2),'Per piece, delivered',1)}
+   </tbody></table></div></div>
+  <div class="panel"><div class="p-head"><h3>Trim breakdown</h3>
+    <span class="fig t-label">₹${trimTot.toFixed(2)}</span></div>
+   <div class="p-body flush"><table class="t" style="min-width:0">
+    <thead><tr><th>Item</th><th>Supplier</th><th data-n>Unit</th><th data-n>Price</th><th data-n>Landed</th></tr></thead>
+    <tbody>${Q.trims.map(t=>`<tr><td class="t-label">${esc(t[0])}</td>
+     <td class="t-label muted">${esc(t[1]||t[2]||'—')}</td>
+     <td data-n class="fig">${esc(String(t[3]))}</td>
+     <td data-n class="fig">${(+t[4]||0).toFixed(2)}</td>
+     <td data-n class="fig">${(+t[5]||0).toFixed(2)}</td></tr>`).join('')}
+     <tr class="tot"><td colspan="4"><b>Total</b></td>
+      <td data-n class="fig"><b>${trimTot.toFixed(2)}</b></td></tr>
+    </tbody></table></div></div>
+ </div>
+
+ ${blk('What it means for us','Their number is ex-factory; ours adds consumer packaging')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th>Line</th><th data-n>₹ per piece</th><th>Whose cost</th><th>Note</th></tr></thead>
+  <tbody>
+   <tr><td class="semi">Vendor FOB</td><td data-n class="fig">${Q.fob.toFixed(2)}</td>
+    <td><span class="tagM">Vendor</span></td><td class="t-label muted">${esc(Q.note)}</td></tr>
+   ${OURPACK.map(([n,d2,v])=>`<tr><td>${esc(n)}</td><td data-n class="fig">${v.toFixed(2)}</td>
+    <td><span class="tagP">MENSCH</span></td><td class="t-label muted">${esc(d2)}</td></tr>`).join('')}
+   <tr class="tot"><td><b>Landed at our warehouse</b></td>
+    <td data-n class="fig"><b>${landed.toFixed(2)}</b></td><td></td>
+    <td class="t-label muted">Against a ₹${PLAN} planning assumption</td></tr>
+  </tbody></table></div></div>
+
+ <div class="g3" style="margin-top:.875rem">
+  ${[['Per shirt','₹'+Math.round(PLAN-landed)+' better','Against plan'],
+     ['On the launch shirts','₹'+grp(Math.round((PLAN-landed)*shirtQty)),grp(shirtQty)+' pieces'],
+     ['Gross margin','+'+(((ASP-landed)/ASP*100)-((ASP-PLAN)/ASP*100)).toFixed(1)+' points','65.8% → '+((ASP-landed)/ASP*100).toFixed(1)+'%']]
+   .map(([k,v,s])=>`<div class="panel"><div class="p-body">
+    <div class="caps">${k}</div>
+    <div class="fig semi" style="font-size:1.25rem;margin-top:.25rem">${v}</div>
+    <div class="t-micro faint" style="margin-top:.1875rem">${s}</div></div></div>`).join('')}
+ </div>
+
+ ${blk('Read it carefully','Four things to check before this becomes the plan')}
+ <div class="g2">
+  ${[['The fabric is not our spec',
+      'They have quoted 100% cotton poplin at ₹160/m. Our tech pack calls for 140 GSM yarn-dyed Oxford, which runs ₹190–220/m. At ₹200/m the same shirt costs ₹495 FOB, not ₹435 — still well inside plan, but the ₹435 is for a plainer cloth than we specified.'],
+     ['The quote is at 500 pieces',
+      'Our launch buy is '+grp(shirtQty)+' shirts across 15 styles. CM is stated as volume-based, so a re-quote at our actual quantity should improve on ₹110 — but per style the run is only about '+Math.round(shirtQty/Math.max(1,shirts.length))+' pieces, which may sit below their 500 MOQ.'],
+     ['Only wovens are covered',
+      'This sheet is one shirt. Knits, denim, bottomwear and outerwear — 46% of the range — have no vendor and no costing. Those figures in this workbook are our estimates.'],
+     ['They source the fabric',
+      'Fabric is 53% of the FOB and their 10% mark-up sits on top of it. Buying cloth direct from a mill and giving them CMT only would remove roughly ₹23 a shirt.']]
+   .map(([t,d2])=>`<div class="panel"><div class="p-body">
+    <div class="semi" style="font-size:13.5px">${esc(t)}</div>
+    <p class="t-label muted" style="margin-top:.375rem;line-height:1.3rem">${esc(d2)}</p></div></div>`).join('')}
+ </div>
+
+ ${blk('Fabric scenarios','The same shirt at four cloth qualities')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th>Cloth</th><th data-n>Rate ₹/m</th><th data-n>Fabric ₹</th><th data-n>FOB ₹</th>
+   <th data-n>Landed ₹</th><th data-n>Gross margin</th></tr></thead>
+  <tbody>${[['100% cotton poplin — as quoted',160],['Premium poplin',180],
+    ['140 GSM yarn-dyed Oxford — our spec',200],['Linen blend',240]].map(([n,r],i)=>{
+   const fab=Q.fabric.yield*r;
+   const sub=fab+L.trimTotal+L.wash+L.testing+L.overhead+L.cm;
+   const f=sub*(1+U.markupPct/100)+sub*U.rejectPct/100+U.logistics;
+   const ld=f+ourPack;
+   return `<tr${i===0?' class="hi"':''}><td class="semi">${esc(n)}</td>
+    <td data-n class="fig">${r}</td><td data-n class="fig">${fab.toFixed(0)}</td>
+    <td data-n class="fig">${f.toFixed(0)}</td><td data-n class="fig semi">${ld.toFixed(0)}</td>
+    <td data-n class="fig">${((ASP-ld)/ASP*100).toFixed(1)}%</td></tr>`}).join('')}
+  </tbody></table></div></div>
+ <div class="note" style="margin-top:.875rem">Even at linen-blend prices the shirt lands under the ₹650 the business plan assumed. The quote gives us room to <b>upgrade the cloth</b> rather than bank the saving — which is the better use of it for a brand selling on construction.</div>
+
+ ${blk('What we still need from them')}
+ <div class="panel"><div class="p-body flush"><table class="t">
+  <thead><tr><th style="width:2.5rem">#</th><th>Request</th><th>Why it matters</th><th>Priority</th></tr></thead>
+  <tbody>${NEEDS.map((n,i)=>`<tr><td class="fig faint">${String(i+1).padStart(2,'0')}</td>
+   <td class="semi">${esc(n[0])}</td><td class="t-label muted">${esc(n[1])}</td>
+   <td><span class="badge ${n[2]==='Critical'?'badge-c':''}">${esc(n[2])}</span></td></tr>`).join('')}
+  </tbody></table></div></div>
+ <div class="row" style="margin-top:.875rem"><button class="btn" data-ex="needs">Download this list as CSV</button></div>`;
+};
+
+
+/* ═══ SEED THE WORKBOOK FROM THE VENDOR QUOTE ════════════════════════════
+   Runs once. Fills every cost sheet, the factory, machinery, manpower,
+   capacity, vendors, quality and timeline with real working figures.
+   Everything remains editable — this is a starting position, not a lock.  */
+function seedFromQuote(force){
+ if(!force && DB.meta && DB.meta.seeded_v2) return;
+ const U=QUOTE.uplift;
+
+ // ── cost sheets ────────────────────────────────────────────────────────
+ DB.designs.forEach(d=>{
+  const fr=FABRATE[d.cat]||[1.2,200,'ours'];
+  const cr=CMRATE[d.cat]||[8,70,20,'ours'];
+  const c=C(d);
+  c.fab={cons:fr[0],unit:'m',rate:fr[1],waste:0,shrink:0};
+  c.trims={'Buttons':{qty:1,rate:0},'Thread':{qty:1,rate:6.60},
+   'Interlining':{qty:1,rate:2.20},'Main label':{qty:1,rate:0.88},
+   'Size label':{qty:1,rate:0.275},'Wash-care label':{qty:1,rate:1.10},
+   'Hang tag':{qty:1,rate:1.98},'Other trims':{qty:1,
+     rate:Math.max(0,(TRIMBY[d.cat]||18)-(6.60+2.20+0.88+0.275+1.10+1.98))}};
+  c.proc={'Washing':WASHBY[d.cat]||6};
+  c.cut={marker:0,labour:cr[0],bundle:0};
+  c.stitch={mode:'flat',sam:'',rate:'',eff:'',flat:cr[1]};
+  c.fin={trim:0,iron:0,button:cr[2],insp:0,fold:0};
+  c.qc={inline:0,endline:0,final:2,reject:U.rejectPct,rework:0};
+  // factory packing already sits inside the vendor's trim total
+  c.pack={poly:0,sticker:0,tissue:0,carton:0};
+  // reproduce the vendor's own formula, then express the difference as overhead
+  // so our engine lands on exactly the number they quoted
+  const fab=fr[0]*fr[1], trims=TRIMBY[d.cat]||18, wash=WASHBY[d.cat]||6;
+  const vendorOH=5, testing=2;
+  const base=fab+trims+wash+testing+vendorOH+cr[0]+cr[1]+cr[2];
+  const markup=base*MARKUP_EFF/100;
+  const fob=(base+markup)*(1+U.rejectPct/100)+U.logistics;
+  const rest=fab+trims+wash+cr[0]+cr[1]+cr[2]+testing;
+  const oh=fob*(1-U.rejectPct/100)-rest;
+  c.oh={mode:'perpiece',perpiece:Math.round(oh*100)/100,monthly:'',output:''};
+  d.quotedCost=Math.round(costOf(d).landing);
+  d.moq=500;
+  d.vendor='Sanjay & team';
+  d.leadTime=45;
+  if(!d.fabric)d.fabric=fr===FABRATE['Shirts']?'100% cotton poplin':'';
+ });
+
+ // ── factory ────────────────────────────────────────────────────────────
+ const f=F();
+ f.location='Peenya / Bommasandra, Bengaluru';
+ f.rate=28; f.deposit=900000; f.fitout=1400000;
+ f.shifts=1; f.hours=8; f.days=26; f.model='cmt';
+ const SP={fabric:700,cutting:1000,stitch:2600,wash:0,finish:800,qc:350,
+  pack:450,fg:700,office:500,util:900};
+ Object.keys(SP).forEach(k=>{f.spaces[k]={sqft:SP[k],note:k==='wash'?'Outsourced — no in-house washing':''}});
+
+ // ── machinery, second-hand where sensible ──────────────────────────────
+ DB.machines={
+  ssm:{qty:34,price:19000,kw:.55,ops:1,status:'Required'},
+  ol4:{qty:8,price:26000,kw:.75,ops:1,status:'Required'},
+  ol5:{qty:3,price:31000,kw:.75,ops:1,status:'Required'},
+  fl:{qty:4,price:42000,kw:.85,ops:1,status:'Required'},
+  db:{qty:4,price:34000,kw:.75,ops:1,status:'Required'},
+  bh:{qty:2,price:145000,kw:1.2,ops:1,status:'Required'},
+  bs:{qty:2,price:120000,kw:1.0,ops:1,status:'Required'},
+  br:{qty:2,price:95000,kw:.9,ops:1,status:'Required'},
+  fd:{qty:1,price:88000,kw:.9,ops:1,status:'Optional'},
+  ke:{qty:1,price:150000,kw:1.1,ops:1,status:'Optional'},
+  sn:{qty:1,price:38000,kw:.4,ops:1,status:'Optional'},
+  cut:{qty:2,price:26000,kw:.75,ops:1,status:'Required'},
+  band:{qty:1,price:55000,kw:1.1,ops:1,status:'Optional'},
+  fuse:{qty:1,price:145000,kw:6.0,ops:1,status:'Required'},
+  steam:{qty:6,price:16000,kw:2.2,ops:1,status:'Required'},
+  vac:{qty:3,price:34000,kw:1.2,ops:1,status:'Required'},
+  thread:{qty:1,price:42000,kw:1.5,ops:0,status:'Required'},
+  nd:{qty:1,price:110000,kw:.4,ops:0,status:'Optional'},
+  insp:{qty:1,price:135000,kw:1.1,ops:1,status:'Optional'},
+  gen:{qty:1,price:320000,kw:0,ops:0,status:'Required'}};
+
+ // ── manpower, Bengaluru garment rates ─────────────────────────────────
+ DB.roles={
+  mgr:{head:1,salary:55000,note:'Line balancing, delivery'},
+  sup:{head:2,salary:28000,note:'One per line'},
+  op:{head:56,salary:17500,note:'One per line machine · piece-rate topped to minimum wage'},
+  help:{head:18,salary:13000,note:'Roughly one per three operators'},
+  cut2:{head:1,salary:32000,note:'Marker and spreading'},
+  cuth:{head:3,salary:13000,note:''},
+  qcin:{head:3,salary:17000,note:'Checking at the line'},
+  qcf:{head:2,salary:20000,note:'Final audit'},
+  fin2:{head:6,salary:15000,note:'Trim, press, fold'},
+  pack2:{head:4,salary:14000,note:''},
+  store:{head:2,salary:18000,note:'Fabric and trims'},
+  mech:{head:1,salary:26000,note:'Machine maintenance'},
+  merch:{head:1,salary:35000,note:'Sampling and vendor follow-up'},
+  admin:{head:2,salary:22000,note:'Payroll, compliance'}};
+
+ // ── capacity ───────────────────────────────────────────────────────────
+ DB.capacity={machines:sewingMachines(),sam:24,eff:55,otherFixed:185000,outRate:110,inVar:52};
+ DB.catSam={'Shirts':24,'Linen shirts':25,'T-Shirts':10,'Polo shirts':14,
+  'Overshirts':27,'Trousers':26,'Jeans':32,'Shorts':17,'Jackets':42,
+  'Hoodies':21,'Underwear':7,'Socks':4};
+
+ // ── vendors, from the quote and the trim sheet ────────────────────────
+ DB.vendors=[
+  {name:'Sanjay & team',type:'Full-package factory',spec:'Wovens — shirts, overshirts',
+   moq:500,cap:8000,lead:45,pay:'To agree',risk:'Medium',
+   backup:'Not identified',fallback:'Second woven unit needed before launch'},
+  {name:'Interface',type:'Trims supplier',spec:'Main tag, story tag',
+   moq:1000,cap:'',lead:14,pay:'Local, advance',risk:'Low',backup:'',fallback:''},
+  {name:'Vidya',type:'Trims supplier',spec:'Barcode stickers',
+   moq:1000,cap:'',lead:10,pay:'Local',risk:'Low',backup:'',fallback:''},
+  {name:'To identify — knits',type:'CMT unit',spec:'T-shirts, polos, hoodies',
+   moq:'',cap:'',lead:'',pay:'',risk:'High',backup:'',
+   fallback:'No knit vendor contracted. Blocks 31% of the range.'},
+  {name:'To identify — denim',type:'Full-package factory',spec:'Jeans, denim shorts',
+   moq:'',cap:'',lead:'',pay:'',risk:'High',backup:'',
+   fallback:'No denim vendor. Blocks Batch 3.'},
+  {name:'To identify — fabric mill',type:'Fabric mill',spec:'Cotton poplin, Oxford',
+   moq:'',cap:'',lead:'',pay:'',risk:'Medium',backup:'',
+   fallback:'Vendor sources fabric today. Direct mill would remove their margin on it.'}];
+
+ // ── quality ────────────────────────────────────────────────────────────
+ DB.qcStd={rejPct:QUOTE.uplift.rejectPct, reworkPct:60,
+  aqlLevel:'2.5 Level II', freq:'100% pre-shipment, AQL audit on receipt',
+  notes:'Vendor quote carries garment testing at ₹2 and a 3% rejection allowance. Standards below are ours to agree with them.'};
+ [['fabinsp','20 points per 100 sq yd','Inward','Reject the roll'],
+  ['shade','No visible variation under D65','Inward','Reject the lot'],
+  ['shrink','Max 3% after one wash','Inward','Reject the lot'],
+  ['bleed','Grade 4 minimum','Inward','Reject the lot'],
+  ['gsmck','±5% of tech pack','Inward','Escalate'],
+  ['meas','±0.5in chest, ±0.25in sleeve','Pre-shipment','Rework'],
+  ['spi','12 SPI minimum','Pre-shipment','Rework'],
+  ['seam','3 kg minimum','Pre-shipment','Reject'],
+  ['button','3 kg pull','Pre-shipment','Rework'],
+  ['pucker','Grade 3 minimum','Pre-shipment','Rework'],
+  ['sym','Max 3mm deviation','Pre-shipment','Rework'],
+  ['press','No shine, no scorch','Pre-shipment','Rework'],
+  ['trimq','Placement per tech pack','Pre-shipment','Rework'],
+  ['needle','Detector pass, mandatory','Final','Reject'],
+  ['aql','2.5 AQL Level II','Final','100% re-inspection'],
+  ['pack','Barcode scans first time','Final','Repack']
+ ].forEach(([k,std,stage,act])=>{DB.qcStd[k]={std,stage,action:act}});
+
+ // ── timeline ───────────────────────────────────────────────────────────
+ DB.timeline={};
+ [['freeze',5],['fabsrc',18],['sample1',10],['fit',4],['sample2',7],['sizeset',5],
+  ['ppmeet',2],['fabin',7],['cut',4],['stitch',18],['wash',4],['finish',5],
+  ['qcfinal',3],['pack',3],['fg',1]].forEach(([k,d2])=>{DB.timeline[k]={days:d2,owner:''}});
+
+ DB.risks=[
+  {name:'No knit or denim vendor contracted',area:'Vendor',p:'High',i:'High',
+   mit:'Only wovens are quoted. 46% of the range has no costing behind it.'},
+  {name:'Fabric price moves before the PO',area:'Fabric',p:'Medium',i:'High',
+   mit:'₹160/m is a spot quote. Lock the rate or book the fabric with the PO.'},
+  {name:'Quote is at 500 pcs, not our volume',area:'Capacity',p:'Medium',i:'Medium',
+   mit:'CM is stated as volume-based. Re-quote at 975 shirts for a better rate.'},
+  {name:'Fabric quality below brand spec',area:'Quality',p:'Medium',i:'High',
+   mit:'Basic poplin at ₹160 is not the 140 GSM Oxford in our tech pack. Confirm before sampling.'},
+  {name:'Single woven vendor',area:'Vendor',p:'Medium',i:'High',
+   mit:'One unit carries all shirts. A second source is needed before Batch 1.'}];
+
+ DB.submission={name:'Sanjay & team',role:'Production and sourcing partner',
+  org:'',date:QUOTE.received,notes:'Costing submitted for the men\u2019s shirt at 500 pcs. Remaining categories and the factory model are MENSCH estimates pending vendor confirmation.',
+  confirm:false};
+ DB.meta=DB.meta||{}; DB.meta.seeded_v2=1; save();
+}
+
+/* boot: honour the hash if it names a real tab, else Overview */
+(function(){
+  const h=location.hash.slice(1);
+  R.page = NAV.some(n=>n[0]===h) ? h : 'overview';
+  render();
+})();
+window.addEventListener('hashchange',()=>{
+  const h=location.hash.slice(1);
+  if(NAV.some(n=>n[0]===h) && h!==R.page) go(h);
+});
+</script>
+</body></html>
