@@ -386,7 +386,8 @@ let saveT;
 function save(){DB.meta.updated=new Date().toISOString();
  clearTimeout(saveT);saveT=setTimeout(()=>{
   try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){
-   toast('Storage full — export a backup')}},220)}
+   toast('Storage full — export a backup')}},220);
+ cloudSchedule()}
 function toast(msg){
  let t=$('#toast'); if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t)}
  t.textContent=msg;t.className='on';clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2600);
@@ -2252,6 +2253,50 @@ function download(text,name,mime){
  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},400)}
 
 /* ── clicks ───────────────────────────────────────────────────────────── */
+/* ── Cloud sync: the whole workbook lives in R2, so every browser sees the same data ── */
+let cloudReady=false, cloudT=null, cloudBusy=false, cloudSkip=false;
+function cloudSchedule(){
+ if(!cloudReady||cloudSkip)return;
+ clearTimeout(cloudT);
+ cloudT=setTimeout(cloudPush,1500);
+}
+async function cloudPush(){
+ cloudT=null;
+ if(cloudBusy){cloudSchedule();return}
+ const pw=r2Pw();
+ if(!pw){cloudSkip=true;toast('Not synced — saved on this device only');return}
+ cloudBusy=true;
+ try{
+  const res=await fetch(API_BASE+'/api/data',{
+   method:'PUT',
+   headers:{'Content-Type':'application/json','X-Auth':pw},
+   body:JSON.stringify(DB)
+  });
+  if(res.status===401){sessionStorage.removeItem('r2pw');toast('Wrong password — not synced')}
+  else if(!res.ok){toast('Cloud save failed')}
+  else{toast('Saved to cloud')}
+ }catch(e){toast('Cloud save failed — check connection')}
+ cloudBusy=false;
+}
+async function cloudPull(){
+ try{
+  const res=await fetch(API_BASE+'/api/data?t='+Date.now(),{cache:'no-store'});
+  if(res.ok){
+   const j=await res.json();
+   if(j&&j.designs){
+    DB=j;
+    try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}
+    cloudReady=true;render();return;
+   }
+  }
+  if(res.status===404){
+   cloudReady=true;      // cloud is empty: push this browser's workbook up
+   cloudSchedule();
+   return;
+  }
+  toast('Could not load cloud data');
+ }catch(e){toast('Offline — showing this device\u2019s copy')}
+}
 document.addEventListener('click',e=>{
  const t=e.target;
  const g=t.closest('[data-go]'); if(g){go(g.dataset.go);return}
@@ -2896,6 +2941,10 @@ function seedFromQuote(force){
   const h=location.hash.slice(1);
   R.page = NAV.some(n=>n[0]===h) ? h : 'overview';
   render();
+  cloudPull();
+  document.addEventListener('visibilitychange',()=>{
+   if(document.visibilityState==='visible'&&cloudReady&&!cloudBusy&&!cloudT)cloudPull();
+  });
 })();
 window.addEventListener('hashchange',()=>{
   const h=location.hash.slice(1);
