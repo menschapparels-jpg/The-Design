@@ -2215,7 +2215,37 @@ function go(k){R.page=k;R.navOpen=false;SC.open=null;
  if(location.hash.slice(1)!==k)location.hash=k;render();window.scrollTo(0,0)}
 
 /* ── file helpers ─────────────────────────────────────────────────────── */
-function readImg(file,cb){const rd=new FileReader();rd.onload=()=>cb(rd.result);rd.readAsDataURL(file)}
+/* ── R2 image storage (Cloudflare Worker) ── */
+const API_BASE='https://my-gallery.menschapparels.workers.dev';
+function r2Pw(){
+ let p=sessionStorage.getItem('r2pw');
+ if(!p){p=prompt('Enter upload password:');if(p)sessionStorage.setItem('r2pw',p)}
+ return p;
+}
+const r2Url=k=>API_BASE+'/img/'+encodeURIComponent(k);
+const isR2=u=>typeof u==='string'&&u.indexOf(API_BASE+'/img/')===0;
+async function readImg(file,key,cb){
+ const pw=r2Pw(); if(!pw)return;
+ toast('Uploading…');
+ try{
+  const k=key+'-'+Date.now();
+  const res=await fetch(API_BASE+'/api/upload/'+encodeURIComponent(k),{
+   method:'PUT',
+   headers:{'Content-Type':file.type||'image/jpeg','X-Auth':pw},
+   body:file
+  });
+  if(res.status===401){sessionStorage.removeItem('r2pw');toast('Wrong password');return}
+  if(!res.ok){toast('Upload failed');return}
+  cb(r2Url(k));
+  toast('Image uploaded');
+ }catch(e){toast('Upload failed — check connection')}
+}
+function r2Delete(url){
+ if(!isR2(url))return;
+ const pw=r2Pw(); if(!pw)return;
+ const key=decodeURIComponent(url.slice((API_BASE+'/img/').length));
+ fetch(API_BASE+'/api/delete/'+encodeURIComponent(key),{method:'DELETE',headers:{'X-Auth':pw}}).catch(()=>{});
+}
 function download(text,name,mime){
  const b=new Blob([text],{type:mime});const a=document.createElement('a');
  a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();
@@ -2239,7 +2269,7 @@ document.addEventListener('click',e=>{
   SC.open=DB.designs[j].id;render();window.scrollTo(0,0);return}
 
  const add=t.closest('[data-addstyle]'); if(add){
-  const cat=SC.group==='all'?'Shirts':(MATERIAL_GROUPS.find(g=>g.id===SC.group).cats[0]);
+    const cat=SC.cat==='all'?'Shirts':SC.cat;
   const set=catSizes(cat), q={}; SIZE_SETS[set].forEach(s=>q[s]=0);
   const n=DB.designs.filter(d=>d.cat===cat).length+1;
   const d={id:uid('d'),code:codeFor(cat,n),name:'',cat,group:catGroup(cat),sizeSet:set,
@@ -2250,7 +2280,7 @@ document.addEventListener('click',e=>{
 
  const dup=t.closest('[data-dup]'); if(dup){
   const s=DB.designs.find(x=>x.id===dup.dataset.dup);
-  const c=JSON.parse(JSON.stringify(s));c.id=uid('d');
+  const c=JSON.parse(JSON.stringify(s));c.id=uid('d');c.shots={};
   c.code=s.code.replace(/(\d+)$/,m=>String(+m+100).padStart(3,'0'));c.name=(s.name||'')+' copy';
   DB.designs.splice(DB.designs.indexOf(s)+1,0,c);save();SC.open=c.id;render();
   toast('Style duplicated');return}
@@ -2267,12 +2297,12 @@ document.addEventListener('click',e=>{
   SIZE_SETS[set].forEach(s=>{q[s]=old[s]!==undefined?old[s]:Math.round(tot*(curve[s]||0)/100)});
   d.sizeSet=set;d.qty=q;save();render();return}
 
- const sx=t.closest('[data-shotx]'); if(sx){e.preventDefault();
+  const sx=t.closest('[data-shotx]'); if(sx){e.preventDefault();
   const [id,s]=sx.dataset.shotx.split(':');
-  const d=DB.designs.find(x=>x.id===id); if(d){delete d.shots[s];save();render()}return}
+  const d=DB.designs.find(x=>x.id===id); if(d){r2Delete(d.shots[s]);delete d.shots[s];save();render()}return}
  const rx=t.closest('[data-refx]'); if(rx){e.preventDefault();
-  delete DB.brand.refImages[rx.dataset.refx];save();render();return}
- if(t.closest('[data-logox]')){DB.logo='';save();render();return}
+  r2Delete(DB.brand.refImages[rx.dataset.refx]);delete DB.brand.refImages[rx.dataset.refx];save();render();return}
+ if(t.closest('[data-logox]')){r2Delete(DB.logo);DB.logo='';save();render();return}
 
  const pa=t.closest('[data-phaseadd]'); if(pa){
   const n=DB.phases.length+1;
@@ -2378,15 +2408,18 @@ document.addEventListener('input',e=>{
 });
 document.addEventListener('change',e=>{
  const t=e.target;
- const sh=t.closest('[data-shot]'); if(sh&&sh.files&&sh.files[0]){
+  const sh=t.closest('[data-shot]'); if(sh&&sh.files&&sh.files[0]){
   const [id,s]=sh.dataset.shot.split(':');
-  readImg(sh.files[0],data=>{const d=DB.designs.find(x=>x.id===id);
-   if(d){d.shots=d.shots||{};d.shots[s]=data;save();render()}});return}
- const rf=t.closest('[data-ref]'); if(rf&&rf.files&&rf.files[0]){
-  readImg(rf.files[0],data=>{DB.brand.refImages=DB.brand.refImages||{};
-   DB.brand.refImages[rf.dataset.ref]=data;save();render()});return}
+  readImg(sh.files[0],'designs/'+id+'/'+s.replace(/\s+/g,'-'),url=>{
+   const d=DB.designs.find(x=>x.id===id);
+   if(d){d.shots=d.shots||{};r2Delete(d.shots[s]);d.shots[s]=url;save();render()}});return}
+  const rf=t.closest('[data-ref]'); if(rf&&rf.files&&rf.files[0]){
+  readImg(rf.files[0],'brand/'+rf.dataset.ref.replace(/\s+/g,'-'),url=>{
+   DB.brand.refImages=DB.brand.refImages||{};
+   r2Delete(DB.brand.refImages[rf.dataset.ref]);
+   DB.brand.refImages[rf.dataset.ref]=url;save();render()});return}
  const lg=t.closest('[data-logo]'); if(lg&&lg.files&&lg.files[0]){
-  readImg(lg.files[0],data=>{DB.logo=data;save();render()});return}
+  readImg(lg.files[0],'logo/logo',url=>{r2Delete(DB.logo);DB.logo=url;save();render()});return}
  const dp=t.closest('[data-dphase]'); if(dp){
   const d=DB.designs.find(x=>x.id===dp.dataset.dphase);
   const ph=DB.phases.find(p=>p.name===t.value);
